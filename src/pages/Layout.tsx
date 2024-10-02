@@ -6,10 +6,10 @@ function Layout() {
       <nav>
         <ul>
           <li>
-            <Link to="profile">Profile</Link>
+            <Link to={`profile`}>Profile</Link>
           </li>
           <li>
-            <Link to="/">Feed</Link>
+            <Link to={`feed`}>Feed</Link>
           </li>
         </ul>
       </nav>
