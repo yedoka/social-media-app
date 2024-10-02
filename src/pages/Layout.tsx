@@ -11,11 +11,6 @@ function Layout() {
           <li>
             <Link to="/">Feed</Link>
           </li>
-          <li>
-            <Link to="/notifications">
-              <li>Notifications</li>
-            </Link>
-          </li>
         </ul>
       </nav>
 
