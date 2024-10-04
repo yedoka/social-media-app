@@ -1,14 +1,14 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Layout from "./pages/Layout";
+import Root from "./pages/Root";
 import Feed from "./pages/Feed";
 import Profile from "./pages/Profile";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: <Root />,
     children: [
       {
         path: "feed",
