@@ -1,0 +1,12 @@
+@import "../styles/globals.scss";
+
+.rootLayout {
+  display: flex;
+  height: 200vh;
+
+  &__content {
+    padding: 20px;
+    background-color: $background-color;
+    color: $primary-text;
+  }
+}
