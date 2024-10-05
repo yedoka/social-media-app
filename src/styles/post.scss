@@ -1,0 +1,21 @@
+.post {
+  background-color: black;
+  padding: 2rem 1.25rem;
+  width: 800px;
+  border-radius: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  .profile {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+}
+
+.profile__img {
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+}

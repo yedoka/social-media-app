@@ -1,7 +1,18 @@
-import React from "react";
+import Post from "../components/Post";
+import pfp from "../assets/pfp.png";
+import "../styles/globals.scss";
 
 const Feed = () => {
-  return <div>Feed</div>;
+  return (
+    <div id="feed">
+      <Post
+        profileImg={pfp}
+        name={"John Smith"}
+        postImg={pfp}
+        description={"some description"}
+      />
+    </div>
+  );
 };
 
 export default Feed;
