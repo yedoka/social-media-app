@@ -32,8 +32,11 @@ ul {
   list-style: none;
 }
 
-#feed {
-  padding: 3rem;
-  position: absolute;
-  left: 250px;
+#main__content {
+  margin-left: 250px;
+  padding: 20px;
+  min-height: 100vh;
+  background-color: $black;
+  color: $white;
+  overflow-y: auto;
 }
