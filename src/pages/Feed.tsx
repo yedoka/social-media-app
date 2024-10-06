@@ -9,7 +9,7 @@ const Feed = () => {
         profileImg={pfp}
         name={"John Smith"}
         postImg={pfp}
-        description={"some description"}
+        caption={"some description"}
       />
     </div>
   );
