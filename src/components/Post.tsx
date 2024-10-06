@@ -1,13 +1,13 @@
-import "../styles/post.scss";
+import "./post.scss"
 
 interface PostProps {
   profileImg: string;
   name: string;
   postImg: string;
-  description: string;
+  caption: string;
 }
 
-const Post = ({ profileImg, name, postImg, description }: PostProps) => {
+const Post = ({ profileImg, name, postImg, caption }: PostProps) => {
   return (
     <>
       <section className="post">
@@ -16,7 +16,7 @@ const Post = ({ profileImg, name, postImg, description }: PostProps) => {
           <h1 className="name">{name}</h1>
         </div>
         <img src={postImg} alt="#" className="post__img" />
-        <p className="description">{description}</p>
+        <p className="caption">{caption}</p>
       </section>
     </>
   );
