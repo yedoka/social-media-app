@@ -1,19 +1,13 @@
 import { createStore } from "redux";
 import { UnknownAction } from "redux";
+import type { User } from "../types/Credentials";
 
-interface ProfileState {
-  name: string,
-  surname: string,
-  avatar: string,
-}
-
-const initialState: ProfileState = {
-  name: '',
-  surname: '',
+const initialState: User = {
+  username: '',
   avatar: '',
 }
 
-const profileReducer = (state = initialState, action: UnknownAction): ProfileState => {
+const profileReducer = (state = initialState, action: UnknownAction): User => {
   switch (action.type) {
   case "setProfile":
     return {
