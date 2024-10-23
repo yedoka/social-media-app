@@ -1,19 +1,21 @@
-import "./post.scss"
-import type { Post } from "../types/Post";
+import "./post.scss";
 
-interface Props {
-  post: Post;
+interface Post {
+  profileImg: string;
+  name: string;
+  postImg: string;
+  caption: string;
 }
 
-const Post = ({post}: Props) => {
+const Post = ({ profileImg, name, postImg, caption }: Post) => {
   return (
     <section className="post">
       <div className="profile">
-        <img src={post.profileImg} alt="profileImage" className="profile__img" />
-        <h1 className="name">{post.name}</h1>
+        <img src={profileImg} alt="profileImage" className="profile__img" />
+        <h1 className="name">{name}</h1>
       </div>
-      <img src={post.postImg} alt="#" className="post__img" />
-      <p className="caption">{post.caption}</p>
+      <img src={postImg} alt="#" className="post__img" />
+      <p className="caption">{caption}</p>
     </section>
   );
 };
