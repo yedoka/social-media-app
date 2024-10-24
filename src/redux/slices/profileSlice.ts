@@ -1,12 +1,10 @@
 import {createSlice} from "@reduxjs/toolkit";
+import { userDetails } from "../../types/userDetails";
 
 interface ProfileState {
   isAuthenticated: boolean;
   token: string | null;
-  userDetails: {
-    username: string;
-    email: string;
-  } | null;
+  userDetails: userDetails | null;
 }
 
 const initialState: ProfileState = {
