@@ -1,11 +1,5 @@
 import "./post.scss";
-
-interface Post {
-  profileImg: string;
-  name: string;
-  postImg: string;
-  caption: string;
-}
+import type { Post } from "../types/Post";
 
 const Post = ({ profileImg, name, postImg, caption }: Post) => {
   return (
@@ -17,6 +11,7 @@ const Post = ({ profileImg, name, postImg, caption }: Post) => {
       <img src={postImg} alt="#" className="post__img" />
       <p className="caption">{caption}</p>
     </section>
+
   );
 };
 
