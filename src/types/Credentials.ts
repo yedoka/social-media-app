@@ -5,7 +5,6 @@ export interface User {
 
 export interface Credentials {
   email: string;
-  username: string;
   password: string;
   passwordConfirmation: string;
 }

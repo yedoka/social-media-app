@@ -1,5 +1,5 @@
 import Root from "../layout/Root";
-import AuthLayout from "../pages/auth/AuthLayout";
+import AuthLayout from "../layout/AuthLayout";
 import SignInForm from "../pages/auth/forms/SignInForm"
 import SignUpForm from "../pages/auth/forms/SignUpForm"
 

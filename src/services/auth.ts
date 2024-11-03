@@ -1,10 +1,10 @@
 import backend from './data.json'
 import type { Credentials } from '../types/Credentials'
 
-const signIn = (username: string, password: string) => {
+const signIn = (email: string, password: string) => {
   // mock data as it would be request to backend
   const {auth} = backend
-  if(auth.username === username && auth.password === password) {
+  if(auth.email === email && auth.password === password) {
     return Promise.resolve({access: auth.access})
   } else {
     return Promise.reject({message: auth.error})
