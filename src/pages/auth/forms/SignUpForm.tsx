@@ -1,6 +1,7 @@
 import React, { useState, FormEvent } from 'react';
 import authService from '../../../services/auth'; 
 import type { Credentials } from '../../../types/Credentials';
+import './SignUpForm.scss';
 
 const SignUpForm: React.FC = () => {
 
