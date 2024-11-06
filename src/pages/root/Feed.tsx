@@ -1,6 +1,6 @@
-import Post from "../components/Post";
-import pfp from "../assets/pfp.png";
-import "../styles/globals.scss";
+import Post from "../../components/Post";
+import pfp from "../../../public/assets/pfp.png";
+import "../../styles/globals.scss";
 
 const Feed = () => {
   return (
