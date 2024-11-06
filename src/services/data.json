@@ -4,5 +4,14 @@
 		"email": "test@gmail.com",
 		"password": "qwerty1234",
 		"error": "Wrong credentials!"
+	},
+	"user": {
+		"currentUser": {
+			"email": "",
+			"name": "",
+			"surname": "",
+			"profileImg": "",
+			"username": ""
+		}
 	}
 }
