@@ -1,5 +1,4 @@
 import backend from './data.json'
-import type { Credentials } from '../types/Credentials'
 
 const signIn = (email: string, password: string) => {
   // mock data as it would be request to backend
@@ -11,7 +10,7 @@ const signIn = (email: string, password: string) => {
   }
 }
 
-const signUp = (credentials: Credentials) => {
+const signUp = () => {
   // request to backend
   return Promise.resolve({message: 'User successfully created!'})
 }
