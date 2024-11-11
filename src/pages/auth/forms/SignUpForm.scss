@@ -1,6 +1,5 @@
 @use '../../../styles/variables.scss';
 
-// Main container styling
 .signUpForm {
   color: variables.$text-color;
   display: flex;
@@ -8,7 +7,6 @@
   align-items: center;
   min-height: 100vh;
   
-  // Form container styling
   &__container {
     background-color: variables.$background-color;
     padding: 2rem;
@@ -20,21 +18,18 @@
     gap: 1rem;
   }
   
-  // Title styling
   &__title {
     font-size: 1.5rem;
     color: variables.$text-color;
     text-align: center;
   }
 
-  // Label styling
   &__label {
     color: variables.$label-color;
     font-size: 0.9rem;
     margin-bottom: 0.25rem;
   }
 
-  // Input field styling
   &__input {
     background-color: variables.$input-background-color;
     color: variables.$text-color;
@@ -50,7 +45,6 @@
     }
   }
 
-  // Button styling
   &__button {
     background-color: variables.$button-color;
     color: #fff;
@@ -65,21 +59,12 @@
     }
   }
 
-  // Success message styling
-  &__success {
-    color: variables.$success-color;
-    background-color: rgba(40, 167, 69, 0.1);
-    padding: 0.5rem;
-    border-radius: 4px;
-    text-align: center;
-  }
+}
 
-  // Error message styling
-  &__error {
-    color: variables.$error-color;
-    background-color: rgba(220, 53, 69, 0.1);
-    padding: 0.5rem;
-    border-radius: 4px;
-    text-align: center;
-  }
+.successMessage {
+  color: variables.$success-color;
+}
+
+.errorMessage {
+  color: variables.$error-color;
 }
