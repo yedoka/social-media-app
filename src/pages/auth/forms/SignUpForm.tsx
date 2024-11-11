@@ -1,10 +1,12 @@
 import React, { useState, FormEvent } from 'react';
 import authService from '../../../services/auth'; 
-import type { Credentials } from '../../../types/Credentials';
 import './SignUpForm.scss';
+import { Link } from 'react-router-dom';
 
 const SignUpForm: React.FC = () => {
 
+  const [name, setName] = useState<string>('');
+  const [username, setUsername] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>('');
@@ -19,10 +21,8 @@ const SignUpForm: React.FC = () => {
       return;
     }
 
-    const credentials: Credentials = { email, password, passwordConfirmation }; 
-
     try {
-      const response = await authService.signUp(credentials); 
+      const response = await authService.signUp(); 
       setMessage(response.message); 
       setError(null); 
     } catch (err: unknown) {
@@ -39,6 +39,28 @@ const SignUpForm: React.FC = () => {
     <div className="signUpForm">
       <form className="signUpForm__container" onSubmit={handleSubmit}>
         <h2 className="signUpForm__title">Sign Up</h2>
+
+        <label className='signUpForm__label'>Name</label>
+        <input 
+          type='text'
+          name='Name'
+          className='signUpForm__input'
+          placeholder='Name'
+          required
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+
+        <label className='signUpForm__label'>Username</label>
+        <input 
+          type='text'
+          name='Username'
+          className='signUpForm__input'
+          placeholder='Username'
+          required
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
 
         <label className="signUpForm__label">Email</label>
         <input
@@ -72,14 +94,13 @@ const SignUpForm: React.FC = () => {
           value={passwordConfirmation}
           onChange={(e) => setPasswordConfirmation(e.target.value)}
         />
+        {error && <p className='errorMessage'>{error}</p>}
 
         <button type="submit" className="signUpForm__button">
           Sign Up
         </button>
-
-        {/* Display success or error messages */}
-        {message && <p className="signUpForm__success">{message}</p>}
-        {error && <p className="signUpForm__error">{error}</p>}
+        {message && <p className='successMessage'>{message}</p>}
+        <Link to='/sign-in'>Sign in</Link>
       </form>
     </div>
   );
