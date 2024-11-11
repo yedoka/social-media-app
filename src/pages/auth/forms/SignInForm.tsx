@@ -1,6 +1,6 @@
 import React, { useState, FormEvent } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import authService from '../../../services/auth';
 import { logIn } from '../../../store/slices/profileSlice';
 import './SignInForm.scss';
@@ -59,12 +59,13 @@ const SignInForm: React.FC = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        {error && <p className="signInForm__error">{error}</p>}
 
         <button type="submit" className="signInForm__button">
           Sign In
         </button>
 
-        {error && <p className="signInForm__error">{error}</p>}
+        <Link to='/sign-up'>Don't have an account?</Link>
       </form>
     </div>
   );
