@@ -1,23 +1,32 @@
-import Root from "../layout/Root";
+import RootLayout from "../layout/Root";
 import AuthLayout from "../layout/AuthLayout";
-import SignInForm from "../pages/auth/forms/SignInForm"
-import SignUpForm from "../pages/auth/forms/SignUpForm"
+import SignInForm from "../pages/auth/forms/SignInForm";
+import SignUpForm from "../pages/auth/forms/SignUpForm";
 
 import Feed from "../pages/root/Feed";
 import Profile from "../pages/root/Profile";
+import ProtectedRoute from "./ProtectedRoute"; 
 
 export const routes = [
   {
     path: "/",
-    element: <Root />,
+    element: <RootLayout />,
     children: [
       {
-        path: "feed",
-        element: <Feed />,
+        path: "",
+        element: (
+          <ProtectedRoute>
+            <Feed />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "profile",
-        element: <Profile />,
+        element: (
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        ),
       },
     ],
   },
@@ -41,4 +50,4 @@ export const routes = [
       },
     ],
   },
-]
+];

@@ -1,22 +1,35 @@
 import React, { useState, FormEvent } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import authService from '../../../services/auth';
+import { logIn } from '../../../store/slices/profileSlice';
 import './SignInForm.scss';
 
 const SignInForm: React.FC = () => {
-
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const handleSubmit = async (event: FormEvent) => {
-    event.preventDefault(); 
+    event.preventDefault();
 
     try {
-      const response = await authService.signIn(email, password); 
-      console.log('Access Token:', response.access); 
-      setError(null); 
+      const response = await authService.signIn(email, password);
+      
+      dispatch(logIn({
+        token: response.access,
+        userDetails: { email, password }, 
+      }));
+
+      setError(null);
+      navigate('/'); 
+      
     } catch (err) {
-      setError((err as { message: string }).message); 
+      const errorMessage = (err as { message: string }).message;
+      setError(errorMessage); 
     }
   };
 

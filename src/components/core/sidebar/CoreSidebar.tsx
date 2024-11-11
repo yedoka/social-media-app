@@ -8,7 +8,7 @@ const CoreSidebar = () => {
       <nav>
         <ul>
           <li>
-            <Link to={`/feed`}>Feed</Link>
+            <Link to={`/`}>Feed</Link>
           </li>
           <li>
             <Link to={`/profile`}>Profile</Link>

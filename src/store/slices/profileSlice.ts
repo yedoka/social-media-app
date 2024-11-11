@@ -1,4 +1,4 @@
-import {createSlice} from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { userDetails } from "../../types/userDetails";
 
 interface ProfileState {
@@ -11,13 +11,13 @@ const initialState: ProfileState = {
   isAuthenticated: false,
   token: null,
   userDetails: null,
-}
+};
 
 const profileSlice = createSlice({
   name: "profile",
   initialState,
   reducers: {
-    logIn(state, action) {
+    logIn(state, action: PayloadAction<{ token: string; userDetails: userDetails }>) {
       state.isAuthenticated = true;
       state.token = action.payload.token;
       state.userDetails = action.payload.userDetails;
@@ -26,8 +26,10 @@ const profileSlice = createSlice({
       state.isAuthenticated = false;
       state.token = null;
       state.userDetails = null;
-    }
-  }
-})
+    },
+  },
+});
 
-export default profileSlice;
+export const { logIn, logOut } = profileSlice.actions;
+
+export default profileSlice.reducer;
