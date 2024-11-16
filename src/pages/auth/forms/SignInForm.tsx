@@ -1,35 +1,51 @@
 import React, { useState, FormEvent } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import authService from '../../../services/auth';
 import { logIn } from '../../../store/slices/profileSlice';
+import { useCookies } from 'react-cookie';
+import authService from '../../../services/auth'; 
 import './SignInForm.scss';
 
 const SignInForm: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
+  const [, setCookie] = useCookies(['accessToken']);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-
+  
     try {
       const response = await authService.signIn(email, password);
       
-      dispatch(logIn({
-        token: response.access,
-        userDetails: { email, password }, 
-      }));
+      const { auth, user } = response;
 
+      setCookie('accessToken', auth.access, {
+        path: '/', 
+        maxAge: 3600 * 24, 
+        secure: true, 
+        sameSite: 'strict', 
+      });
+  
+      dispatch(logIn({
+        token: auth.access,
+        userDetails: {
+          email: user.email,
+          name: user.name,
+          surname: user.surname,
+          profileImg: user.profileImg,
+          username: user.username,
+        },
+      }));
+  
       setError(null);
       navigate('/'); 
-      
     } catch (err) {
       const errorMessage = (err as { message: string }).message;
-      setError(errorMessage); 
+      setError(errorMessage);
     }
   };
 
