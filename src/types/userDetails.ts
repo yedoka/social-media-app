@@ -1,4 +1,7 @@
 export interface userDetails {
     email: string;
-    password: string;
+    name: string;
+    surname: string;
+    profileImg: string;
+    username: string;
 };
