@@ -1,15 +1,16 @@
 import Post from "../../components/Post";
-import pfp from "../../../public/assets/pfp.png";
+import postImage from "../../../public/assets/post-img.jpg";
+import johnSmith from "../../../public/assets/john-smith.jpg";
 import "../../styles/globals.scss";
 
 const Feed = () => {
   return (
     <div id="feed">
       <Post
-        profileImg={pfp}
+        profileImg={johnSmith}
         name={"John Smith"}
-        postImg={pfp}
-        caption={"some description"}
+        postImg={postImage}
+        caption={"Photo from my latest trip!"}
       />
     </div>
   );
