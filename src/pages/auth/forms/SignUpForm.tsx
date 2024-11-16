@@ -1,7 +1,7 @@
 import React, { useState, FormEvent } from 'react';
 import authService from '../../../services/auth'; 
 import './SignUpForm.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const SignUpForm: React.FC = () => {
 
@@ -12,6 +12,8 @@ const SignUpForm: React.FC = () => {
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>('');
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault(); 
@@ -25,6 +27,7 @@ const SignUpForm: React.FC = () => {
       const response = await authService.signUp(); 
       setMessage(response.message); 
       setError(null); 
+      navigate('/');
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message); 
