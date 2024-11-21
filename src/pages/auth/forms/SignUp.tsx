@@ -1,6 +1,6 @@
 import React, { useState, FormEvent } from 'react';
 import authService from '../../../services/auth'; 
-import './SignUpForm.scss';
+import './SignUp.scss';
 import { Link, useNavigate } from 'react-router-dom';
 
 const SignUpForm: React.FC = () => {

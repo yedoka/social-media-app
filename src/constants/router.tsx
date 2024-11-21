@@ -1,7 +1,7 @@
 import RootLayout from "../layout/Root";
 import AuthLayout from "../layout/AuthLayout";
-import SignInForm from "../pages/auth/forms/SignInForm";
-import SignUpForm from "../pages/auth/forms/SignUpForm";
+import SignInForm from "../pages/auth/forms/SignIn";
+import SignUpForm from "../pages/auth/forms/SignUp";
 
 import Feed from "../pages/root/Feed";
 import Profile from "../pages/root/Profile";
