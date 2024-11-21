@@ -1,6 +1,5 @@
 @use '../../../styles/variables.scss';
 
-// Main container styling
 .signInForm {
   color: variables.$text-color;
   display: flex;
@@ -8,7 +7,6 @@
   align-items: center;
   min-height: 100vh;
   
-  // Form container styling
   &__container {
     background-color: variables.$background-color;
     padding: 2rem;
@@ -20,21 +18,18 @@
     gap: 1rem;
   }
   
-  // Title styling
   &__title {
     font-size: 1.5rem;
     color: variables.$text-color;
     text-align: center;
   }
 
-  // Label styling
   &__label {
     color: variables.$label-color;
     font-size: 0.9rem;
     margin-bottom: 0.25rem;
   }
 
-  // Input field styling
   &__input {
     background-color: variables.$input-background-color;
     color: variables.$text-color;
@@ -50,7 +45,6 @@
     }
   }
 
-  // Button styling
   &__button {
     background-color: variables.$button-color;
     color: #fff;
@@ -65,12 +59,7 @@
     }
   }
 
-  // Error message styling
   &__error {
-    color: variables.$button-color;
-    background-color: rgba(255, 0, 0, 0.1);
-    padding: 0.5rem;
-    border-radius: 4px;
-    text-align: center;
+    color: variables.$error-color;
   }
 }

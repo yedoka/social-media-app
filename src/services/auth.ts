@@ -1,22 +1,23 @@
 import backend from './data.json'
-import type { Credentials } from '../types/Credentials'
 
 const signIn = (email: string, password: string) => {
-  // mock data as it would be request to backend
-  const {auth} = backend
-  if(auth.email === email && auth.password === password) {
-    return Promise.resolve({access: auth.access})
-  } else {
-    return Promise.reject({message: auth.error})
-  }
-}
+  const { auth, user } = backend;
 
-const signUp = (credentials: Credentials) => {
-  // request to backend
-  return Promise.resolve({message: 'User successfully created!'})
-}
+  if (auth.email === email && auth.password === password) {
+    return Promise.resolve({
+      auth: { access: auth.access },
+      user: user.currentUser, 
+    });
+  } else {
+    return Promise.reject({ message: auth.error });
+  }
+};
+
+const signUp = () => {
+  return Promise.resolve({ message: 'User successfully created!' });
+};
 
 export default {
   signIn,
-  signUp
-}
+  signUp,
+};

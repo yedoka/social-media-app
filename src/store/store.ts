@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import profileSlice from "./slices/profileSlice";
-import postSlice from "./slices/postSlice";
+import profileReducer from "./slices/profileSlice"; 
 
 export const store = configureStore({
   reducer: {
-    profile: profileSlice.reducer,
-    post: postSlice.reducer,
-  }
-})
+    profile: profileReducer, 
+  },
+});
+
+export type RootState = ReturnType<typeof store.getState>;
+
+export default store;

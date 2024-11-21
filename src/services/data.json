@@ -2,16 +2,16 @@
 	"auth": {
 		"access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
 		"email": "test@gmail.com",
-		"password": "qwerty1234",
+		"password": "123",
 		"error": "Wrong credentials!"
 	},
 	"user": {
 		"currentUser": {
-			"email": "",
-			"name": "",
-			"surname": "",
-			"profileImg": "",
-			"username": ""
+			"email": "test@gmail.com",
+			"name": "John",
+			"surname": "Smith",
+			"profileImg": "https://images.unsplash.com/photo-1727293341907-5803c9874f10?q=80&w=1976&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+			"username": "johnsmith"
 		}
 	}
 }

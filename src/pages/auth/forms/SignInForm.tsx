@@ -1,22 +1,51 @@
 import React, { useState, FormEvent } from 'react';
-import authService from '../../../services/auth';
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { logIn } from '../../../store/slices/profileSlice';
+import { useCookies } from 'react-cookie';
+import authService from '../../../services/auth'; 
 import './SignInForm.scss';
 
 const SignInForm: React.FC = () => {
-
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
+  const [, setCookie] = useCookies(['accessToken']);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: FormEvent) => {
-    event.preventDefault(); 
-
+    event.preventDefault();
+  
     try {
-      const response = await authService.signIn(email, password); 
-      console.log('Access Token:', response.access); 
-      setError(null); 
+      const response = await authService.signIn(email, password);
+      
+      const { auth, user } = response;
+
+      setCookie('accessToken', auth.access, {
+        path: '/', 
+        maxAge: 3600 * 24, 
+        secure: true, 
+        sameSite: 'strict', 
+      });
+  
+      dispatch(logIn({
+        token: auth.access,
+        userDetails: {
+          email: user.email,
+          name: user.name,
+          surname: user.surname,
+          profileImg: user.profileImg,
+          username: user.username,
+        },
+      }));
+  
+      setError(null);
+      navigate('/'); 
     } catch (err) {
-      setError((err as { message: string }).message); 
+      const errorMessage = (err as { message: string }).message;
+      setError(errorMessage);
     }
   };
 
@@ -46,12 +75,13 @@ const SignInForm: React.FC = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        {error && <p className="signInForm__error">{error}</p>}
 
         <button type="submit" className="signInForm__button">
           Sign In
         </button>
 
-        {error && <p className="signInForm__error">{error}</p>}
+        <Link to='/sign-up'>Don't have an account?</Link>
       </form>
     </div>
   );

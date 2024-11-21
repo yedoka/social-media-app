@@ -6,7 +6,7 @@ const Post = ({ profileImg, name, postImg, caption }: Post) => {
     <section className="post">
       <div className="profile">
         <img src={profileImg} alt="profileImage" className="profile__img" />
-        <h1 className="name">{name}</h1>
+        <h1 className="profile__name">{name}</h1>
       </div>
       <img src={postImg} alt="#" className="post__img" />
       <p className="caption">{caption}</p>
