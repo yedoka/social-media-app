@@ -21,8 +21,6 @@ const UserProfile = () => {
     setIsEditing(false);
   };
 
-  console.log(user);
-
   if (!user) {
     return <div>Loading...</div>;
   }
