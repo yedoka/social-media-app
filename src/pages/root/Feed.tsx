@@ -1,6 +1,6 @@
 import Post from "../../components/Post";
-import postImage from "../../../public/assets/post-img.jpg";
-import johnSmith from "../../../public/assets/john-smith.jpg";
+import postImage from "../../assets/post-img.jpg"
+import johnSmith from "../../assets/john-smith.jpg";
 import "../../styles/globals.scss";
 
 const Feed = () => {
