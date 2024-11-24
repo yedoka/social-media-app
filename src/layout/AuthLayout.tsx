@@ -1,19 +1,15 @@
-import { Outlet, Navigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import signInBg from "../assets/signIn-bg.jpg"
 import './AuthLayout.scss';
 
 const AuthLayout = () => {
-  const isAuthenticated = false;
-
   return (
-    <>
-      {isAuthenticated ? (
-        <Navigate to="/" />
-      ): (
-        <section className="form__section">
-          <Outlet />
-        </section> 
-      )}
-    </>
+    <div className="formLayout">
+      <img src={signInBg} alt="signIn-background" />
+      <main className="formLayout__content">
+        <Outlet />
+      </main>
+    </div>
   )
 }
 
