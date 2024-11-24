@@ -1,4 +1,6 @@
-.coreSidebar {
+@use '../../../styles/variables.scss';
+
+.sidebar {
   position: sticky;
   left: 0;
   top: 0;
@@ -6,4 +8,9 @@
   height: 100vh;
   padding: 20px;
   border-right: 1px solid #fff;
+
+  &__link {
+    color: variables.$text-primary;
+    text-decoration: none;
+  }
 }
