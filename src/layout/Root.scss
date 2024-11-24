@@ -1,4 +1,4 @@
-@import "../styles/globals.scss";
+@use '../styles/variables.scss';
 
 .rootLayout {
   display: flex;
@@ -6,7 +6,7 @@
 
   &__content {
     padding: 20px;
-    background-color: $background-color;
-    color: $primary-text;
+    background-color: variables.$bg-primary;
+    color: variables.$text-primary;
   }
 }
