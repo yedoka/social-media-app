@@ -1,16 +1,15 @@
 import React, { FC } from "react";
 import { Navigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
+import { RootState } from "../store/store";
+import { useSelector } from "react-redux";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 const ProtectedRoute: FC<ProtectedRouteProps> = ({ children }) => {
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated)
 
-  const [cookies] = useCookies(['accessToken']);
-  const accessToken = cookies.accessToken;
-
-  if (!accessToken) {
+  if (!isAuthenticated) {
     return <Navigate to="/sign-in" replace />;
   }
 
