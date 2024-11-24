@@ -1,26 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../../services/firebase';
+import { auth } from '../../services/firebase';
+import { authenticate } from '../../store/slices/authSlice';
+import { useDispatch } from 'react-redux';
+import { FirebaseError } from 'firebase/app';
+import type { SignInFormInputs } from '../../types/auth';
 import './SignIn.scss';
-
-
-type FormValues = {
-  email: string;
-  password: string;
-};
+import Button from '../../components/core/Button';
 
 const SignInForm: React.FC = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
-  const navigate = useNavigate();
+  const { register, handleSubmit, formState: { errors } } = useForm<SignInFormInputs>();
+  const [error, setError] = useState<string>("");
 
-  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const onSubmit: SubmitHandler<SignInFormInputs> = async (data) => {
     try {
       await signInWithEmailAndPassword(auth, data.email, data.password);
+      dispatch(authenticate());
       navigate('/');
     } catch (err) {
-      console.error(err);
+      if (err instanceof FirebaseError) {
+        if (err.code === 'auth/user-not-found') {
+          setError('User not found. Please check your email.');
+        } else if (err.code === 'auth/wrong-password') {
+          setError('Incorrect password. Please try again.');
+        } else {
+          setError('An error occurred. Please try again later.');
+        }
+      } else {
+        setError('An unexpected error occurred.');
+      }
     }
   };
 
@@ -46,12 +59,10 @@ const SignInForm: React.FC = () => {
           {...register('password', { required: 'Password is required' })}
         />
         {errors.password && <span className="signInForm__error">{errors.password.message}</span>}
+        {error && <p className="signInForm__error">{error}</p>}
+        <Button type='submit'>Sign In</Button>
 
-        <button type="submit" className="signInForm__button">
-          Sign In
-        </button>
-
-        <Link to="/sign-up">Don't have an account?</Link>
+        <Link to="/sign-up" className='signInForm__container__link'>Don't have an account?</Link>
       </form>
     </div>
   );

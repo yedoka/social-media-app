@@ -1,0 +1,60 @@
+@use '../../styles/variables.scss';
+
+a {
+  color: variables.$text-secondary;
+}
+
+.signInForm {
+  color: variables.$text-primary;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  
+  &__container {
+    background-color: variables.$bg-secondary;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    width: 24rem;
+    display: flex;
+    flex-direction: column;
+
+    &__link {
+      margin-top: 2rem;
+      text-decoration: underline;
+    }
+  }
+  
+  &__title {
+    font-size: 1.5rem;
+    color: variables.$text-secondary;
+    text-align: center;
+  }
+
+  &__label {
+    color: variables.$text-secondary;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+  }
+
+  &__input {
+    background-color: variables.$bg-secondary;
+    color: variables.$text-secondary;
+    border: 1px solid variables.$border-default;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+    &:focus {
+      border-color: variables.$accent-primary;
+      box-shadow: 0 0 5px variables.$accent-primary-hover;
+    }
+  }
+
+  &__error {
+    color: variables.$error;
+  }
+}
