@@ -7,4 +7,5 @@ export interface SignUpFormInputs {
   email: string;
   password: string;
   passwordConfirmation: string;
+  displayName: string;
 }
