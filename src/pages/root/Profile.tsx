@@ -1,4 +1,4 @@
-import UserProfile from "../../components/UserProfile";
+import UserProfile from "../../components/core/userProfile/UserProfile";
 
 const Profile = () => {
   return <main>

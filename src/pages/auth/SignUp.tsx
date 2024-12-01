@@ -1,9 +1,9 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../../services/firebase';
-import { authenticate } from '../../store/slices/authSlice';
+import { authenticate } from '../../store/slices/auth';
 import { useDispatch } from 'react-redux';
 import { FirebaseError } from 'firebase/app';
 import type { SignUpFormInputs } from '../../types/auth';
@@ -23,7 +23,7 @@ const SignUpForm: React.FC = () => {
   const [error, setError] = React.useState<string | null>(null);
 
   const onSubmit = async (data: SignUpFormInputs) => {
-    const { email, password, passwordConfirmation } = data;
+    const { email, password, passwordConfirmation, displayName } = data;
 
     if (password !== passwordConfirmation) {
       setError('Passwords do not match!');
@@ -32,9 +32,18 @@ const SignUpForm: React.FC = () => {
 
     try {
       setError(null);
-      await createUserWithEmailAndPassword(auth, email, password);
+
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
+      if (userCredential.user) {
+        await updateProfile(userCredential.user, {
+          displayName,
+        });
+      }
+
+      // Dispatch authentication action and navigate
       dispatch(authenticate());
-      navigate('/'); 
+      navigate('/');
     } catch (err) {
       if (err instanceof FirebaseError) {
         switch (err.code) {
@@ -60,6 +69,17 @@ const SignUpForm: React.FC = () => {
     <div className="signUpForm">
       <form className="signUpForm__container" onSubmit={handleSubmit(onSubmit)}>
         <h2 className="signUpForm__title">Sign Up</h2>
+        <label className="signUpForm__label">Display Name</label>
+        <input
+          type="text"
+          className={`signUpForm__input ${errors.displayName ? 'signUpForm__input--error' : ''}`}
+          placeholder="Enter your display name"
+          {...register('displayName', {
+            required: 'Display name is required',
+          })}
+        />
+        {errors.displayName && <p className="errorMessage">{errors.displayName.message}</p>}
+
         <label className="signUpForm__label">Email</label>
         <input
           type="email"
@@ -108,7 +128,7 @@ const SignUpForm: React.FC = () => {
         )}
         {error && <p className="errorMessage">{error}</p>}
 
-        <Button type='submit'>Sign Up</Button>
+        <Button type="submit">Sign Up</Button>
 
         <Link to="/sign-in">Sign in</Link>
       </form>

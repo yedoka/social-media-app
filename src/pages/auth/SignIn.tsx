@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../services/firebase';
-import { authenticate } from '../../store/slices/authSlice';
+import { authenticate } from '../../store/slices/auth';
 import { useDispatch } from 'react-redux';
 import { FirebaseError } from 'firebase/app';
 import type { SignInFormInputs } from '../../types/auth';
@@ -29,7 +29,7 @@ const SignInForm: React.FC = () => {
         } else if (err.code === 'auth/wrong-password') {
           setError('Incorrect password. Please try again.');
         } else {
-          setError('An error occurred. Please try again later.');
+          setError('Error');
         }
       } else {
         setError('An unexpected error occurred.');
