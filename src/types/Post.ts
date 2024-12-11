@@ -1,6 +1,14 @@
+export interface User {
+  displayName: string;
+  email: string;
+  profilePicture: string;
+}
+
 export interface Post {
-  profileImg: string;
-  name: string;
-  postImg: string;
-  caption: string;
+  authorId: User;
+  content: string;
+  imageUrl: string;
+  isLikedByUser: boolean;
+  likes: User[];
+  timestamp: Date;
 }
