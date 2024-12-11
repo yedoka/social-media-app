@@ -1,58 +1,79 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { updateProfile } from "firebase/auth";
-import { auth } from "../../../services/firebase";
-import Button from "../Button";
+import { auth, db } from "../../../services/firebase";
 import { disable } from "../../../store/slices/editProfile";
+import Button from "../Button";
+import { updateDoc, doc } from "firebase/firestore";
+import { useForm, SubmitHandler } from "react-hook-form";
+
+interface FormInputs {
+  username: string;
+}
 
 const EditForm: React.FC = () => {
   const dispatch = useDispatch();
-  const [username, setUsername] = useState(auth.currentUser?.displayName || "");
-  const [error, setError] = useState<string | null>(null);
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<FormInputs>({
+    defaultValues: { username: auth.currentUser?.displayName || "" },
+  });
 
   const handleCancel = () => {
     dispatch(disable());
   };
 
-  const handleSave = async () => {
+  const handleSave: SubmitHandler<FormInputs> = async (data) => {
     try {
-      if (!username) {
-        setError("Username cannot be empty.");
-        return;
-      }
-
-      setError(null);
-
       if (auth.currentUser) {
-        await updateProfile(auth.currentUser, { displayName: username });
-        dispatch(disable()); 
+        await updateProfile(auth.currentUser, { displayName: data.username });
+
+        const userDocRef = doc(db, "users", auth.currentUser.uid);
+        await updateDoc(userDocRef, { displayName: data.username });
+
+        dispatch(disable());
       } else {
-        setError("User is not authenticated.");
+        setError("username", {
+          type: "manual",
+          message: "User is not authenticated.",
+        });
       }
     } catch (err) {
       if (err instanceof Error) {
-        setError(err.message);
+        setError("username", {
+          type: "manual",
+          message: err.message,
+        });
       } else {
-        setError("Unknow error occured");
+        setError("username", {
+          type: "manual",
+          message: "Unknown error occurred.",
+        });
       }
     }
   };
 
   return (
-    <div>
+    <form onSubmit={handleSubmit(handleSave)}>
       <h3>Edit Username</h3>
       <input
         type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
         placeholder="Enter new username"
+        {...register("username", {
+          required: "Username cannot be empty.",
+        })}
       />
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {errors.username && <p style={{ color: "red" }}>{errors.username.message}</p>}
       <div>
-        <Button onClick={handleSave}>Save</Button>
-        <Button onClick={handleCancel}>Cancel</Button>
+        <Button type="submit">Save</Button>
+        <Button type="button" onClick={handleCancel}>
+          Cancel
+        </Button>
       </div>
-    </div>
+    </form>
   );
 };
 

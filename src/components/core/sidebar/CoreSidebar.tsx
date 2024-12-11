@@ -27,6 +27,9 @@ const CoreSidebar = () => {
           <li>
             <Link to={`/profile`} className="sidebar__link">Profile</Link>
           </li>
+          <li>
+            <Link to={`/createpost`} className="sidebar__link">Create Post</Link>
+          </li>
         </ul>
       </nav>
       <Button onClick={logout}>Log out</Button>

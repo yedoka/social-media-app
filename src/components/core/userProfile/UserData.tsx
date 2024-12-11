@@ -3,8 +3,8 @@ import { auth } from '../../../services/firebase';
 const UserData = () => {
   return (
     <div>
-      {`Current user: ${auth.currentUser?.email}`}
-      {`name: ${auth.currentUser?.displayName}`}
+      <h1>{`Current user: ${auth.currentUser?.email}`}</h1>
+      <h2>{`name: ${auth.currentUser?.displayName}`}</h2>
     </div>
   )
 }

@@ -7,8 +7,8 @@ import { authenticate } from '../../store/slices/auth';
 import { useDispatch } from 'react-redux';
 import { FirebaseError } from 'firebase/app';
 import type { SignInFormInputs } from '../../types/auth';
-import './SignIn.scss';
 import Button from '../../components/core/Button';
+import './SignIn.scss';
 
 const SignInForm: React.FC = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<SignInFormInputs>();
@@ -24,10 +24,10 @@ const SignInForm: React.FC = () => {
       navigate('/');
     } catch (err) {
       if (err instanceof FirebaseError) {
-        if (err.code === 'auth/user-not-found') {
-          setError('User not found. Please check your email.');
-        } else if (err.code === 'auth/wrong-password') {
-          setError('Incorrect password. Please try again.');
+        if (err.code === 'auth/invalid-credential') {
+          setError('Email or password is incorrect');
+          console.log(err.code);
+          
         } else {
           setError('Error');
         }

@@ -1,19 +1,18 @@
-function outerFunc() {
-  let a = "outer func var";
-  return function innerFunc() {
-    console.log(a);
+let promise = new Promise(function (resolve, reject) {
+  setTimeout(() => resolve(1), 1000);
+}).then(
+  function(result) {
+    console.log(result);
+    return result * 2;
   }
-}
-
-
-let i = 0
-
-function counter() {
-  i++;
-}
-
-console.log(i);
-console.log(i);
-console.log(i);
-console.log(i);
-
+).then(
+  function(result) {
+    console.log(result);
+    return result * 2;
+  }
+).then(
+  function(result) {
+    console.log(result);
+    return result * 2;
+  }
+)

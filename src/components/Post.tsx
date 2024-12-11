@@ -1,18 +1,28 @@
-import "./post.scss";
 import type { Post } from "../types/Post";
 
-const Post = ({ profileImg, name, postImg, caption }: Post) => {
-  return (
-    <section className="post">
-      <div className="profile">
-        <img src={profileImg} alt="profileImage" className="profile__img" />
-        <h1 className="profile__name">{name}</h1>
-      </div>
-      <img src={postImg} alt="#" className="post__img" />
-      <p className="caption">{caption}</p>
-    </section>
+interface PostComponentProps {
+  posts: Post[];
+}
 
+const PostComponent: React.FC<PostComponentProps> = ({ posts }) => {
+  return (
+    <div>
+      {posts.map((post, index) => (
+        <div key={index}>
+          <h3>Username: {post.authorId.displayName}</h3>
+          <p>Content: {post.content}</p>
+          {post.imageUrl && <img src={post.imageUrl} alt="Post" />}
+          <p>
+            {post.isLikedByUser
+              ? "You like this post"
+              : "You don't like this post"}
+          </p>
+          <p>{`Likes: ${post.likes.length}`}</p>
+          <small>Posted: {post.timestamp.toLocaleString()}</small>
+        </div>
+      ))}
+    </div>
   );
 };
 
-export default Post;
+export default PostComponent;
