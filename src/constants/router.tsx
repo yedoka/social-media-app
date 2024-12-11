@@ -5,7 +5,8 @@ import SignUpForm from "../pages/auth/SignUp";
 
 import Feed from "../pages/root/Feed";
 import Profile from "../pages/root/Profile";
-import ProtectedRoute from "./ProtectedRoute"; 
+import ProtectedRoute from "./ProtectedRoute";
+import CreatePost from "../pages/root/CreatePost";
 
 export const routes = [
   {
@@ -25,6 +26,14 @@ export const routes = [
         element: (
           <ProtectedRoute>
             <Profile />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "createpost",
+        element: (
+          <ProtectedRoute>
+            <CreatePost />
           </ProtectedRoute>
         ),
       },
