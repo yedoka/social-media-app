@@ -9,10 +9,12 @@ import { FirebaseError } from 'firebase/app';
 import type { SignInFormInputs } from '../../types/auth';
 import Button from '../../components/core/Button';
 import './SignIn.scss';
+import { useCookies } from 'react-cookie';
 
 const SignInForm: React.FC = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<SignInFormInputs>();
   const [error, setError] = useState<string>("");
+  const [, setCookie] = useCookies(['authToken']);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -20,8 +22,12 @@ const SignInForm: React.FC = () => {
   const onSubmit: SubmitHandler<SignInFormInputs> = async (data) => {
     try {
       await signInWithEmailAndPassword(auth, data.email, data.password);
-      dispatch(authenticate());
-      navigate('/');
+      const idToken = await auth.currentUser?.getIdToken();
+      if (idToken) {
+        setCookie('authToken', idToken, { path: '/', maxAge: 3600 })
+        dispatch(authenticate());
+        navigate('/');
+      }
     } catch (err) {
       if (err instanceof FirebaseError) {
         if (err.code === 'auth/invalid-credential') {
