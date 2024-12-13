@@ -7,6 +7,8 @@ import Feed from "../pages/root/Feed";
 import Profile from "../pages/root/Profile";
 import ProtectedRoute from "./ProtectedRoute";
 import CreatePost from "../pages/root/CreatePost";
+import FindUser from "../pages/root/FindUser";
+import UserDetail from "../pages/root/UserDetail";
 
 export const routes = [
   {
@@ -37,6 +39,22 @@ export const routes = [
           </ProtectedRoute>
         ),
       },
+      {
+        path: "finduser",
+        element: (
+          <ProtectedRoute>
+            <FindUser />
+          </ProtectedRoute>
+        )
+      },
+      {
+        path: "finduser/:userId",
+        element: (
+          <ProtectedRoute>
+            <UserDetail />
+          </ProtectedRoute>
+        )
+      }
     ],
   },
   {
