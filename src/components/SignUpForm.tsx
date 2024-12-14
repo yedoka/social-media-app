@@ -6,10 +6,10 @@ import { useDispatch } from "react-redux";
 import { FirebaseError } from "firebase/app";
 import { doc, setDoc } from "firebase/firestore";
 import { auth } from "@/services/firebase";
-import { authenticate } from "@/store/slices/auth";
+import { authenticate } from "@/store/slices/Auth";
 import { db } from "@/services/firebase";
 import Button from "@/components/core/Button";
-import type { SignUpFormInputs } from "@/types/auth";
+import type { SignUpFormInputs } from "@/types/Auth";
 import "./SignUpForm.scss";
 
 const SignUpForm = () => {

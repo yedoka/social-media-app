@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/store/store';
-import { enable } from '@/store/slices/editProfile';
+import { RootState } from '@/store/Store';
+import { enable } from '@/store/slices/EditProfile';
 import UserData from './UserData';
 import EditForm from './EditForm';
 import Button from '../Button';

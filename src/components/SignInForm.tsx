@@ -6,7 +6,7 @@ import { FirebaseError } from 'firebase/app';
 import { useCookies } from 'react-cookie';
 import { useState } from 'react';
 import { auth } from '@/services/firebase';
-import { authenticate } from '@/store/slices/auth';
+import { authenticate } from '@/store/slices/Auth';
 import Button from '@/components/core/Button';
 import type { SignInFormInputs } from '@/types/auth';
 import './SignInForm.scss';

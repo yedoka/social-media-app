@@ -3,12 +3,12 @@ import AuthLayout from "../layout/AuthLayout";
 import SignInForm from "../pages/auth/SignIn";
 import SignUpForm from "../pages/auth/SignUp";
 
-import Feed from "@/pages/root/Feed";
-import Profile from "@/pages/root/Profile";
+import Feed from "@/pages/Feed";
+import Profile from "@/pages/Profile";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import CreatePost from "@/pages/root/CreatePost";
-import FindUser from "@/pages/root/FindUser";
-import UserDetail from "@/pages/root/UserDetail";
+import CreatePost from "@/pages/CreatePost";
+import FindUser from "@/pages/FindUser";
+import UserDetail from "@/pages/UserDetail";
 
 export const routes = [
   {
