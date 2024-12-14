@@ -9,15 +9,11 @@ const UserDetail = () => {
   const params = useParams();
 
   const searchUserById = async (searchingId: string | undefined) => {
-    console.log("string");
-    
-    console.log(searchingId);
-    
+        
     if (!searchingId) return;
     try {
       const userRef = doc(db, "users", searchingId); 
       const docSnap = await getDoc(userRef);
-      console.log(docSnap.data());
       if (docSnap.exists()) {
         setResult(docSnap.data() as User); 
       } else {

@@ -32,9 +32,7 @@ const SignInForm = () => {
     } catch (err) {
       if (err instanceof FirebaseError) {
         if (err.code === 'auth/invalid-credential') {
-          setError('Email or password is incorrect');
-          console.log(err.code);
-          
+          setError('Email or password is incorrect');          
         } else {
           setError('Error');
         }
