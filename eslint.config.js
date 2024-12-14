@@ -23,9 +23,16 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
-      "indent": ["error", 2],
-      "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 0 }],
-      "no-tabs": ["error"]
+      'react/jsx-curly-brace-presence': [
+        'error',
+        {
+          props: 'never',
+          children: 'ignore',
+        },
+      ],
+      'indent': ['error', 2],
+      'no-multiple-empty-lines': ['error', { max: 1, maxEOF: 0 }],
+      'no-tabs': ['error'],
     },
   },
 )
