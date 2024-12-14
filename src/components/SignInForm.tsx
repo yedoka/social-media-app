@@ -1,14 +1,14 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../services/firebase';
-import { authenticate } from '../store/slices/auth';
 import { useDispatch } from 'react-redux';
 import { FirebaseError } from 'firebase/app';
 import { useCookies } from 'react-cookie';
 import { useState } from 'react';
-import Button from './core/Button';
-import type { SignInFormInputs } from '../types/auth';
+import { auth } from '@/services/firebase';
+import { authenticate } from '@/store/slices/auth';
+import Button from '@/components/core/Button';
+import type { SignInFormInputs } from '@/types/auth';
 import './SignInForm.scss';
 
 const SignInForm = () => {
