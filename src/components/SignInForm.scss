@@ -1,6 +1,10 @@
-@use '../../styles/variables.scss';
+@use '../styles/variables.scss';
 
-.signUpForm {
+a {
+  color: variables.$text-secondary;
+}
+
+.signInForm {
   color: variables.$text-primary;
   display: flex;
   justify-content: center;
@@ -15,6 +19,11 @@
     width: 24rem;
     display: flex;
     flex-direction: column;
+
+    &__link {
+      margin-top: 2rem;
+      text-decoration: underline;
+    }
   }
   
   &__title {
@@ -26,16 +35,15 @@
   &__label {
     color: variables.$text-secondary;
     font-size: 0.9rem;
-    margin-top: 1rem;
     margin-bottom: 0.25rem;
   }
 
   &__input {
     background-color: variables.$bg-secondary;
-    margin-bottom: 1rem;
     color: variables.$text-secondary;
     border: 1px solid variables.$border-default;
     padding: 0.5rem;
+    margin-bottom: 1rem;
     border-radius: 4px;
     outline: none;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -45,12 +53,8 @@
       box-shadow: 0 0 5px variables.$accent-primary-hover;
     }
   }
-}
 
-.successMessage {
-  color: variables.$success;
-}
-
-.errorMessage {
-  color: variables.$error;
+  &__error {
+    color: variables.$error;
+  }
 }
