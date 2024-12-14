@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
+import CoreSidebar from '@/components/core/sidebar/CoreSidebar';
 import "./Root.scss";
-import CoreSidebar from '../components/core/sidebar/CoreSidebar';
 
 export default function RootLayout() {
   return (

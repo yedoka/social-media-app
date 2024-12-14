@@ -1,11 +1,11 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { updateProfile } from "firebase/auth";
-import { auth, db } from "../../../services/firebase";
-import { disable } from "../../../store/slices/editProfile";
-import Button from "../Button";
 import { updateDoc, doc } from "firebase/firestore";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { auth, db } from "@/services/firebase";
+import { disable } from "@/store/slices/editProfile";
+import Button from "../Button";
 
 interface FormInputs {
   username: string;

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import PostComponent from "../../components/Post"; 
 import { collection, getDoc, getDocs, query, orderBy } from "firebase/firestore";
-import { db } from "../../services/firebase";
-import type { Post, User } from "../../types/Post";
-import "../../styles/globals.scss";
+import PostComponent from "@/components/Post"; 
+import { db } from "@/services/firebase";
+import type { Post, User } from "@/types/Post";
+import "@/styles/globals.scss";
 
 const Feed = () => {
   const [posts, setPosts] = useState<Post[]>([]);

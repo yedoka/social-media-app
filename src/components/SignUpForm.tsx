@@ -2,14 +2,14 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth } from "../services/firebase";
-import { authenticate } from "../store/slices/auth";
 import { useDispatch } from "react-redux";
 import { FirebaseError } from "firebase/app";
-import type { SignUpFormInputs } from "../types/auth";
-import Button from "../components/core/Button";
 import { doc, setDoc } from "firebase/firestore";
-import { db } from "../services/firebase";
+import { auth } from "@/services/firebase";
+import { authenticate } from "@/store/slices/auth";
+import { db } from "@/services/firebase";
+import Button from "@/components/core/Button";
+import type { SignUpFormInputs } from "@/types/auth";
 import "./SignUpForm.scss";
 
 const SignUpForm = () => {

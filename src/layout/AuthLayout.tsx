@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import signInBg from "../assets/signIn-bg.jpg"
+import signInBg from "@/assets/signIn-bg.jpg"
 import './AuthLayout.scss';
 
 const AuthLayout = () => {
