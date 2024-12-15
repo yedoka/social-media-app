@@ -3,22 +3,19 @@
 $poppins: "Poppins", sans-serif;
 
 
-// Core Colors
-$bg-primary: #13293D;        // Main background color
-$bg-secondary: #F3F3F3;      // Light backgrounds (e.g., cards, forms)
+$bg-primary: #13293D;
+$bg-secondary: #F3F3F3;
 
-$text-primary: #F1F1F1;      // Primary text color (on dark backgrounds)
-$text-secondary: #333;       // Secondary text color (on light backgrounds)
+$text-primary: #F1F1F1;
+$text-secondary: #333;
 
-$accent-primary: #007BFF;    // Main accent color (buttons, links, highlights)
-$accent-primary-hover: #0056B3; // Darker accent for hover states
+$accent-primary: #007BFF;
+$accent-primary-hover: #0056B3;
 
-// State Colors
-$success: #28A745;           // Success notifications
-$error: #DC3545;             // Error notifications
-$warning: #FFC107;           // Warning states (optional)
+$success: #28A745;
+$error: #DC3545;
+$warning: #FFC107;
 
-// Borders & Utilities
-$border-default: #3D3D3D;    // Default border color
-$border-radius: 0.75rem;     // Shared border-radius for inputs, buttons, etc.
-$focus-outline: rgba(0, 123, 255, 0.3); // Outline on focus
+$border-default: #3D3D3D;
+$border-radius: 0.75rem;
+$focus-outline: rgba(0, 123, 255, 0.3);
