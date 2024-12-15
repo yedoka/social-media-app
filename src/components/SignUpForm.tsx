@@ -1,11 +1,10 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {  updateProfile } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { FirebaseError } from "firebase/app";
 import { doc, setDoc } from "firebase/firestore";
-import { auth } from "@/services/firebase/firebase";
 import { authenticate } from "@/store/slices/Auth";
 import { db } from "@/services/firebase/firebase";
 import Button from "@/components/core/Button";

@@ -17,10 +17,10 @@ const FindUser = () => {
       const q = query(userRef, where("displayName", "==", searchTerm));
       const querySnapshot = await getDocs(q);
 
-      const fetchedResults = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data() as User, 
-      })) as User[];
+      const fetchedResults = querySnapshot.docs.map((doc) => {
+        const { id, ...data } = doc.data() as User;
+        return { id: doc.id, ...data };
+      });
 
       if (fetchedResults.length === 0) {
         setError(true);
@@ -50,7 +50,7 @@ const FindUser = () => {
         <h1>Results:</h1>
         {results.length > 0 ? (
           results.map((result) => (
-            <div onClick={() => navigate(`${result.id}`)}>
+            <div key={result.id} onClick={() => navigate(`${result.id}`)}>
               <p><strong>Username:</strong> {result.displayName}</p>
             </div>
           ))

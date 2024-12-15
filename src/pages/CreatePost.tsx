@@ -17,7 +17,7 @@ const CreatePost = () => {
     const firestoreTimestamp = Timestamp.now();
 
     try {
-      const authorRef = doc(db, "users", auth.currentUser.uid);
+      const authorRef = auth.currentUser ? doc(db, "users", auth.currentUser.uid) : null;
 
       await addDoc(postCollectionRef, {
         authorID: authorRef,
