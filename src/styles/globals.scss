@@ -1,11 +1,5 @@
 @use './variables.scss';
 
-body {
-  background: variables.$bg-primary;
-  color: variables.$text-primary;
-  font-family: variables.$poppins;
-}
-
 * {
   box-sizing: border-box;
   margin: 0;
