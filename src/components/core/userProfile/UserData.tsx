@@ -1,4 +1,4 @@
-import { auth } from '@/services/firebase'; 
+import { auth } from '@/services/firebase/firebase'; 
 
 const UserData = () => {
   return (

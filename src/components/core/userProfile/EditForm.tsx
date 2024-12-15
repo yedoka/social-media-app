@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { updateProfile } from "firebase/auth";
 import { updateDoc, doc } from "firebase/firestore";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { auth, db } from "@/services/firebase";
+import { auth, db } from "@/services/firebase/firebase";
 import { disable } from "@/store/slices/EditProfile";
 import Button from "../Button";
 

@@ -1,8 +1,8 @@
 import { addDoc, collection, doc } from "firebase/firestore";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Timestamp } from "firebase/firestore";
-import { db } from "@/services/firebase";
-import { auth } from "@/services/firebase";
+import { db } from "@/services/firebase/firebase";
+import { auth } from "@/services/firebase/firebase";
 
 interface PostFormInputs {
   content: string;

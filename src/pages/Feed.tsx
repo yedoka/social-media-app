@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { collection, getDoc, getDocs, query, orderBy } from "firebase/firestore";
 import PostComponent from "@/components/Post"; 
-import { db } from "@/services/firebase";
+import { db } from "@/services/firebase/firebase";
 import type { Post, User } from "@/types/Post";
 import "@/styles/globals.scss";
 
@@ -30,11 +30,7 @@ const Feed = () => {
           const authorData = authorSnap.data() as User;
 
           const post: Post = {
-            authorId: {
-              displayName: authorData.displayName,
-              email: authorData.email,
-              profilePicture: authorData.profilePicture,
-            },
+            authorId: { ...authorData },
             content: data.content,
             imageUrl: data.imageUrl,
             isLikedByUser: data.isLikedByUser,
@@ -45,7 +41,7 @@ const Feed = () => {
             })),
             timestamp: new Date(data.timestamp.seconds * 1000),
           };
-
+          
           fetchedPosts.push(post);
         }
 

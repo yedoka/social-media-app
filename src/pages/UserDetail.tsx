@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/services/firebase";
+import { db } from "@/services/firebase/firebase";
 import type { User } from "@/types/Post";
 
 const UserDetail = () => {

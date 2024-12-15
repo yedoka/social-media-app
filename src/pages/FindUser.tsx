@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router";
-import { db } from "@/services/firebase";
+import { db } from "@/services/firebase/firebase";
 import type { User } from "@/types/Post";
 
 const FindUser = () => {
