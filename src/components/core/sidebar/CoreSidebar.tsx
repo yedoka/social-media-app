@@ -1,15 +1,14 @@
 import { Link, useNavigate } from "react-router-dom";
-import { signOut } from "firebase/auth";
-import { auth } from "@/services/firebase";
 import Button from "@/components/core/Button";
+import { logout } from "@/services/firebase/auth";
 import "./CoreSidebar.scss";
 
 const CoreSidebar = () => {
   const navigate = useNavigate();
 
-  const logout = async () => {
+  const logoutHandler = async () => {
     try {
-      await signOut(auth);
+      await logout()
       navigate('/sign-in');
     } catch (err) {
       console.error(err);
@@ -35,7 +34,7 @@ const CoreSidebar = () => {
           </li>
         </ul>
       </nav>
-      <Button onClick={logout}>Log out</Button>
+      <Button onClick={logoutHandler}>Log out</Button>
     </div>
   )
 }

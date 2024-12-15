@@ -5,12 +5,13 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { FirebaseError } from "firebase/app";
 import { doc, setDoc } from "firebase/firestore";
-import { auth } from "@/services/firebase";
+import { auth } from "@/services/firebase/firebase";
 import { authenticate } from "@/store/slices/Auth";
-import { db } from "@/services/firebase";
+import { db } from "@/services/firebase/firebase";
 import Button from "@/components/core/Button";
 import type { SignUpFormInputs } from "@/types/Auth";
 import "./SignUpForm.scss";
+import { signUp } from "@/services/firebase/auth";
 
 const SignUpForm = () => {
   const {
@@ -35,8 +36,7 @@ const SignUpForm = () => {
 
     try {
       setError(null);
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
+      const userCredential = await signUp(
         email,
         password
       );

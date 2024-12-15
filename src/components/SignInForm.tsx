@@ -1,14 +1,14 @@
+import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
 import { FirebaseError } from 'firebase/app';
 import { useCookies } from 'react-cookie';
-import { useState } from 'react';
-import { auth } from '@/services/firebase';
+import { signIn } from '@/services/firebase/auth';
+import { auth } from '@/services/firebase/firebase';
 import { authenticate } from '@/store/slices/Auth';
 import Button from '@/components/core/Button';
-import type { SignInFormInputs } from '@/types/auth';
+import type { SignInFormInputs } from '@/types/Auth';
 import './SignInForm.scss';
 
 const SignInForm = () => {
@@ -22,7 +22,7 @@ const SignInForm = () => {
 
   const onSubmit: SubmitHandler<SignInFormInputs> = async (data) => {
     try {
-      await signInWithEmailAndPassword(auth, data.email, data.password);
+      await signIn(data.email, data.password);
       const idToken = await auth.currentUser?.getIdToken();
       if (idToken) {
         setCookie('authToken', idToken, { path: '/', maxAge: 3600 })
