@@ -1,20 +1,21 @@
-$background-color: #464646; 
-$form-background-color: #2c2c2c;
-$text-color: #f1f1f1; 
-$label-color: #e0e0e0; 
-$input-background-color: #3d3d3d; 
-$input-border-color: #555; 
-$button-color: #007bff; 
-$button-hover-color: #0056b3; 
-$input-focus-color: rgba(0, 123, 255, 0.3); 
-$secondary-button-color: #6c757d;          
-$secondary-button-hover-color: #5a6268;     
-$success-color: #28a745; 
-$error-color: #dc3545;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-$primary-text-color:f1f1f1;
-$primary-color: #007bff;
-$primary-color-dark: #464646;
-$border-color: #3d3d3d;
+$poppins: "Poppins", sans-serif;
 
+
+$bg-primary: #13293D;
+$bg-secondary: #F3F3F3;
+
+$text-primary: #F1F1F1;
+$text-secondary: #333;
+
+$accent-primary: #007BFF;
+$accent-primary-hover: #0056B3;
+
+$success: #28A745;
+$error: #DC3545;
+$warning: #FFC107;
+
+$border-default: #3D3D3D;
 $border-radius: 0.75rem;
+$focus-outline: rgba(0, 123, 255, 0.3);

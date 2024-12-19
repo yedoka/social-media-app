@@ -1,19 +1,15 @@
-function outerFunc() {
-  let a = "outer func var";
-  return function innerFunc() {
-    console.log(a);
+async function* generateSequence(start, end) {
+  for (let i = start; i <= end; i++) {
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    yield i;
   }
 }
 
-
-let i = 0
-
-function counter() {
-  i++;
-}
-
-console.log(i);
-console.log(i);
-console.log(i);
-console.log(i);
-
+(async () => {
+  let generator = generateSequence(1, 5);
+  for await(let value of generator) {
+    console.log(value);
+    
+  }
+})();

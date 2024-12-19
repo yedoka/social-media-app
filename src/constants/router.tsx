@@ -1,11 +1,14 @@
 import RootLayout from "../layout/Root";
-import AuthLayout from "../layout/AuthLayout";
-import SignInForm from "../pages/auth/forms/SignInForm";
-import SignUpForm from "../pages/auth/forms/SignUpForm";
+import AuthLayout from "../layout/Auth";
+import SignInForm from "../pages/auth/SignIn";
+import SignUpForm from "../pages/auth/SignUp";
 
-import Feed from "../pages/root/Feed";
-import Profile from "../pages/root/Profile";
-import ProtectedRoute from "./ProtectedRoute"; 
+import Feed from "@/pages/Feed";
+import Profile from "@/pages/Profile";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import CreatePost from "@/pages/CreatePost";
+import FindUser from "@/pages/FindUser";
+import UserDetail from "@/pages/FoundUserDetail";
 
 export const routes = [
   {
@@ -28,6 +31,30 @@ export const routes = [
           </ProtectedRoute>
         ),
       },
+      {
+        path: "createpost",
+        element: (
+          <ProtectedRoute>
+            <CreatePost />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "finduser",
+        element: (
+          <ProtectedRoute>
+            <FindUser />
+          </ProtectedRoute>
+        )
+      },
+      {
+        path: "finduser/:userId",
+        element: (
+          <ProtectedRoute>
+            <UserDetail />
+          </ProtectedRoute>
+        )
+      }
     ],
   },
   {
