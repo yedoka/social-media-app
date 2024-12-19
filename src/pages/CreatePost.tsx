@@ -1,14 +1,14 @@
-import { useForm, SubmitHandler } from "react-hook-form";
-import { createPostDocument } from "@/services/firebase/posts";
-import type { PostFormInputs } from "@/types/Post";
+import { useForm } from "react-hook-form";
+import { createPost } from "@/services/api/posts";
+import type { PostForm } from "@/types/Post";
 
 
 const CreatePost = () => {
-  const { register, handleSubmit, reset } = useForm<PostFormInputs>();
+  const { register, handleSubmit, reset } = useForm<PostForm>();
 
-  const onSubmitPost: SubmitHandler<PostFormInputs> = async (data) => {
+  const onSubmitPost = async (data: PostForm) => {
     try {
-      await createPostDocument(data.content, data.imageUrl);
+      await createPost(data);
       reset();
     } catch (err) {
       console.error(err);

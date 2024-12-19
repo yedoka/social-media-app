@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import PostComponent from "@/components/Post"; 
-import { fetchPosts } from "@/services/firebase/posts";
+import { fetchPosts } from "@/services/api/posts";
 import type { Post } from "@/types/Post";
 import "@/styles/globals.scss";
 

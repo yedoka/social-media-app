@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
-import Button from "@/components/core/Button";
-import { logout } from "@/services/firebase/auth";
+import Button from "@/components/Button";
+import { logout } from "@/services/api/auth";
 import "./CoreSidebar.scss";
 
 const CoreSidebar = () => {

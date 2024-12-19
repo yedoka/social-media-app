@@ -1,5 +1,5 @@
 import { collection, query, where, getDocs, doc, updateDoc, getDoc } from "firebase/firestore";
-import { auth, db } from "@/services/firebase/firebase";
+import { auth, db } from "@/services/api/config";
 import type { User } from "@/types/Post";
 import { updateProfile } from "firebase/auth";
 
@@ -23,7 +23,7 @@ export const fetchUserById = async (userId: string): Promise<User | null> => {
   }  
 }
 
-export const fetchUsersByDisplayName = async (displayName: string): Promise<User[]> => {
+export const fetchUserByUsername = async (displayName: string): Promise<User[]> => {
   const userRef = collection(db, "users");
   const q = query(userRef, where("displayName", "==", displayName));
   const querySnapshot = await getDocs(q);

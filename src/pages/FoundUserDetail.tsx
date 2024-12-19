@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import type { User } from "@/types/Post";
-import { fetchUserById } from "@/services/firebase/user";
+import { fetchUserById } from "@/services/api/user";
 
 const UserDetail = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -42,9 +42,8 @@ const UserDetail = () => {
         <strong>Email:</strong> {user.email}
       </p>
       <img
-        src={user.profilePicture || "/placeholder.jpg"}
+        src={user.profilePicture}
         alt={`${user.displayName}'s profile`}
-        style={{ maxWidth: "200px", borderRadius: "50%" }}
       />
     </div>
   );

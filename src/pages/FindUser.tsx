@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import type { User } from "@/types/Post";
-import { fetchUsersByDisplayName } from "@/services/firebase/user";
+import { fetchUsersByDisplayName } from "@/services/api/user";
 
 const FindUser = () => {
   const [results, setResults] = useState<User[]>([]);

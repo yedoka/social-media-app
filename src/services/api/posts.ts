@@ -1,10 +1,10 @@
 import { addDoc, collection, doc, getDoc, getDocs, orderBy, query, Timestamp } from "firebase/firestore";
-import { auth, db } from "./firebase";
-import { Post, User } from "@/types/Post";
+import { auth, db } from "./config";
+import { Post, PostForm, User } from "@/types/Post";
 
 export const postCollectionRef = collection(db, "posts")
 
-export async function createPostDocument(content: string, imageUrl: string): Promise<void> {
+export async function createPost(payload: PostForm): Promise<void> {
   const firestoreTimestamp =  Timestamp.now();
   if (!auth.currentUser) {
     throw new Error("User not authenticated");
@@ -15,8 +15,8 @@ export async function createPostDocument(content: string, imageUrl: string): Pro
   try {
     await addDoc(postCollectionRef, {
       authorID: authorRef,
-      content,
-      imageUrl,
+      content: payload.content,
+      imageUrl: payload.imageUrl,
       isLikedByUser: false,
       likes: [],
       timestamp: firestoreTimestamp, 

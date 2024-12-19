@@ -1,5 +1,5 @@
 import RootLayout from "../layout/Root";
-import AuthLayout from "../layout/AuthLayout";
+import AuthLayout from "../layout/Auth";
 import SignInForm from "../pages/auth/SignIn";
 import SignUpForm from "../pages/auth/SignUp";
 
@@ -8,7 +8,7 @@ import Profile from "@/pages/Profile";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import CreatePost from "@/pages/CreatePost";
 import FindUser from "@/pages/FindUser";
-import UserDetail from "@/pages/UserDetail";
+import UserDetail from "@/pages/FoundUserDetail";
 
 export const routes = [
   {

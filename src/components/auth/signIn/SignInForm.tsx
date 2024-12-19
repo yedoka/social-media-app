@@ -4,10 +4,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { FirebaseError } from 'firebase/app';
 import { useCookies } from 'react-cookie';
-import { signIn } from '@/services/firebase/auth';
-import { auth } from '@/services/firebase/firebase';
+import { signIn } from '@/services/api/auth';
+import { auth } from '@/services/api/config';
 import { authenticate } from '@/store/slices/Auth';
-import Button from '@/components/core/Button';
+import Button from '@/components/Button';
 import type { SignInFormInputs } from '@/types/Auth';
 import './SignInForm.scss';
 

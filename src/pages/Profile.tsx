@@ -1,5 +1,5 @@
-import UserProfile from "@/components/core/userProfile/UserProfile";
-import UserStats from "@/components/core/userProfile/UserStats";
+import UserProfile from "@/components/userProfile/UserProfile";
+import UserStats from "@/components/userProfile/UserStats";
 
 const Profile = () => {
 

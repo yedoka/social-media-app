@@ -2,8 +2,8 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { disable } from "@/store/slices/EditProfile";
-import Button from "../Button";
-import { updateUserProfile } from "@/services/firebase/user";
+import { updateUserProfile } from "@/services/api/user";
+import Button from "@/components/Button";
 
 interface FormInputs {
   username: string;

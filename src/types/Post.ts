@@ -14,7 +14,7 @@ export interface Post {
   timestamp: Date;
 }
 
-export interface PostFormInputs {
+export interface PostForm {
   content: string;
   imageUrl: string;
 }

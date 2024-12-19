@@ -1,4 +1,4 @@
-import { getCurrentUser } from "@/services/firebase/user"
+import { getCurrentUser } from "@/services/api/user"
 
 const UserData = () => {
   const currentUser = getCurrentUser();
@@ -11,6 +11,7 @@ const UserData = () => {
     <div>
       <h1>Current user: {currentUser.email}</h1>
       <h2>name: {currentUser.displayName}</h2>
+      {/* <img src={currentUser.photoURL} alt="avatar" /> */}
     </div>
   )
 }
