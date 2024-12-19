@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { collection, query, where, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router";
-import { db } from "@/services/firebase/firebase";
 import type { User } from "@/types/Post";
+import { fetchUsersByDisplayName } from "@/services/firebase/user";
 
 const FindUser = () => {
   const [results, setResults] = useState<User[]>([]);
@@ -13,25 +12,15 @@ const FindUser = () => {
 
   const searchUser = async (searchTerm: string) => {
     try {
-      const userRef = collection(db, "users");
-      const q = query(userRef, where("displayName", "==", searchTerm));
-      const querySnapshot = await getDocs(q);
-
-      const fetchedResults = querySnapshot.docs.map((doc) => {
-        const { id, ...data } = doc.data() as User;
-        return { id: doc.id, ...data };
-      });
-
+      const fetchedResults = await fetchUsersByDisplayName(searchTerm);
       if (fetchedResults.length === 0) {
         setError(true);
       } else {
         setError(false);
       }
-
       setResults(fetchedResults);
     } catch (err) {
       console.error(err);
-      setError(true);
     }
   };
 
@@ -55,11 +44,9 @@ const FindUser = () => {
             </div>
           ))
         ) : (
-          !error && <p>No results to display</p> 
+          error && <span style={{ color: "red" }}>User not found</span>
         )}
       </div>
-
-      {error && <span style={{ color: "red" }}>User not found</span>}
     </div>
   );
 };

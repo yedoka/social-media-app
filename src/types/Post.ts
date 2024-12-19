@@ -13,3 +13,8 @@ export interface Post {
   likes: User[];
   timestamp: Date;
 }
+
+export interface PostFormInputs {
+  content: string;
+  imageUrl: string;
+}

@@ -1,46 +1,51 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/services/firebase/firebase";
 import type { User } from "@/types/Post";
+import { fetchUserById } from "@/services/firebase/user";
 
 const UserDetail = () => {
-  const [result, setResult] = useState<User | null>(null); 
-  const params = useParams();
+  const [user, setUser] = useState<User | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const { userId } = useParams();
 
-  const searchUserById = async (searchingId: string | undefined) => {
-        
-    if (!searchingId) return;
+  const fetchUser = async () => {
+    if (!userId) return;
+
     try {
-      const userRef = doc(db, "users", searchingId); 
-      const docSnap = await getDoc(userRef);
-      if (docSnap.exists()) {
-        setResult(docSnap.data() as User); 
-      } else {
-        console.error("No such document!");
-        setResult(null); 
-      }
-    } catch (err) {
-      console.error("Error fetching user:", err);
+      const fetchedUsers = await fetchUserById(userId);
+      setUser(fetchedUsers);
+    } catch(err) {
+      console.error(err);
+      setError("An error occurred while fetching user details.");
     }
-  };
+  }
 
   useEffect(() => {
-    searchUserById(params.userId);
-  }, [params.userId]); 
+    fetchUser();
+  }, [userId]); 
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  if (!user) {
+    return <div>User not found.</div>;
+  }
 
   return (
     <div>
-      <h1>User details</h1>
-      {result ? (
-        <div>
-          <p><strong>Username:</strong> {result.displayName}</p>
-          <p><strong>Email:</strong> {result.email}</p>
-          <img src={result.profilePicture} alt="" />
-        </div>
-      ) : (
-        <p>User not found.</p> 
-      )}
+      <h1>User Details</h1>
+      <p>
+        <strong>Username:</strong> {user.displayName}
+      </p>
+      <p>
+        <strong>Email:</strong> {user.email}
+      </p>
+      <img
+        src={user.profilePicture || "/placeholder.jpg"}
+        alt={`${user.displayName}'s profile`}
+        style={{ maxWidth: "200px", borderRadius: "50%" }}
+      />
     </div>
   );
 };

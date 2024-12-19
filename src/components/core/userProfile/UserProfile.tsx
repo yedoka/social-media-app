@@ -9,19 +9,16 @@ const UserProfile: React.FC = () => {
   const isEditing = useSelector((state: RootState) => state.editProfile.isEditing);
   const dispatch = useDispatch();
 
-  const handleEditProfile = () => {
-    dispatch(enable());
-  }
+  const handleEditProfile = () => dispatch(enable());
 
-  if (!isEditing) {
-    return <div>
+  return isEditing ? (
+    <EditForm />
+  ) : (
+    <div>
       <UserData />
       <Button onClick={handleEditProfile}>Edit</Button>
     </div>
-  } else {
-    return <EditForm />
-  }
-  
+  );
 };
 
 export default UserProfile;

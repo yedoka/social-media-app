@@ -1,14 +1,13 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { updateProfile } from "firebase/auth";
-import { updateDoc, doc } from "firebase/firestore";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { auth, db } from "@/services/firebase/firebase";
 import { disable } from "@/store/slices/EditProfile";
 import Button from "../Button";
+import { updateUserProfile } from "@/services/firebase/user";
 
 interface FormInputs {
   username: string;
+  imageUrl: string;
 }
 
 const EditForm: React.FC = () => {
@@ -18,9 +17,7 @@ const EditForm: React.FC = () => {
     handleSubmit,
     setError,
     formState: { errors },
-  } = useForm<FormInputs>({
-    defaultValues: { username: auth.currentUser?.displayName || "" },
-  });
+  } = useForm<FormInputs>();
 
   const handleCancel = () => {
     dispatch(disable());
@@ -28,19 +25,8 @@ const EditForm: React.FC = () => {
 
   const handleSave: SubmitHandler<FormInputs> = async (data) => {
     try {
-      if (auth.currentUser) {
-        await updateProfile(auth.currentUser, { displayName: data.username });
-
-        const userDocRef = doc(db, "users", auth.currentUser.uid);
-        await updateDoc(userDocRef, { displayName: data.username });
-
-        dispatch(disable());
-      } else {
-        setError("username", {
-          type: "manual",
-          message: "User is not authenticated.",
-        });
-      }
+      await updateUserProfile(data.username, data.imageUrl);
+      dispatch(disable());
     } catch (err) {
       if (err instanceof Error) {
         setError("username", {
@@ -61,10 +47,15 @@ const EditForm: React.FC = () => {
       <h3>Edit Username</h3>
       <input
         type="text"
-        placeholder="Enter new username"
+        placeholder="New username"
         {...register("username", {
           required: "Username cannot be empty.",
         })}
+      />
+      <input
+      type="text"
+      placeholder="Image URL"
+      {...register("imageUrl")}
       />
       {errors.username && <p style={{ color: "red" }}>{errors.username.message}</p>}
       <div>
