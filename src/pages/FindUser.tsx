@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import type { User } from "@/types/Post";
-import { fetchUsersByDisplayName } from "@/services/api/user";
+import { fetchUserByUsername } from "@/services/api/user";
 
 const FindUser = () => {
   const [results, setResults] = useState<User[]>([]);
@@ -12,7 +12,7 @@ const FindUser = () => {
 
   const searchUser = async (searchTerm: string) => {
     try {
-      const fetchedResults = await fetchUsersByDisplayName(searchTerm);
+      const fetchedResults = await fetchUserByUsername(searchTerm);
       if (fetchedResults.length === 0) {
         setError(true);
       } else {
