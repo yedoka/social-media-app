@@ -5,10 +5,10 @@ import {  updateProfile } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { FirebaseError } from "firebase/app";
 import { doc, setDoc } from "firebase/firestore";
-import { authenticate } from "@/store/slices/Auth";
+import { authenticate } from "@/store/slices/auth";
 import { db } from "@/services/api/config";
 import Button from "@/components/Button";
-import type { SignUpFormInputs } from "@/types/Auth";
+import type { SignUpFormInputs } from "@/types/auth";
 import "./SignUpForm.scss";
 import { signUp } from "@/services/api/auth";
 
