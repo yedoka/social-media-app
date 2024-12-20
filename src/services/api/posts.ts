@@ -1,6 +1,7 @@
 import { addDoc, collection, doc, getDoc, getDocs, orderBy, query, Timestamp } from "firebase/firestore";
 import { auth, db } from "./config";
-import { Post, PostForm, User } from "@/types/Post";
+import { Post, PostForm } from "@/types/Post";
+import type { User } from "@/types/User";
 
 export const postCollectionRef = collection(db, "posts")
 

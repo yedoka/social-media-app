@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import type { User } from "@/types/Post";
+import type { User } from "@/types/User";
 import { fetchUserByUsername } from "@/services/api/user";
 
 const FindUser = () => {

@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import type { User } from "@/types/Post";
-import { fetchUserById } from "@/services/api/user";
+import type { User } from "@/types/User";
+import { fetchUserById, follow } from "@/services/api/user";
 
 const UserDetail = () => {
   const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { userId } = useParams();
 
+  if (!userId) return;
+  
   const fetchUser = async () => {
-    if (!userId) return;
-
     try {
-      const fetchedUsers = await fetchUserById(userId);
-      setUser(fetchedUsers);
+      const fetchedUser = await fetchUserById(userId);
+      setUser(fetchedUser);
     } catch(err) {
       console.error(err);
       setError("An error occurred while fetching user details.");
@@ -45,6 +45,10 @@ const UserDetail = () => {
         src={user.profilePicture}
         alt={`${user.displayName}'s profile`}
       />
+      <p>Followers: {user.followers.length}</p>
+      <p>Following: {user.following.length}</p>
+
+      <button onClick={() => {follow(userId)}}>follow</button>
     </div>
   );
 };
