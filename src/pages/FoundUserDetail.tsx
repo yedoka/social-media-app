@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import type { User } from "@/types/User";
-import { fetchUserById, follow } from "@/services/api/user";
+import { fetchUserById, follow, unfollow } from "@/services/api/user";
 
 const UserDetail = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -49,6 +49,7 @@ const UserDetail = () => {
       <p>Following: {user.following.length}</p>
 
       <button onClick={() => {follow(userId)}}>follow</button>
+      <button onClick={() => {unfollow(userId)}}>unfollow</button>
     </div>
   );
 };
