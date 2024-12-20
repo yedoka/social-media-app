@@ -1,17 +1,27 @@
-import { getCurrentUser } from "@/services/api/user"
+import { auth } from "@/services/api/config";
+import { fetchUserById } from "@/services/api/user"
+import { User } from "@/types/User";
+import { useEffect, useState } from "react";
 
 const UserData = () => {
-  const currentUser = getCurrentUser();
+  const [user, setUser] = useState<User | null>(null)
+  if (!auth.currentUser) return;
+  const currentUserId = auth.currentUser.uid;
 
-  if (!currentUser) {
-    return <p>No user is currently logged in.</p>
+  const fetchCurrentUser = async () => {
+    const fetchedUser = await fetchUserById(currentUserId);
+    setUser(fetchedUser)
   }
+
+  useEffect(() => {
+    fetchCurrentUser();
+  }, [])
 
   return (
     <div>
-      <h1>Current user: {currentUser.email}</h1>
-      <h2>name: {currentUser.displayName}</h2>
-      <img src={currentUser.photoURL} alt="avatar" />
+      <h1>Current user: {user?.email}</h1>
+      <h2>name: {user?.displayName}</h2>
+      <img src={user?.profilePicture} alt="avatar" />
     </div>
   )
 }
