@@ -1,10 +1,38 @@
-import { collection, query, where, getDocs, doc, updateDoc, getDoc } from "firebase/firestore";
+import { collection, query, where, getDocs, doc, updateDoc, getDoc, arrayUnion } from "firebase/firestore";
 import { auth, db } from "@/services/api/config";
-import type { User } from "@/types/Post";
+import type { User } from "@/types/User";
 import { updateProfile } from "firebase/auth";
 
 export const getCurrentUser = () => {
   return auth.currentUser;
+}
+
+export const follow = async (userId: string): Promise<void> => {
+  try {
+    if (!auth.currentUser) {
+      throw new Error("User not authenticated");
+    }
+    const currentUserId = auth.currentUser.uid
+
+    const userRef = doc(db, "users", userId);
+    const currentUserRef = doc(db, "users", currentUserId);
+
+    const userSnap = await getDoc(userRef);
+    const currentUserSnap = await getDoc(currentUserRef)
+    if (userSnap.id !== currentUserSnap.id) {
+      await updateDoc(userRef, {
+        followers: arrayUnion(currentUserRef)
+      })
+  
+      await updateDoc(currentUserRef, {
+        following: arrayUnion(userRef)
+      })  
+    } else {
+      throw new Error("Can not follow yourself")
+    }
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 export const fetchUserById = async (userId: string): Promise<User | null> => {
@@ -15,7 +43,6 @@ export const fetchUserById = async (userId: string): Promise<User | null> => {
     if (docSnap.exists()) {
       return docSnap.data() as User;
     }
-
     return null;
   } catch(err) {
     console.error("Error fetching user by ID:", err);
