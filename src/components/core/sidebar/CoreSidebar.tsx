@@ -1,5 +1,6 @@
+import React from 'react';
 import { Link, useNavigate } from "react-router-dom";
-import Button from "@/components/Button";
+import Button from "@/components/ui/Button";
 import { logout } from "@/services/api/auth";
 import "./CoreSidebar.scss";
 
@@ -27,10 +28,10 @@ const CoreSidebar = () => {
             <Link to={`/profile`} className="sidebar__link">Profile</Link>
           </li>
           <li>
-            <Link to={`/createpost`} className="sidebar__link">Create Post</Link>
+            <Link to={`/createPost`} className="sidebar__link">Create Post</Link>
           </li>
           <li>
-            <Link to={`/finduser`} className="sidebar__link">Find User</Link>
+            <Link to={`/findUser`} className="sidebar__link">Find User</Link>
           </li>
         </ul>
       </nav>

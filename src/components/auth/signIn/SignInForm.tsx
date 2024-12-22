@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -6,8 +6,8 @@ import { FirebaseError } from 'firebase/app';
 import { useCookies } from 'react-cookie';
 import { signIn } from '@/services/api/auth';
 import { auth } from '@/services/api/config';
-import { authenticate } from '@/store/slices/auth';
-import Button from '@/components/Button';
+import { logIn } from '@/store/slices/auth';
+import Button from '@/components/ui/Button';
 import type { SignInFormInputs } from '@/types/auth';
 import './SignInForm.scss';
 
@@ -26,7 +26,7 @@ const SignInForm = () => {
       const idToken = await auth.currentUser?.getIdToken();
       if (idToken) {
         setCookie('authToken', idToken, { path: '/', maxAge: 3600 })
-        dispatch(authenticate());
+        dispatch(logIn());
         navigate('/');
       }
     } catch (err) {
@@ -75,7 +75,7 @@ const SignInForm = () => {
       <Button type="submit">Sign In</Button>
 
       <Link to="/sign-up" className="signInForm__container__link">
-        Don't have an account?
+        Don&apos;t have an account?
       </Link>
     </form>
   );

@@ -1,3 +1,5 @@
+import { Post } from "./post";
+
 export interface User {
   id: string;
   displayName: string;
@@ -5,4 +7,5 @@ export interface User {
   profilePicture: string;
   followers: User[];
   following: User[];
+  posts: Post[];
 }

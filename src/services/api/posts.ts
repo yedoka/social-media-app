@@ -1,9 +1,27 @@
-import { addDoc, collection, doc, getDoc, getDocs, orderBy, query, Timestamp } from "firebase/firestore";
+import { arrayUnion, collection, doc, getDoc, getDocs, orderBy, query, setDoc, Timestamp, updateDoc } from "firebase/firestore";
 import { auth, db } from "./config";
 import { Post, PostForm } from "@/types/Post";
 import type { User } from "@/types/User";
 
 export const postCollectionRef = collection(db, "posts")
+
+export async function likePost(postId: string) {
+  if (!auth.currentUser) {
+    throw new Error("User not authenticated");
+  }
+  const currentUserId = auth.currentUser.uid;
+  const currentUserRef = doc(db, "users", currentUserId);
+  const postRef= doc(db, "posts", postId);
+  
+  try {
+    await updateDoc(postRef, {
+      likes: arrayUnion(currentUserRef),
+      isLikedByUser: true
+    })  
+  } catch (err) {
+    console.error(err);
+  }
+}
 
 export async function createPost(payload: PostForm): Promise<void> {
   const firestoreTimestamp =  Timestamp.now();
@@ -12,16 +30,21 @@ export async function createPost(payload: PostForm): Promise<void> {
   }
 
   const authorRef = doc(db, "users", auth.currentUser.uid);
+  const postRef = doc(collection(db, "posts"));
 
   try {
-    await addDoc(postCollectionRef, {
+    await setDoc(postRef, {
       authorID: authorRef,
       content: payload.content,
       imageUrl: payload.imageUrl,
       isLikedByUser: false,
-      likes: [],
       timestamp: firestoreTimestamp, 
+      likes: [],
     });
+    await updateDoc(authorRef, {
+      posts: arrayUnion(postRef)
+    })
+    
   } catch (err) {
     console.error("Error adding post", err);
   }
@@ -46,6 +69,7 @@ export async function fetchPosts(): Promise<Post[]> {
     const authorData = authorSnap.data() as User;
 
     const post: Post = {
+      id: docSnapshot.id,
       authorId: { ...authorData },
       content: data.content,
       imageUrl: data.imageUrl,

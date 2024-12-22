@@ -1,6 +1,6 @@
 @use '@/styles/variables.scss';
 
-button {
+.button {
   background-color: variables.$accent-primary;
   color: variables.$text-primary;
   padding: 0.75rem 2rem;

@@ -1,6 +1,7 @@
+import React from 'react';
 import { auth } from "@/services/api/config"
 import { fetchUserById } from "@/services/api/user"
-import { User } from "@/types/User"
+import type { User } from "@/types/User"
 import { useEffect, useState } from "react"
 
 const UserStats = () => {
@@ -20,9 +21,9 @@ const UserStats = () => {
   return (
     <div>
       <h1>User stats</h1>
-      <p>Followers: <span>{user?.followers.length}</span></p>
-      <p>Following: <span>{user?.following.length}</span></p>
-      <p>Posts: <span>12</span></p>
+      <p>Followers: {user?.followers.length}</p>
+      <p>Following: {user?.following.length}</p>
+      <p>Posts: {user?.posts.length}</p>
     </div>
   )
 }

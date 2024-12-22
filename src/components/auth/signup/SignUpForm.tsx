@@ -5,9 +5,9 @@ import {  updateProfile } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { FirebaseError } from "firebase/app";
 import { doc, setDoc } from "firebase/firestore";
-import { authenticate } from "@/store/slices/auth";
+import { logIn } from "@/store/slices/auth";
 import { db } from "@/services/api/config";
-import Button from "@/components/Button";
+import Button from "@/components/ui/Button";
 import type { SignUpFormInputs } from "@/types/auth";
 import "./SignUpForm.scss";
 import { signUp } from "@/services/api/auth";
@@ -51,11 +51,13 @@ const SignUpForm = () => {
       await setDoc(userRef, {
         email: email,
         displayName: displayName,
-        profilePicture:
-          "https://i.pinimg.com/236x/68/31/12/68311248ba2f6e0ba94ff6da62eac9f6.jpg",
+        profilePicture: "",
+        followers: [],
+        following: [],
+        posts: [],
       });
 
-      dispatch(authenticate());
+      dispatch(logIn());
       navigate("/");
     } catch (err) {
       if (err instanceof FirebaseError) {

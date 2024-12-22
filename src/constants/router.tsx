@@ -1,3 +1,4 @@
+import React from 'react';
 import RootLayout from "../layout/Root";
 import AuthLayout from "../layout/Auth";
 import SignInForm from "../pages/auth/SignIn";
@@ -32,7 +33,7 @@ export const routes = [
         ),
       },
       {
-        path: "createpost",
+        path: "createPost",
         element: (
           <ProtectedRoute>
             <CreatePost />
@@ -40,7 +41,7 @@ export const routes = [
         ),
       },
       {
-        path: "finduser",
+        path: "findUser",
         element: (
           <ProtectedRoute>
             <FindUser />
@@ -48,7 +49,7 @@ export const routes = [
         )
       },
       {
-        path: "finduser/:userId",
+        path: "findUser/:userId",
         element: (
           <ProtectedRoute>
             <UserDetail />

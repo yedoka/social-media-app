@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import type { User } from "@/types/User";
 import { fetchUserById, follow, unfollow } from "@/services/api/user";
@@ -47,6 +47,7 @@ const UserDetail = () => {
       />
       <p>Followers: {user.followers.length}</p>
       <p>Following: {user.following.length}</p>
+      <p>Posts: {user.posts.length}</p>
 
       <button onClick={() => {follow(userId)}}>follow</button>
       <button onClick={() => {unfollow(userId)}}>unfollow</button>

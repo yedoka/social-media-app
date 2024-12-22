@@ -1,6 +1,7 @@
+import React from 'react';
 import { auth } from "@/services/api/config";
 import { fetchUserById } from "@/services/api/user"
-import { User } from "@/types/User";
+import type { User } from "@/types/User";
 import { useEffect, useState } from "react";
 
 const UserData = () => {

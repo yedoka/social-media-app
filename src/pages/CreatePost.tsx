@@ -1,3 +1,4 @@
+import React from 'react';
 import { useForm } from "react-hook-form";
 import { createPost } from "@/services/api/posts";
 import type { PostForm } from "@/types/Post";

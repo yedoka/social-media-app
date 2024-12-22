@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import type { User } from "@/types/User";
 import { fetchUserByUsername } from "@/services/api/user";

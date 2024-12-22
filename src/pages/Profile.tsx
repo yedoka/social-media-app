@@ -1,3 +1,4 @@
+import React from 'react';
 import UserProfile from "@/components/userProfile/UserProfile";
 import UserStats from "@/components/userProfile/UserStats";
 

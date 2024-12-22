@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import PostComponent from "@/components/Post"; 
 import { fetchPosts } from "@/services/api/posts";
 import type { Post } from "@/types/Post";

@@ -1,3 +1,5 @@
+import React from 'react';
+import { likePost } from "@/services/api/posts";
 import type { Post } from "@/types/Post";
 
 interface PostComponentProps {
@@ -18,6 +20,7 @@ const PostComponent: React.FC<PostComponentProps> = ({ posts }) => {
               : "You don't like this post"}
           </p>
           <p>{`Likes: ${post.likes.length}`}</p>
+          <button onClick={() => {likePost(post.id)}}>Like</button>
           <small>Posted: {post.timestamp.toLocaleString()}</small>
         </div>
       ))}
