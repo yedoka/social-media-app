@@ -4,10 +4,10 @@ import AuthLayout from "../layout/Auth";
 import SignInForm from "../pages/auth/SignIn";
 import SignUpForm from "../pages/auth/SignUp";
 
-import Feed from "@/pages/Feed";
-import Profile from "@/pages/Profile";
+import Feed from "@/pages/feed/Feed";
+import Profile from "@/pages/profile/Profile";
 import ProtectedRoute from "@/components/core/ProtectedRoute";
-import CreatePost from "@/pages/CreatePost";
+import CreatePost from "@/pages/posts/CreatePost";
 import UserDetail from "@/pages/foundUser/FoundUserDetail";
 
 export const routes = [
