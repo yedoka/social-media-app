@@ -1,79 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import {  updateProfile } from "firebase/auth";
 import { useDispatch } from "react-redux";
-import { FirebaseError } from "firebase/app";
-import { doc, setDoc } from "firebase/firestore";
 import { logIn } from "@/store/slices/auth";
-import { db } from "@/services/api/config";
-import Button from "@/components/ui/Button";
+import Button from "@/components/ui/button/Button";
 import type { SignUpFormInputs } from "@/types/auth";
-import "./SignUpForm.scss";
 import { signUp } from "@/services/api/auth";
+import { validationRules } from "@/utils/validationRules";
+import "./SignUpForm.scss";
 
 const SignUpForm = () => {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<SignUpFormInputs>();
+  const [ passwordMatchError, setPasswordMatchError ] = useState<boolean>(false);
+  const { register, handleSubmit, formState: { errors } } = useForm<SignUpFormInputs>();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [error, setError] = React.useState<string | null>(null);
-
   const onSubmit = async (data: SignUpFormInputs) => {
     const { email, password, passwordConfirmation, displayName } = data;
-
+  
     if (password !== passwordConfirmation) {
-      setError("Passwords do not match!");
-      return;
+      setPasswordMatchError(true);
     }
-
+  
     try {
-      setError(null);
-      const userCredential = await signUp(
-        email,
-        password
-      );
-      if (userCredential.user) {
-        await updateProfile(userCredential.user, {
-          displayName,
-        });
-      }
-      const user = userCredential.user;
-      const uid = user.uid;
-
-      const userRef = doc(db, "users", uid);
-      await setDoc(userRef, {
-        email: email,
-        displayName: displayName,
-        profilePicture: "",
-        followers: [],
-        following: [],
-        posts: [],
-      });
-
+      await signUp({ email, password, displayName });
       dispatch(logIn());
       navigate("/");
     } catch (err) {
-      if (err instanceof FirebaseError) {
-        switch (err.code) {
-        case "auth/email-already-in-use":
-          setError("This email is already in use. Please try another.");
-          break;
-        default:
-          setError("An error occurred. Please try again later.");
-        }
-      } else {
-        setError("An unknown error occurred.");
-      }
+      console.error(err)
     }
   };
-
+  
   return (
     <form className="signUpForm__container" onSubmit={handleSubmit(onSubmit)}>
       <h2 className="signUpForm__title">Sign Up</h2>
@@ -84,9 +42,7 @@ const SignUpForm = () => {
           errors.displayName ? "signUpForm__input--error" : ""
         }`}
         placeholder="Enter your display name"
-        {...register("displayName", {
-          required: "Display name is required",
-        })}
+        {...register("displayName", validationRules.displayName)}
       />
       {errors.displayName && (
         <p className="errorMessage">{errors.displayName.message}</p>
@@ -99,13 +55,7 @@ const SignUpForm = () => {
           errors.email ? "signUpForm__input--error" : ""
         }`}
         placeholder="Enter your email"
-        {...register("email", {
-          required: "Email is required",
-          pattern: {
-            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-            message: "Enter a valid email",
-          },
-        })}
+        {...register("email", validationRules.email)}
       />
       {errors.email && <p className="errorMessage">{errors.email.message}</p>}
 
@@ -116,13 +66,7 @@ const SignUpForm = () => {
           errors.password ? "signUpForm__input--error" : ""
         }`}
         placeholder="Enter your password"
-        {...register("password", {
-          required: "Password is required",
-          minLength: {
-            value: 6,
-            message: "Password must be at least 6 characters",
-          },
-        })}
+        {...register("password", validationRules.password)}
       />
       {errors.password && (
         <p className="errorMessage">{errors.password.message}</p>
@@ -135,19 +79,11 @@ const SignUpForm = () => {
           errors.passwordConfirmation ? "signUpForm__input--error" : ""
         }`}
         placeholder="Confirm your password"
-        {...register("passwordConfirmation", {
-          required: "Password confirmation is required",
-          validate: (value) =>
-            value === watch("password") || "Passwords do not match",
-        })}
+        {...register("passwordConfirmation", validationRules.password)}
       />
-      {errors.passwordConfirmation && (
-        <p className="errorMessage">{errors.passwordConfirmation.message}</p>
-      )}
-      {error && <p className="errorMessage">{error}</p>}
+      {passwordMatchError && <p className="errorMessage">Passwords should match!</p> }
 
       <Button type="submit">Sign Up</Button>
-
       <Link to="/sign-in">Sign in</Link>
     </form>
   );
