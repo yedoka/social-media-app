@@ -1,28 +1,23 @@
-import React, { useEffect, useState } from "react";
-import PostComponent from "@/components/Post"; 
-import { fetchPosts } from "@/services/api/posts";
-import type { Post } from "@/types/Post";
-import "@/styles/globals.scss";
+import React from 'react';
+import { useFetchPosts } from '@/hooks/useFetchPosts';
+import PostComponent from '@/components/post/Post';
 
-const Feed = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
+const Feed: React.FC = () => {
+  const { posts, loading, error, likePost, addComment } = useFetchPosts();
 
-  const loadPosts = async () => {
-    try {
-      const fetchedPosts = await fetchPosts();
-      setPosts(fetchedPosts);
-    } catch (err) {
-      console.error("Error fetching posts: ", err);
-    }
-  }
-
-  useEffect(() => {
-    loadPosts();
-  }, []);
+  if (loading) return <div>Loading posts...</div>;
+  if (error) return <div>Error loading posts</div>;
 
   return (
     <div>
-      <PostComponent posts={posts} />
+      {posts.map((post) => (
+        <PostComponent
+          key={post.id}
+          post={post}
+          onLikePost={likePost}
+          onAddComment={addComment}
+        />
+      ))}
     </div>
   );
 };
