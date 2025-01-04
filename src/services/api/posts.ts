@@ -1,7 +1,7 @@
-import { arrayUnion, collection, doc, getDoc, getDocs, orderBy, query, setDoc, Timestamp, updateDoc } from "firebase/firestore";
+import { arrayRemove, arrayUnion, collection, doc, DocumentReference, getDoc, getDocs, orderBy, query, setDoc, Timestamp, updateDoc } from "firebase/firestore";
 import { auth, db } from "./config";
-import { Post, PostForm } from "@/types/Post";
-import type { User } from "@/types/User";
+import { Post, PostForm } from "@/types/post";
+import type { User } from "@/types/user";
 
 export const postCollectionRef = collection(db, "posts")
 
@@ -11,13 +11,35 @@ export async function likePost(postId: string) {
   }
   const currentUserId = auth.currentUser.uid;
   const currentUserRef = doc(db, "users", currentUserId);
-  const postRef= doc(db, "posts", postId);
+  const postRef = doc(db, "posts", postId);
   
+  const postDoc = await getDoc(postRef);
+  const postData = postDoc.data();
+  const likes = postData?.likes || [];
+  const isLiked = likes.some((like: DocumentReference) => like.id === currentUserId);
+ 
   try {
     await updateDoc(postRef, {
-      likes: arrayUnion(currentUserRef),
-      isLikedByUser: true
-    })  
+      likes: isLiked ? arrayRemove(currentUserRef) : arrayUnion(currentUserRef),
+      isLikedByUser: !isLiked
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+export const addComment = async (text: string, postId: string) => {
+  if (!auth.currentUser) throw new Error("User not auth")
+  const author = doc(db, "users", auth.currentUser.uid);
+  const postRef= doc(db, "posts", postId);
+
+  try {
+    await updateDoc(postRef, {
+      comments: arrayUnion({
+        author,
+        text: text
+      })
+    })
   } catch (err) {
     console.error(err);
   }
@@ -40,6 +62,7 @@ export async function createPost(payload: PostForm): Promise<void> {
       isLikedByUser: false,
       timestamp: firestoreTimestamp, 
       likes: [],
+      comments: []
     });
     await updateDoc(authorRef, {
       posts: arrayUnion(postRef)
@@ -68,6 +91,24 @@ export async function fetchPosts(): Promise<Post[]> {
 
     const authorData = authorSnap.data() as User;
 
+    const comments = await Promise.all(
+      (data.comments || []).map(async (comment: { text: string; author: DocumentReference<User> }) => {
+        const authorSnap = await getDoc(comment.author);
+        if (!authorSnap.exists()) {
+          console.warn("Author not found for comment");
+          return null;
+        }
+        const commentAuthorData = authorSnap.data() as User;
+        return {
+          text: comment.text,
+          author: {
+            displayName: commentAuthorData.displayName,
+            profilePicture: commentAuthorData.profilePicture,
+          },
+        };
+      })
+    );
+
     const post: Post = {
       id: docSnapshot.id,
       authorId: { ...authorData },
@@ -80,6 +121,7 @@ export async function fetchPosts(): Promise<Post[]> {
         profilePicture: like.profilePicture,
       })),
       timestamp: new Date(data.timestamp.seconds * 1000),
+      comments: comments
     };
 
     fetchedPosts.push(post);
