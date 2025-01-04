@@ -6,10 +6,9 @@ import SignUpForm from "../pages/auth/SignUp";
 
 import Feed from "@/pages/Feed";
 import Profile from "@/pages/Profile";
-import ProtectedRoute from "@/components/ProtectedRoute";
+import ProtectedRoute from "@/components/core/ProtectedRoute";
 import CreatePost from "@/pages/CreatePost";
-import FindUser from "@/pages/FindUser";
-import UserDetail from "@/pages/FoundUserDetail";
+import UserDetail from "@/pages/foundUser/FoundUserDetail";
 
 export const routes = [
   {
@@ -41,14 +40,6 @@ export const routes = [
         ),
       },
       {
-        path: "findUser",
-        element: (
-          <ProtectedRoute>
-            <FindUser />
-          </ProtectedRoute>
-        )
-      },
-      {
         path: "findUser/:userId",
         element: (
           <ProtectedRoute>
@@ -59,23 +50,17 @@ export const routes = [
     ],
   },
   {
-    path: "/sign-in",
+    path: "/auth",
     element: <AuthLayout />,
     children: [
       {
-        path: "",
+        path: "sign-in",
         element: <SignInForm />,
       },
-    ],
-  },
-  {
-    path: "/sign-up",
-    element: <AuthLayout />,
-    children: [
       {
-        path: "",
+        path: "sign-up",
         element: <SignUpForm />,
-      },
+      }
     ],
   },
 ];

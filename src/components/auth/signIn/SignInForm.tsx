@@ -2,17 +2,15 @@ import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { FirebaseError } from 'firebase/app';
 import { useCookies } from 'react-cookie';
 import { signIn } from '@/services/api/auth';
 import { auth } from '@/services/api/config';
 import { logIn } from '@/store/slices/auth';
-import Button from '@/components/ui/Button';
+import Button from '@/components/ui/button/Button';
 import type { SignInFormInputs } from '@/types/auth';
 import './SignInForm.scss';
 
 const SignInForm = () => {
-
   const { register, handleSubmit, formState: { errors } } = useForm<SignInFormInputs>();
   const [error, setError] = useState<string>("");
   const [, setCookie] = useCookies(['authToken']);
@@ -30,14 +28,10 @@ const SignInForm = () => {
         navigate('/');
       }
     } catch (err) {
-      if (err instanceof FirebaseError) {
-        if (err.code === 'auth/invalid-credential') {
-          setError('Email or password is incorrect');          
-        } else {
-          setError('Error');
-        }
+      if (err) {
+        setError("Invalid credentials.");    
       } else {
-        setError('An unexpected error occurred.');
+        setError("Unexpected error occurred.")
       }
     }
   };

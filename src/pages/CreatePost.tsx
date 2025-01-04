@@ -1,8 +1,7 @@
 import React from 'react';
 import { useForm } from "react-hook-form";
 import { createPost } from "@/services/api/posts";
-import type { PostForm } from "@/types/Post";
-
+import type { PostForm } from "@/types/post";
 
 const CreatePost = () => {
   const { register, handleSubmit, reset } = useForm<PostForm>();

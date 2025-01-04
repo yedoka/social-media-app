@@ -7,11 +7,11 @@ interface ProtectedRouteProps {
 }
 const ProtectedRoute: FC<ProtectedRouteProps> = ({ children }) => {
 
-  const [cookie] = useCookies(['authToken'])
-  const authToken = cookie.authToken;
+  const [cookies] = useCookies(['authToken'])
+  const authToken = cookies.authToken;
 
   if (!authToken) {
-    return <Navigate to="/sign-in" replace />;
+    return <Navigate to="/auth/sign-in" replace />;
   }
 
   return children as React.ReactElement;

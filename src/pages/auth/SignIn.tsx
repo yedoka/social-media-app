@@ -3,11 +3,8 @@ import React from 'react';
 
 const SignIn: React.FC = () => {
 
-  return (
-    <div className="signInForm">
-      <SignInForm />
-    </div>
-  );
+  return <SignInForm />
+
 };
 
 export default SignIn;

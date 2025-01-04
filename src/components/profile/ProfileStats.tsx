@@ -1,17 +1,16 @@
-import React from 'react';
-import { auth } from "@/services/api/config"
-import { fetchUserById } from "@/services/api/user"
-import type { User } from "@/types/User"
 import { useEffect, useState } from "react"
+import { auth } from "@/services/api/config"
+import { fetchCurrentLoggedUser } from "@/services/api/user"
+import type { User } from "@/types/user"
 
-const UserStats = () => {
+const ProfileStats = () => {
   const [user, setUser] = useState<User | null>(null)
-  if (!auth.currentUser) return;
-  const currentUserId = auth.currentUser.uid;
-
+  
   const fetchCurrentUser = async () => {
-    const fetchedUser = await fetchUserById(currentUserId);
-    setUser(fetchedUser)
+    if (auth.currentUser) {
+      const fetchedUser = await fetchCurrentLoggedUser();
+      setUser(fetchedUser)
+    }
   }
 
   useEffect(() => {
@@ -28,4 +27,4 @@ const UserStats = () => {
   )
 }
 
-export default UserStats
+export default ProfileStats

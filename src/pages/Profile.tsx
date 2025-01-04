@@ -1,13 +1,13 @@
 import React from 'react';
-import UserProfile from "@/components/userProfile/UserProfile";
-import UserStats from "@/components/userProfile/UserStats";
+import ProfilePage from "@/components/profile/ProfilePage";
+import ProfileStats from "@/components/profile/ProfileStats";
 
 const Profile = () => {
 
   return (
     <main>
-      <UserProfile />
-      <UserStats />
+      <ProfilePage />
+      <ProfileStats />
     </main>
   );
 };

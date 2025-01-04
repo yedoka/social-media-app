@@ -2,11 +2,12 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 import { enable } from '@/store/slices/editProfile';
-import UserData from './UserData';
-import EditForm from './EditForm';
-import Button from '../ui/Button';
+import Details from './ProfileDetails';
+import EditForm from './ProfileEditForm';
+import Button from '../ui/button/Button';
 
-const UserProfile: React.FC = () => {
+const ProfilePage: React.FC = () => {
+  
   const isEditing = useSelector((state: RootState) => state.editProfile.isEditing);
   const dispatch = useDispatch();
 
@@ -16,10 +17,10 @@ const UserProfile: React.FC = () => {
     <EditForm />
   ) : (
     <div>
-      <UserData />
+      <Details />
       <Button onClick={handleEditProfile}>Edit</Button>
     </div>
   );
 };
 
-export default UserProfile;
+export default ProfilePage;
