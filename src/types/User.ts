@@ -1,4 +1,3 @@
-import { Post } from "./post";
 
 export interface User {
   id: string;
@@ -7,5 +6,5 @@ export interface User {
   profilePicture: string;
   followers: User[];
   following: User[];
-  posts: Post[];
+  posts: string[];
 }

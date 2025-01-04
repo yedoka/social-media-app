@@ -1,4 +1,4 @@
-import type { User } from "./User";
+import type { User } from "./user";
 
 export interface Post {
   id: string;
@@ -6,8 +6,15 @@ export interface Post {
   content: string;
   imageUrl: string;
   isLikedByUser: boolean;
-  likes: User[];
+  likes: string[];
   timestamp: Date;
+  comments: {
+    author: {
+      displayName: string;
+      profilePicture: string;
+    }
+    text: string;
+  }[];
 }
 
 export interface PostForm {
