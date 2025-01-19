@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { fetchUserByUsername } from "@/services/api/user";
 import { User } from "@/types/user";
-import Results from "@/components/findUser/FindUserResults";
+import Results from "@/components/searchBar/UserList";
 import Input from "@/components/ui/input/Input";
 
-export default function FindUser() {
+export default function SearchBar() {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [results, setResults] = useState<User[]>([]);
 

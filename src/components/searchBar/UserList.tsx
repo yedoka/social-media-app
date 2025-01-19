@@ -1,7 +1,7 @@
 import { User } from "@/types/user";
 import { Link } from "react-router-dom";
 
-const Results: React.FC<{ foundUsers: User[] }> = ({ foundUsers }) => {
+const UserList: React.FC<{ foundUsers: User[] }> = ({ foundUsers }) => {
   if (foundUsers.length === 0) {
     return <p>No users found.</p>;
   }
@@ -18,4 +18,4 @@ const Results: React.FC<{ foundUsers: User[] }> = ({ foundUsers }) => {
   );
 };
 
-export default Results;
+export default UserList;
