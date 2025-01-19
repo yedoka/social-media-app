@@ -7,14 +7,14 @@ const Results: React.FC<{ foundUsers: User[] }> = ({ foundUsers }) => {
   }
 
   return (
-    <div>
+    <>
       {foundUsers.slice(0, 3).map((item) => (
-        <Link to={`/findUser/${item.id}`} key={item.id}>
-          <img src={item.profilePicture} alt="" style={{ width: "16px" }} />
+        <Link to={`/user/${item.displayName}`} key={item.id} className="flex items-center">
+          <img src={item.profilePicture} alt="" className="w-8 h-8 object-cover mr-4 rounded-full" />
           <span style={{ color: "#fff" }}>{item.displayName}</span>
         </Link>
       ))}
-    </div>
+    </>
   );
 };
 

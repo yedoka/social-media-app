@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -7,10 +7,10 @@ import Button from "@/components/ui/button/Button";
 import type { SignUpFormInputs } from "@/types/auth";
 import { signUp } from "@/services/api/auth";
 import { validationRules } from "@/utils/validationRules";
-import "./SignUpForm.scss";
+import Input from "@/components/ui/input/Input";
 
 const SignUpForm = () => {
-  const [ passwordMatchError, setPasswordMatchError ] = useState<boolean>(false);
+  const [passwordMatchError, setPasswordMatchError] = useState(false);
   const { register, handleSubmit, formState: { errors } } = useForm<SignUpFormInputs>();
 
   const navigate = useNavigate();
@@ -18,73 +18,66 @@ const SignUpForm = () => {
 
   const onSubmit = async (data: SignUpFormInputs) => {
     const { email, password, passwordConfirmation, displayName } = data;
-  
+
     if (password !== passwordConfirmation) {
       setPasswordMatchError(true);
+      return;
     }
-  
+
     try {
       await signUp({ email, password, displayName });
       dispatch(logIn());
-      navigate("/");
+      navigate("/auth/sign-in");
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
   };
-  
+
   return (
-    <form className="signUpForm__container" onSubmit={handleSubmit(onSubmit)}>
-      <h2 className="signUpForm__title">Sign Up</h2>
-      <label className="signUpForm__label">Display Name</label>
-      <input
+    <form className="flex flex-col w-80 shadow-md rounded-md p-8 bg-accent-bg mx-auto border border-dark-border" onSubmit={handleSubmit(onSubmit)}>
+      <h2 className="text-xl mb-4 font-semibold">Register</h2>
+
+      <label className="text-xs mb-1 font-semibold">Display Name</label>
+      <Input
         type="text"
-        className={`signUpForm__input ${
-          errors.displayName ? "signUpForm__input--error" : ""
-        }`}
+        className="mb-4 py-2"
         placeholder="Enter your display name"
         {...register("displayName", validationRules.displayName)}
       />
-      {errors.displayName && (
-        <p className="errorMessage">{errors.displayName.message}</p>
-      )}
+      {errors.displayName && <p className="text-red-500">{errors.displayName.message}</p>}
 
-      <label className="signUpForm__label">Email</label>
-      <input
+      <label className="text-xs mb-1 font-semibold">Email</label>
+      <Input
         type="email"
-        className={`signUpForm__input ${
-          errors.email ? "signUpForm__input--error" : ""
-        }`}
+        className="mb-4 py-2"
         placeholder="Enter your email"
         {...register("email", validationRules.email)}
       />
-      {errors.email && <p className="errorMessage">{errors.email.message}</p>}
+      {errors.email && <p className="text-red-500">{errors.email.message}</p>}
 
-      <label className="signUpForm__label">Password</label>
-      <input
+      <label className="text-xs mb-1 font-semibold">Password</label>
+      <Input
         type="password"
-        className={`signUpForm__input ${
-          errors.password ? "signUpForm__input--error" : ""
-        }`}
+        className="mb-4 py-2"
         placeholder="Enter your password"
         {...register("password", validationRules.password)}
       />
-      {errors.password && (
-        <p className="errorMessage">{errors.password.message}</p>
-      )}
+      {errors.password && <p className="text-red-500">{errors.password.message}</p>}
 
-      <label className="signUpForm__label">Confirm Password</label>
-      <input
+      <label className="text-xs mb-1 font-semibold">Confirm Password</label>
+      <Input
         type="password"
-        className={`signUpForm__input ${
-          errors.passwordConfirmation ? "signUpForm__input--error" : ""
-        }`}
+        className="mb-4 py-2"
         placeholder="Confirm your password"
         {...register("passwordConfirmation", validationRules.password)}
       />
-      {passwordMatchError && <p className="errorMessage">Passwords should match!</p> }
+      {passwordMatchError && <p className="text-red-500">Passwords should match!</p>}
 
-      <Button type="submit">Sign Up</Button>
-      <Link to="/sign-in">Sign in</Link>
+      <Button type="submit">Create Account</Button>
+
+      <Link to="/auth/sign-in" className="text-xs underline mt-4 ">
+        Already have an account?
+      </Link>
     </form>
   );
 };

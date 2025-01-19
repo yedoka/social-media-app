@@ -1,4 +1,3 @@
-import React from 'react';
 import RootLayout from "../layout/Root";
 import AuthLayout from "../layout/Auth";
 import SignInForm from "../pages/auth/SignIn";
@@ -8,7 +7,7 @@ import Feed from "@/pages/feed/Feed";
 import Profile from "@/pages/profile/Profile";
 import ProtectedRoute from "@/components/core/ProtectedRoute";
 import CreatePost from "@/pages/posts/CreatePost";
-import UserDetail from "@/pages/foundUser/FoundUserDetail";
+import User from "@/pages/user/User";
 
 export const routes = [
   {
@@ -20,6 +19,14 @@ export const routes = [
         element: (
           <ProtectedRoute>
             <Feed />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "user/:displayName",
+        element: (
+          <ProtectedRoute>
+            <User />
           </ProtectedRoute>
         ),
       },
@@ -39,14 +46,6 @@ export const routes = [
           </ProtectedRoute>
         ),
       },
-      {
-        path: "findUser/:userId",
-        element: (
-          <ProtectedRoute>
-            <UserDetail />
-          </ProtectedRoute>
-        )
-      }
     ],
   },
   {

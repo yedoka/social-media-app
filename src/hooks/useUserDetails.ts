@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { fetchUser, followUser, isFollowingUser, unfollowUser } from "@/services/api/user";
+import { fetchUserByUsernameFunc, followUser, checkFollowStatus, unfollowUser} from "@/services/api/user";
 import { auth } from "@/services/api/config"; 
 import type { User } from "@/types/user";
 
-export const useUserDetails = (userId: string) => {
+export const useUserDetails = (displayName: string) => {
   const [userData, setUserData] = useState<User | null>(null);
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -11,14 +11,26 @@ export const useUserDetails = (userId: string) => {
 
   const fetchAndSetUser = async () => {
     try {
-      const fetchedUser = await fetchUser(userId);
+      setError(null);
+
+      const fetchedUser = await fetchUserByUsernameFunc(displayName);
+
+      if (!fetchedUser) {
+        setError("User not found");
+        setUserData(null);
+        return;
+      }
+
       setUserData(fetchedUser);
 
-      const isUserFollowing = await isFollowingUser(userId);
-      setIsFollowing(isUserFollowing);
+      if (auth.currentUser) {
+        const isUserFollowing = await checkFollowStatus(displayName);
+        setIsFollowing(isUserFollowing);
+      }
     } catch (err) {
       console.error(err);
       setError("An error occurred while fetching user details.");
+      setUserData(null)
     } finally {
       setLoading(false);
     }
@@ -32,12 +44,12 @@ export const useUserDetails = (userId: string) => {
 
     try {
       if (isFollowing) {
-        await unfollowUser(userId);
+        await unfollowUser(displayName);
         setIsFollowing(false);
         
         await fetchAndSetUser();
       } else {
-        await followUser(userId);
+        await followUser(displayName);
         setIsFollowing(true);
         
         await fetchAndSetUser();
@@ -49,10 +61,10 @@ export const useUserDetails = (userId: string) => {
   };
 
   useEffect(() => {
-    if (userId) {
+    if (displayName) {
       fetchAndSetUser();
     }
-  }, [userId]);
+  }, [displayName]);
 
   return { userData, isFollowing, error, loading, toggleFollow };
 };

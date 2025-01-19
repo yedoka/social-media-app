@@ -1,5 +1,5 @@
-import SignUpForm from "@/components/auth/signUp/SignUpForm";
 import React from 'react';
+import SignUpForm from "@/components/auth/signUp/SignUpForm";
 
 const SignUp: React.FC = () => {
   

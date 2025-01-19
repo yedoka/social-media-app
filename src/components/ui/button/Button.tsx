@@ -1,5 +1,4 @@
 import React from 'react';
-import './Button.scss';
 
 interface ButtonProps {
   type?: 'button' | 'submit' | 'reset'; 
@@ -10,8 +9,8 @@ interface ButtonProps {
 }
 
 const Button: React.FC<ButtonProps> = ({ 
-  type = 'button', 
-  className = '', 
+  type = 'button',
+  className,
   onClick, 
   children, 
   disabled = false 
@@ -19,7 +18,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button 
       type={type} 
-      className={`button ${className}`} 
+      className={`bg-primary text-primary-text font-semibold text-xs py-2 px-8 rounded-md transition-colors hover:bg-blue-700 ${className || ''}`} 
       onClick={onClick} 
       disabled={disabled}
     >

@@ -1,13 +1,9 @@
-import React from 'react';
 import { Outlet } from "react-router-dom";
-import signInBg from "@/assets/images/signInBackground.jpg"
-import '@/layout/Auth.scss';
 
 const AuthLayout = () => {
   return (
-    <div className="formLayout">
-      <img src={signInBg} alt="signIn-background" />
-      <main className="formLayout__content">
+    <div className="flex w-full h-screen bg-gradient-to-r from-blue-600 to-violet-600 text-primary-text">
+      <main className="flex w-full h-screen justify-center items-center">
         <Outlet />
       </main>
     </div>

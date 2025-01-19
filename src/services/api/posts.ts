@@ -1,9 +1,24 @@
 import { arrayRemove, arrayUnion, collection, doc, DocumentReference, getDoc, getDocs, orderBy, query, setDoc, Timestamp, updateDoc } from "firebase/firestore";
-import { auth, db } from "./config";
+import { auth, db } from "@/services/api/config";
 import { Post, PostForm } from "@/types/post";
 import type { User } from "@/types/user";
 
 export const postCollectionRef = collection(db, "posts")
+
+export const checkIfUserLiked = async (postId: string) => {
+  if (!auth.currentUser) {
+    throw new Error("User not authenticated");
+  }
+  const currentUserId = auth.currentUser.uid;
+  const currentUserRef = doc(db, "users", currentUserId);
+  const postRef = doc(db, "posts", postId);
+  const postDoc = await getDoc(postRef);
+  const postData = postDoc.data();
+  const likes = postData?.likes || [];
+  
+  return likes.includes(currentUserRef.id);
+
+}
 
 export async function likePost(postId: string) {
   if (!auth.currentUser) {
@@ -17,7 +32,7 @@ export async function likePost(postId: string) {
   const postData = postDoc.data();
   const likes = postData?.likes || [];
   const isLiked = likes.some((like: DocumentReference) => like.id === currentUserId);
- 
+  
   try {
     await updateDoc(postRef, {
       likes: isLiked ? arrayRemove(currentUserRef) : arrayUnion(currentUserRef),
@@ -52,7 +67,7 @@ export async function createPost(payload: PostForm): Promise<void> {
   }
 
   const authorRef = doc(db, "users", auth.currentUser.uid);
-  const postRef = doc(collection(db, "posts"));
+  const postRef = doc(collection(db, "posts"));  
 
   try {
     await setDoc(postRef, {
@@ -82,15 +97,16 @@ export async function fetchPosts(): Promise<Post[]> {
     const data = docSnapshot.data();
 
     const authorRef = data.authorID;
+    
     const authorSnap = await getDoc(authorRef);
-
+    
     if(!authorSnap.exists()) {
       console.error("Author not found for post: ", docSnapshot.id);
       continue;
     }
 
     const authorData = authorSnap.data() as User;
-
+    
     const comments = await Promise.all(
       (data.comments || []).map(async (comment: { text: string; author: DocumentReference<User> }) => {
         const authorSnap = await getDoc(comment.author);

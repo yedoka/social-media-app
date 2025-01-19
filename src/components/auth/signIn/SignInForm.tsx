@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -8,7 +8,7 @@ import { auth } from '@/services/api/config';
 import { logIn } from '@/store/slices/auth';
 import Button from '@/components/ui/button/Button';
 import type { SignInFormInputs } from '@/types/auth';
-import './SignInForm.scss';
+import Input from '@/components/ui/input/Input';
 
 const SignInForm = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<SignInFormInputs>();
@@ -21,6 +21,7 @@ const SignInForm = () => {
   const onSubmit: SubmitHandler<SignInFormInputs> = async (data) => {
     try {
       await signIn(data.email, data.password);
+
       const idToken = await auth.currentUser?.getIdToken();
       if (idToken) {
         setCookie('authToken', idToken, { path: '/', maxAge: 3600 })
@@ -37,38 +38,33 @@ const SignInForm = () => {
   };
 
   return (
-    <form className="signInForm__container" onSubmit={handleSubmit(onSubmit)}>
-      <h2 className="signInForm__title">Sign In</h2>
-
-      <label className="signInForm__label">Email</label>
-      <input
+    <form className ="flex flex-col w-72 shadow-md rounded-md p-8 bg-accent-bg border border-dark-border" onSubmit={handleSubmit(onSubmit)}>
+      <h2 className="text-xl font-semibold mb-4">Login</h2>
+      <label className="text-xs font-semibold mb-1">Email</label>
+      <Input
         type="email"
-        className={`signInForm__input ${
-          errors.email ? "signInForm__input--error" : ""
-        }`}
+        className='mb-4 py-2'
         placeholder="Enter your email"
         {...register("email", { required: "Email is required" })}
       />
       {errors.email && (
-        <span className="signInForm__error">{errors.email.message}</span>
+        <span className="text-red-500">{errors.email.message}</span>
       )}
 
-      <label className="signInForm__label">Password</label>
-      <input
+      <label className ="text-xs font-semibold mb-1">Password</label>
+      <Input
         type="password"
-        className={`signInForm__input ${
-          errors.password ? "signInForm__input--error" : ""
-        }`}
+        className='mb-4 py-2'
         placeholder="Enter your password"
         {...register("password", { required: "Password is required" })}
       />
       {errors.password && (
-        <span className="signInForm__error">{errors.password.message}</span>
+        <span className="text-red-500">{errors.password.message}</span>
       )}
-      {error && <p className="signInForm__error">{error}</p>}
-      <Button type="submit">Sign In</Button>
+      {error && <p className="text-red-500">{error}</p>}
+      <Button type="submit">Log In</Button>
 
-      <Link to="/sign-up" className="signInForm__container__link">
+      <Link to="/auth/sign-up" className="text-xs underline mt-4">
         Don&apos;t have an account?
       </Link>
     </form>

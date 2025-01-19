@@ -1,7 +1,8 @@
+import { useState } from "react";
 import { fetchUserByUsername } from "@/services/api/user";
 import { User } from "@/types/user";
-import { useState } from "react";
-import Results from "./Results";
+import Results from "@/components/findUser/FindUserResults";
+import Input from "@/components/ui/input/Input";
 
 export default function FindUser() {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -24,8 +25,8 @@ export default function FindUser() {
   };
 
   return (
-    <div>
-      <input
+    <div className="space-y-4">
+      <Input
         type="text"
         value={searchTerm}
         onChange={(e) => handleChange(e.target.value)}
