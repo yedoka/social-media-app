@@ -8,9 +8,7 @@ const User = () => {
 
   const { userData, isFollowing, error, loading, toggleFollow } = useUserDetails(searchTerm);
 
-  if (!displayName) {
-    console.log(displayName);
-    
+  if (!displayName) {    
     return <div>Invalid user.</div>;
   }
 

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Post } from '@/types/post';
 import PostActions from '@/components/post/PostActions';
 import { Link } from 'react-router-dom';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 interface PostComponentProps {
   post: Post;
@@ -28,12 +29,15 @@ const PostComponent: React.FC<PostComponentProps> = ({ post, onLikePost, onAddCo
   };
 
   return (
-    <div className='flex flex-col w-96 py-4 border-b-[1px]'>
-      <div className="flex items-center mb-4">
-        <img src={post.authorId.profilePicture} alt="profile picture" className='rounded-full w-8 mr-4' />
-        <Link to={`profile/${post.authorId}`} className='font-bold'>{post.authorId.displayName}</Link>
+    <div className='flex flex-col w-96 py-4 border-[1px] border-dark-border bg-accent-bg rounded-md mb-2'>
+      <div className="flex items-center mb-4 px-4">
+        <Avatar className='mr-4 w-8 h-8'>
+          <AvatarImage src={post.authorId.profilePicture} />
+          <AvatarFallback>CN</AvatarFallback>
+        </Avatar>
+        <Link to={`user/${post.authorId.displayName}`} className='font-bold text-xs'>{post.authorId.displayName}</Link>
       </div>
-      {post.imageUrl && <img src={post.imageUrl} alt="Post" className='border border-dark-border rounded-sm mb-4' />}
+      {post.imageUrl && <img src={post.imageUrl} alt="Post" className='max-w-[384px] h-[384px] object-cover border border-dark-border rounded-sm mb-4' />}
       
       <PostActions
         post={post}
@@ -43,7 +47,7 @@ const PostComponent: React.FC<PostComponentProps> = ({ post, onLikePost, onAddCo
         onCommentChange={handleCommentChange}
       />
 
-      <p className='text-xs my-2'><strong>{post.authorId.displayName} </strong>{post.content}</p>
+      <p className='text-xs my-2 px-2'><strong>{post.authorId.displayName} </strong>{post.content}</p>
     </div>
   );
 };

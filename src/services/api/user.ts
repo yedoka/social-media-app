@@ -129,6 +129,32 @@ export const fetchCurrentLoggedUser = async () => {
   }
 }
 
+export const searchUsers = async (searchTerm: string): Promise<User[]> => {
+  
+  const userRef = collection(db, "users");
+  
+  const upperBound = searchTerm + '\uf8ff';
+  
+  const q = query(
+    userRef,
+    where("displayName", ">=", searchTerm),
+    where("displayName", "<", upperBound)
+  );
+
+  try {
+    const querySnapshot = await getDocs(q);
+    
+    const users: User[] = [];
+    querySnapshot.forEach((doc) => {
+      users.push({ id: doc.id, ...doc.data() } as User);
+    });
+    return users;
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    throw error;
+  }
+};
+
 export const fetchUserByUsername = async (displayName: string) => {
   const userRef = collection(db, "users");
   const q = query(userRef, where("displayName", "==", displayName));

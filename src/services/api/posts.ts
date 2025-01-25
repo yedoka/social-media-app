@@ -145,3 +145,64 @@ export async function fetchPosts(): Promise<Post[]> {
 
   return fetchedPosts;
 }
+
+export async function fetchUserPosts(postRefs: DocumentReference[]): Promise<Post[]> {
+  const fetchedPosts: Post[] = [];
+
+  for (const postRef of postRefs) {
+    const postSnap = await getDoc(postRef);
+    
+    if (!postSnap.exists()) {
+      console.warn("Post not found:", postRef.id);
+      continue;
+    }
+
+    const data = postSnap.data();
+    const authorRef = data.authorID;
+    const authorSnap = await getDoc(authorRef);
+    
+    if(!authorSnap.exists()) {
+      console.error("Author not found for post: ", postSnap.id);
+      continue;
+    }
+
+    const authorData = authorSnap.data() as User;
+    
+    const comments = await Promise.all(
+      (data.comments || []).map(async (comment: { text: string; author: DocumentReference<User> }) => {
+        const authorSnap = await getDoc(comment.author);
+        if (!authorSnap.exists()) {
+          console.warn("Author not found for comment");
+          return null;
+        }
+        const commentAuthorData = authorSnap.data() as User;
+        return {
+          text: comment.text,
+          author: {
+            displayName: commentAuthorData.displayName,
+            profilePicture: commentAuthorData.profilePicture,
+          },
+        };
+      })
+    );
+
+    const post: Post = {
+      id: postSnap.id,
+      authorId: { ...authorData },
+      content: data.content,
+      imageUrl: data.imageUrl,
+      isLikedByUser: data.isLikedByUser,
+      likes: data.likes.map((like: User) => ({
+        displayName: like.displayName,
+        email: like.email,
+        profilePicture: like.profilePicture,
+      })),
+      timestamp: new Date(data.timestamp.seconds * 1000),
+      comments: comments
+    };
+
+    fetchedPosts.push(post);
+  }
+
+  return fetchedPosts.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+}

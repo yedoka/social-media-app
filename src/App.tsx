@@ -1,4 +1,3 @@
-import React from 'react';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { CookiesProvider } from 'react-cookie';
 import { Provider } from "react-redux";

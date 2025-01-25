@@ -7,7 +7,7 @@ export default function RootLayout() {
   return (
     <div className="flex text-primary-text h-full">
       <SideBar />
-      <div className="p-4 mx-auto min-h-screen h-full bg-dark-bg">
+      <div className="mx-auto min-h-screen h-full bg-dark-bg">
         <Outlet />
         <Toaster />
       </div>

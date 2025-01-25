@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -13,7 +13,7 @@ import Input from '@/components/ui/input/Input';
 const SignInForm = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<SignInFormInputs>();
   const [error, setError] = useState<string>("");
-  const [, setCookie] = useCookies(['authToken']);
+  const [cookies, setCookie] = useCookies(['authToken']);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -36,6 +36,12 @@ const SignInForm = () => {
       }
     }
   };
+
+  useEffect(() => {
+    if (cookies.authToken) {
+      navigate('/')
+    }
+  }, [])
 
   return (
     <form className ="flex flex-col w-72 shadow-md rounded-md p-8 bg-accent-bg border border-dark-border" onSubmit={handleSubmit(onSubmit)}>

@@ -1,3 +1,4 @@
+import { DocumentReference } from "firebase/firestore";
 
 export interface User {
   id: string;
@@ -6,5 +7,5 @@ export interface User {
   profilePicture: string;
   followers: User[];
   following: User[];
-  posts: string[];
+  posts: DocumentReference[];
 }
