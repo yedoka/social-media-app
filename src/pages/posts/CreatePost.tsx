@@ -13,7 +13,7 @@ const CreatePost = () => {
     try {
       await createPost(data);
       toast({
-        title: "Success✅",
+        title: "Success",
         description: "Your post was created successfully!",
         className: "border-dark-border"
       })
@@ -21,7 +21,7 @@ const CreatePost = () => {
     } catch (err) {
       console.error(err);
       toast({
-        title: "Error❌",
+        title: "Error",
         description: "Failed to create post. Please try again.",
       })
     }

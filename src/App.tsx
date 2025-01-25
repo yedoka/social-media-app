@@ -1,4 +1,3 @@
-import React from 'react';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { CookiesProvider } from 'react-cookie';
 import { Provider } from "react-redux";
@@ -10,13 +9,11 @@ import '@/index.css';
 const router = createBrowserRouter(routes);
 
 const App = () => (
-  <div className="bg-dark-bg">
-    <CookiesProvider>
-      <Provider store={store}>
-        <RouterProvider router={router} />
-      </Provider>
-    </CookiesProvider>
-  </div>
+  <CookiesProvider>
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
+  </CookiesProvider>
 );
 
 export default App;

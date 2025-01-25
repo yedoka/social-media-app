@@ -1,4 +1,4 @@
-export const validationRules = {
+export const AuthValidationRules = {
   displayName: {
     required: "Display name is required",
   },

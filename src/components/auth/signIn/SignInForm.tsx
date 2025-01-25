@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useCookies } from 'react-cookie';
 import { signIn } from '@/services/api/auth';
@@ -9,6 +9,7 @@ import { logIn } from '@/store/slices/auth';
 import Button from '@/components/ui/button/Button';
 import type { SignInFormInputs } from '@/types/auth';
 import Input from '@/components/ui/input/Input';
+import SignUpLink from '@/constants/SignUpLink';
 
 const SignInForm = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<SignInFormInputs>();
@@ -64,9 +65,9 @@ const SignInForm = () => {
       {error && <p className="text-red-500">{error}</p>}
       <Button type="submit">Log In</Button>
 
-      <Link to="/auth/sign-up" className="text-xs underline mt-4">
+      <SignUpLink className="text-xs underline mt-4">
         Don&apos;t have an account?
-      </Link>
+      </SignUpLink>
     </form>
   );
 };

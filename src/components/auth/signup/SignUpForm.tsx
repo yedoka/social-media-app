@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logIn } from "@/store/slices/auth";
 import Button from "@/components/ui/button/Button";
 import type { SignUpFormInputs } from "@/types/auth";
 import { signUp } from "@/services/api/auth";
-import { validationRules } from "@/utils/validationRules";
+import { AuthValidationRules } from "@/utils/AuthValidationRules";
 import Input from "@/components/ui/input/Input";
+import SignInLink from "@/constants/SignInLink";
 
 const SignUpForm = () => {
   const [passwordMatchError, setPasswordMatchError] = useState(false);
@@ -42,7 +43,7 @@ const SignUpForm = () => {
         type="text"
         className="mb-4 py-2"
         placeholder="Enter your display name"
-        {...register("displayName", validationRules.displayName)}
+        {...register("displayName", AuthValidationRules.displayName)}
       />
       {errors.displayName && <p className="text-red-500">{errors.displayName.message}</p>}
 
@@ -51,7 +52,7 @@ const SignUpForm = () => {
         type="email"
         className="mb-4 py-2"
         placeholder="Enter your email"
-        {...register("email", validationRules.email)}
+        {...register("email", AuthValidationRules.email)}
       />
       {errors.email && <p className="text-red-500">{errors.email.message}</p>}
 
@@ -60,7 +61,7 @@ const SignUpForm = () => {
         type="password"
         className="mb-4 py-2"
         placeholder="Enter your password"
-        {...register("password", validationRules.password)}
+        {...register("password", AuthValidationRules.password)}
       />
       {errors.password && <p className="text-red-500">{errors.password.message}</p>}
 
@@ -69,15 +70,15 @@ const SignUpForm = () => {
         type="password"
         className="mb-4 py-2"
         placeholder="Confirm your password"
-        {...register("passwordConfirmation", validationRules.password)}
+        {...register("passwordConfirmation", AuthValidationRules.password)}
       />
       {passwordMatchError && <p className="text-red-500">Passwords should match!</p>}
 
       <Button type="submit">Create Account</Button>
 
-      <Link to="/auth/sign-in" className="text-xs underline mt-4 ">
+      <SignInLink className="text-xs underline mt-4 ">
         Already have an account?
-      </Link>
+      </SignInLink>
     </form>
   );
 };
