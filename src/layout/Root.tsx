@@ -5,9 +5,9 @@ import { Toaster } from "@/components/ui/toaster";
 export default function RootLayout() {
   
   return (
-    <div className="flex text-primary-text h-full">
+    <div className="flex text-primary-text h-full bg-dark-bg">
       <SideBar />
-      <div className="mx-auto min-h-screen h-full bg-dark-bg">
+      <div className="mx-auto min-h-screen h-full">
         <Outlet />
         <Toaster />
       </div>

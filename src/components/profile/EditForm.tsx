@@ -89,7 +89,7 @@ const EditForm: React.FC = () => {
         </div>
         <div className="grid gap-4">
           <Button type="submit">Save</Button>
-          <Button type="button" className="bg-neutral-950 text-neutral-50 hover:bg-neutral-950/40" onClick={handleCancel}>
+          <Button type="button" className="bg-neutral-800 hover:bg-neutral-800/40" onClick={handleCancel}>
           Cancel
           </Button>
         </div>

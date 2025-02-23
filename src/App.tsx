@@ -11,15 +11,13 @@ const router = createBrowserRouter(routes);
 const queryClient = new QueryClient();
 
 const App = () => (
-  <div className="bg-dark-bg">
-    <CookiesProvider>
-      <Provider store={store}>
-        <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
-        </QueryClientProvider>
-      </Provider>
-    </CookiesProvider>
-  </div>
+  <CookiesProvider>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </Provider>
+  </CookiesProvider>
 );
 
 export default App;
