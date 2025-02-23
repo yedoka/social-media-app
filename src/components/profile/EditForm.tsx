@@ -3,38 +3,44 @@ import { useDispatch } from "react-redux";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { disable } from "@/store/slices/editProfile";
 import { updateUserProfile, fetchCurrentLoggedUser } from "@/services/api/user";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { EditFormSchema } from "@/utils/validation";
+import Input from '@/components/ui/input/Input';
 import Button from "@/components/ui/button/Button";
 
-interface FormInputs {
+type FormValues = {
   username: string;
   imageUrl: string;
 }
 
 const EditForm: React.FC = () => {
   const dispatch = useDispatch();
-  const [initialData, setInitialData] = useState<FormInputs | null>(null);
-  const { register, handleSubmit, setError, formState: { errors }, reset } = useForm<FormInputs>();
-
-  const loadUserData = async () => {
-    try {
-      const fetchedUser = await fetchCurrentLoggedUser();
-      if (!fetchedUser) {
-        throw new Error("Failed to fetch user data");
-      }
-
-      const userData = {
-        username: fetchedUser.displayName || '',
-        imageUrl: fetchedUser.profilePicture || '',
-      };
-
-      setInitialData(userData);
-      reset(userData);
-    } catch (err) {
-      console.error("Error fetching user data:", err);
-    }
-  };
-
+  const [initialData, setInitialData] = useState<FormValues | null>(null);
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<FormValues>({defaultValues: {
+    username: initialData?.username,
+    imageUrl: initialData?.imageUrl
+  },
+  resolver: zodResolver(EditFormSchema),
+  mode: 'onSubmit'
+  });
+  
   useEffect(() => {
+    const loadUserData = async () => {
+      try {
+        const fetchedUser = await fetchCurrentLoggedUser();
+        if (!fetchedUser) {
+          throw new Error("Failed to fetch user data");
+        }
+        const userData = {
+          username: fetchedUser.displayName || '',
+          imageUrl: fetchedUser.profilePicture || '',
+        };
+        setInitialData(userData);
+        reset(userData);
+      } catch (err) {
+        console.error("Error fetching user data:", err);
+      }
+    };
     loadUserData();
   }, [reset]);
 
@@ -42,22 +48,12 @@ const EditForm: React.FC = () => {
     dispatch(disable());
   };
 
-  const handleSave: SubmitHandler<FormInputs> = async (data) => {
+  const handleSave: SubmitHandler<FormValues> = async (data) => {
     try {
       await updateUserProfile(data.username, data.imageUrl);
       dispatch(disable());
     } catch (err) {
-      if (err instanceof Error) {
-        setError("username", {
-          type: "manual",
-          message: err.message,
-        });
-      } else {
-        setError("username", {
-          type: "manual",
-          message: "Unknown error occurred.",
-        });
-      }
+      console.error("Error occurred:", err)
     }
   };
 
@@ -66,34 +62,39 @@ const EditForm: React.FC = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit(handleSave)}>
-      <h3 className="mb-4">Edit Username</h3>
-      <div className="flex flex-col gap-4 mb-4">
-        <input
-          type="text"
-          placeholder="New username"
-          defaultValue={initialData.username}
-          className="block w-full px-2 py-1 border rounded-md text-xs text-accent-bg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-          {...register("username", {
-            required: "Username cannot be empty.",
-          })}
-        />
-        {errors.username && <p style={{ color: "red" }}>{errors.username.message}</p>}
-        <input
-          type="text"
-          placeholder="Image URL"
-          defaultValue={initialData.imageUrl}
-          className="block w-full px-2 py-1 border rounded-md text-xs text-accent-bg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-          {...register("imageUrl")}
-        />
+    <div className="w-96 mx-auto shadow-md rounded-md p-6 bg-accent-bg border border-dark-border">
+      <div className="pb-6 text-neutral-300">
+        <h2 className="text-2xl font-semibold mb-2">Edit profile</h2>
       </div>
-      <div className="flex gap-4">
-        <Button type="submit">Save</Button>
-        <Button type="button" onClick={handleCancel}>
+      <form onSubmit={handleSubmit(handleSave)} className="flex flex-col gap-6">
+        <div className="grid gap-2">
+          <label htmlFor="username" className="font-semibold">Username</label>
+          <Input
+            id="username"
+            type="text"
+            placeholder="New username"
+            {...register("username")}
+          />
+          {errors.username && <p className="text-red-500 text-xs">{errors.username?.message}</p>}
+        </div>
+        <div className="grid gap-2">
+          <label htmlFor="imageUrl" className="font-semibold">Image URL</label>
+          <Input
+            id="imageUrl"
+            type="text"
+            placeholder="Image URL"
+            {...register("imageUrl")}
+          />
+          {errors.imageUrl && <p className="text-red-500 text-xs">{errors.imageUrl?.message}</p>}
+        </div>
+        <div className="grid gap-4">
+          <Button type="submit">Save</Button>
+          <Button type="button" className="bg-neutral-950 text-neutral-50 hover:bg-neutral-950/40" onClick={handleCancel}>
           Cancel
-        </Button>
-      </div>
-    </form>
+          </Button>
+        </div>
+      </form>
+    </div>
   );
 };
 

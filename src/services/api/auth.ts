@@ -6,9 +6,8 @@ import {
   updateProfile,
 } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
-import type { SignUpData } from '@/types/auth';
 
-export const signUp = async ({ email, password, displayName }: SignUpData) => {
+export const signUp = async ( email: string, password: string, displayName: string) => {
   const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
   if (userCredential.user) {

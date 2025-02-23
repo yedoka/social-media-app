@@ -1,79 +1,108 @@
-import { useEffect, useState } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { useCookies } from 'react-cookie';
-import { signIn } from '@/services/api/auth';
-import { auth } from '@/services/api/config';
-import { logIn } from '@/store/slices/auth';
-import Button from '@/components/ui/button/Button';
-import type { SignInFormInputs } from '@/types/auth';
-import Input from '@/components/ui/input/Input';
+import { useEffect, useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useCookies } from "react-cookie";
+import { signIn } from "@/services/api/auth";
+import { auth } from "@/services/api/config";
+import { logIn } from "@/store/slices/auth";
+import Button from "@/components/ui/button/Button";
+import Input from "@/components/ui/input/Input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from '@tanstack/react-query';
+import { signInSchema } from "@/utils/validation";
+
+type FormValues = {
+  email: string;
+  password: string;
+};
 
 const SignInForm = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm<SignInFormInputs>();
-  const [error, setError] = useState<string>("");
-  const [cookies, setCookie] = useCookies(['authToken']);
+  const { register, handleSubmit, formState: { errors }} = useForm<FormValues>({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    resolver: zodResolver(signInSchema),
+    mode: "onSubmit"
+  });
 
+  const [error, setError] = useState<string>("");
+  const [cookies, setCookie] = useCookies(["authToken"]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const onSubmit: SubmitHandler<SignInFormInputs> = async (data) => {
-    try {
-      await signIn(data.email, data.password);
-
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
+    signInMutation.mutate(data);
+  };
+  
+  const signInMutation = useMutation({
+    mutationFn: (data: FormValues) => signIn(data.email, data.password),
+    onSuccess: async () => {
       const idToken = await auth.currentUser?.getIdToken();
       if (idToken) {
-        setCookie('authToken', idToken, { path: '/', maxAge: 3600 })
+        setCookie("authToken", idToken, { path: "/", maxAge: 3600 });
         dispatch(logIn());
-        navigate('/');
+        navigate("/");
       }
-    } catch (err) {
-      if (err) {
-        setError("Invalid credentials.");    
-      } else {
-        setError("Unexpected error occurred.")
-      }
+    },
+    onError: (error: Error) => {
+      setError(error.message || 'Invalid credentials');
     }
-  };
-
+  })
+  
   useEffect(() => {
     if (cookies.authToken) {
-      navigate('/')
+      navigate("/");
     }
-  }, [])
-
+  }, [cookies.authToken, navigate]);
+  
   return (
-    <form className ="flex flex-col w-72 shadow-md rounded-md p-8 bg-accent-bg border border-dark-border" onSubmit={handleSubmit(onSubmit)}>
-      <h2 className="text-xl font-semibold mb-4">Login</h2>
-      <label className="text-xs font-semibold mb-1">Email</label>
-      <Input
-        type="email"
-        className='mb-4 py-2'
-        placeholder="Enter your email"
-        {...register("email", { required: "Email is required" })}
-      />
-      {errors.email && (
-        <span className="text-red-500">{errors.email.message}</span>
-      )}
+    <div className="w-96 shadow-md rounded-md p-6 bg-accent-bg border border-dark-border">
+      <div className="pb-6 text-neutral-300">
+        <h2 className="text-2xl font-semibold mb-2">Login</h2>
+        <p className="text-xs">Enter your email below to login to your account</p>
+      </div>
+      <form
+        noValidate
+        className="flex flex-col gap-6"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <div className="grid gap-2">
+          <label htmlFor="email" className="text-sm font-semibold">
+          Email
+          </label>
+          <Input
+            id="email"
+            type="email"
+            className="py-2"
+            placeholder="Enter your email"
+            {...register("email")}
+          />
+          {errors.email && <p className="text-red-500 text-xs">{errors.email?.message}</p>}
+        </div>
 
-      <label className ="text-xs font-semibold mb-1">Password</label>
-      <Input
-        type="password"
-        className='mb-4 py-2'
-        placeholder="Enter your password"
-        {...register("password", { required: "Password is required" })}
-      />
-      {errors.password && (
-        <span className="text-red-500">{errors.password.message}</span>
-      )}
-      {error && <p className="text-red-500">{error}</p>}
-      <Button type="submit">Log In</Button>
+        <div className="grid gap-2">
+          <label htmlFor="password" className="text-sm font-semibold">
+          Password
+          </label>
+          <Input
+            id="password"
+            type="password"
+            className="py-2"
+            placeholder="Enter your password"
+            {...register("password")}
+          />
+          {errors.password && <p className="text-red-500 text-xs">{errors.password?.message}</p>}
+        </div>
 
-      <Link to="/auth/sign-up" className="text-xs underline mt-4">
-        Don&apos;t have an account?
-      </Link>
-    </form>
+        <Button type="submit" disabled={signInMutation.isPending}>{signInMutation.isPending ? 'Logging In...' : 'Log In'}</Button>
+        {error && (
+          <p className="text-red-500 text-xs">{error}</p>
+        )}
+      </form>
+      <p className="text-xs mt-4 text-center">Don&apos;t have an account? <Link to="/auth/sign-up" className="underline">Sign up</Link></p>
+    </div>
   );
 };
 

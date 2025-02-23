@@ -16,8 +16,3 @@ export interface Post {
     text: string;
   }[];
 }
-
-export interface PostForm {
-  content: string;
-  imageUrl: string;
-}
