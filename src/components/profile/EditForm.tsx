@@ -1,63 +1,66 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { disable } from "@/store/slices/editProfile";
-import { updateUserProfile, fetchCurrentLoggedUser } from "@/services/api/user";
+import { updateUserProfile } from "@/services/api/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EditFormSchema } from "@/utils/validation";
 import Input from '@/components/ui/input/Input';
 import Button from "@/components/ui/button/Button";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { User } from "@/types/user";
+import { useToast } from "@/hooks/useToast";
 
 type FormValues = {
   username: string;
   imageUrl: string;
+};
+
+interface EditFormProps {
+  data: User | null | undefined;
 }
 
-const EditForm: React.FC = () => {
+const EditForm: React.FC<EditFormProps> = ({ data }) => {
   const dispatch = useDispatch();
-  const [initialData, setInitialData] = useState<FormValues | null>(null);
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<FormValues>({defaultValues: {
-    username: initialData?.username,
-    imageUrl: initialData?.imageUrl
-  },
-  resolver: zodResolver(EditFormSchema),
-  mode: 'onSubmit'
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
+    defaultValues: {
+      username: data?.displayName || "",
+      imageUrl: data?.profilePicture || "",
+    },
+    resolver: zodResolver(EditFormSchema),
+    mode: 'onSubmit',
   });
-  
-  useEffect(() => {
-    const loadUserData = async () => {
-      try {
-        const fetchedUser = await fetchCurrentLoggedUser();
-        if (!fetchedUser) {
-          throw new Error("Failed to fetch user data");
-        }
-        const userData = {
-          username: fetchedUser.displayName || '',
-          imageUrl: fetchedUser.profilePicture || '',
-        };
-        setInitialData(userData);
-        reset(userData);
-      } catch (err) {
-        console.error("Error fetching user data:", err);
-      }
-    };
-    loadUserData();
-  }, [reset]);
+
+  const mutation = useMutation({
+    mutationFn: (formData: FormValues) => updateUserProfile(formData.username, formData.imageUrl),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['currentUser'] });
+      toast({
+        title: "Success",
+        description: "Profile updated successfully!",
+        className: "border-dark-border",
+      });
+      dispatch(disable());
+    },
+    onError: (error) => {
+      toast({
+        title: `Error: ${error}`,
+        description: "Failed to update profile. Please try again.",
+      });
+    },
+  });
 
   const handleCancel = () => {
     dispatch(disable());
   };
 
-  const handleSave: SubmitHandler<FormValues> = async (data) => {
-    try {
-      await updateUserProfile(data.username, data.imageUrl);
-      dispatch(disable());
-    } catch (err) {
-      console.error("Error occurred:", err)
-    }
+  const handleSave: SubmitHandler<FormValues> = async (formData) => {
+    await mutation.mutateAsync(formData);
   };
 
-  if (!initialData) {
+  if (!data) {
     return <div>Loading...</div>;
   }
 
@@ -88,9 +91,11 @@ const EditForm: React.FC = () => {
           {errors.imageUrl && <p className="text-red-500 text-xs">{errors.imageUrl?.message}</p>}
         </div>
         <div className="grid gap-4">
-          <Button type="submit">Save</Button>
+          <Button type="submit" disabled={mutation.isPending}>
+            {mutation.isPending ? "Saving..." : "Save"}
+          </Button>
           <Button type="button" className="bg-neutral-800 hover:bg-neutral-800/40" onClick={handleCancel}>
-          Cancel
+            Cancel
           </Button>
         </div>
       </form>

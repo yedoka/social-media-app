@@ -1,22 +1,29 @@
-import React from 'react';
-import { useFetchPosts } from '@/hooks/useFetchPosts';
-import PostComponent from '@/components/post/Post';
+import React from "react";
+import { useFeedPosts } from "@/hooks/useFeedPosts";
+import PostComponent from "@/components/post/Post";
+import LoadingSpinner from "@/components/ui/spinner/LoadingSpinner";
+import ErrorMessage from "@/components/ui/spinner/ErrorMessage";
+import EmptyState from "@/components/ui/spinner/EmptyState";
 
 const Feed: React.FC = () => {
-  const { posts, loading, error, likePost, addComment } = useFetchPosts();
+  const { data: posts, isLoading, error } = useFeedPosts();
 
-  if (loading) return <div>Loading posts...</div>;
-  if (error) return <div>Error loading posts</div>;
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  if (error) {
+    return <ErrorMessage message={error.message || "Failed to load posts."} />;
+  }
+
+  if (!posts || posts.length === 0) {
+    return <EmptyState message="No posts available." />;
+  }
 
   return (
-    <div>
+    <div className="space-y-4">
       {posts.map((post) => (
-        <PostComponent
-          key={post.id}
-          post={post}
-          onLikePost={likePost}
-          onAddComment={addComment}
-        />
+        <PostComponent key={post.id} post={post} />
       ))}
     </div>
   );

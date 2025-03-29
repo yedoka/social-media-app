@@ -1,6 +1,6 @@
 import { arrayRemove, arrayUnion, collection, doc, DocumentReference, getDoc, getDocs, orderBy, query, setDoc, Timestamp, updateDoc } from "firebase/firestore";
 import { auth, db } from "@/services/api/config";
-import { Post, PostForm } from "@/types/post";
+import { Post } from "@/types/post";
 import type { User } from "@/types/user";
 
 export const postCollectionRef = collection(db, "posts")
@@ -43,7 +43,7 @@ export async function likePost(postId: string) {
   }
 }
 
-export const addComment = async (text: string, postId: string) => {
+export const addComment = async (postId: string, text: string) => {
   if (!auth.currentUser) throw new Error("User not auth")
   const author = doc(db, "users", auth.currentUser.uid);
   const postRef= doc(db, "posts", postId);
@@ -60,7 +60,7 @@ export const addComment = async (text: string, postId: string) => {
   }
 }
 
-export async function createPost(payload: PostForm): Promise<void> {
+export async function createPost(content: string, imageUrl: string ): Promise<void> {
   const firestoreTimestamp =  Timestamp.now();
   if (!auth.currentUser) {
     throw new Error("User not authenticated");
@@ -72,8 +72,8 @@ export async function createPost(payload: PostForm): Promise<void> {
   try {
     await setDoc(postRef, {
       authorID: authorRef,
-      content: payload.content,
-      imageUrl: payload.imageUrl,
+      content,
+      imageUrl,
       isLikedByUser: false,
       timestamp: firestoreTimestamp, 
       likes: [],

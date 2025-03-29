@@ -34,3 +34,13 @@ export const signIn = async (email: string, password: string) => {
 export const logout = async () => {
   return signOut(auth);
 };
+
+export const getToken = async () => {
+  const token = auth.currentUser?.getIdToken();
+
+  if (token) {
+    return token
+  } else {
+    return null
+  }
+}

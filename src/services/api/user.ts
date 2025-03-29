@@ -40,7 +40,6 @@ export const followUser= async (displayName: string) => {
       throw new Error("User not authenticated");
     }
 
-    // Find user by displayName
     const usersRef = collection(db, "users");
     const q = query(usersRef, where("displayName", "==", displayName));
     const querySnapshot = await getDocs(q);
@@ -53,7 +52,6 @@ export const followUser= async (displayName: string) => {
     const targetUserId = targetUser.id;
     const currentUserId = currentUser.uid;
 
-    // Check if trying to follow self
     if (currentUserId === targetUserId) {
       throw new Error("You cannot follow yourself");
     }
@@ -69,7 +67,7 @@ export const followUser= async (displayName: string) => {
     });
   } catch (err) {
     console.error("Error following user:", err);
-    throw err; // Re-throw to handle in the UI
+    throw err;
   }
 };
 
@@ -79,7 +77,6 @@ export const unfollowUser= async (displayName: string) => {
       throw new Error("User not authenticated");
     }
 
-    // Find user by displayName
     const usersRef = collection(db, "users");
     const q = query(usersRef, where("displayName", "==", displayName));
     const querySnapshot = await getDocs(q);
@@ -103,7 +100,7 @@ export const unfollowUser= async (displayName: string) => {
     });
   } catch (err) {
     console.error("Error unfollowing user:", err);
-    throw err; // Re-throw to handle in the UI
+    throw err;
   }
 };
 

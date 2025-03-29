@@ -3,8 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useCookies } from "react-cookie";
-import { signIn } from "@/services/api/auth";
-import { auth } from "@/services/api/config";
+import { getToken, signIn } from "@/services/api/auth";
 import { logIn } from "@/store/slices/auth";
 import Button from "@/components/ui/button/Button";
 import Input from "@/components/ui/input/Input";
@@ -39,9 +38,9 @@ const SignInForm = () => {
   const signInMutation = useMutation({
     mutationFn: (data: FormValues) => signIn(data.email, data.password),
     onSuccess: async () => {
-      const idToken = await auth.currentUser?.getIdToken();
-      if (idToken) {
-        setCookie("authToken", idToken, { path: "/", maxAge: 3600 });
+      const token = await getToken();
+      if (token) {
+        setCookie("authToken", token, { path: "/", maxAge: 3600 });
         dispatch(logIn());
         navigate("/");
       }

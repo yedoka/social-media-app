@@ -1,11 +1,11 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import Button from "@/components/ui/button/Button";
 import { logout } from "@/services/api/auth";
 import SearchBar from "@/components/searchBar/SearchBar";
 import { Newspaper, User, Edit3 } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { useCookies } from "react-cookie";
 import { logOut } from "@/store/slices/auth";
+import Button from "@/components/ui/button/Button";
 
 const SideBar = () => {
   const dispatch = useDispatch();
@@ -65,7 +65,7 @@ const SideBar = () => {
         </nav>
         <SearchBar />
       </div>
-      <Button onClick={logoutHandler} className="mt-4">Log out</Button>
+      <Button onClick={logoutHandler} className="bg-neutral-700 hover:bg-neutral-800">Log out</Button>
     </div>
   );
 };

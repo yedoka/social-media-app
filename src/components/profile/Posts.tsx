@@ -1,7 +1,4 @@
-import { useState, useEffect } from "react";
 import { User } from "@/types/user";
-import { Post } from "@/types/post";
-import { fetchUserPosts } from "@/services/api/posts";
 import {
   Dialog,
   DialogContent,
@@ -11,54 +8,40 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Link } from "react-router-dom";
+import { useProfilePosts } from "@/hooks/useProfilePosts";
 
-const Posts: React.FC<{ user: User }> = ({ user }) => {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+interface PostsProps {
+  user: User
+}
 
-  useEffect(() => {
-    const loadPosts = async () => {
-      if (!user.posts || user.posts.length === 0) {
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const fetchedPosts = await fetchUserPosts(user.posts);
-        setPosts(fetchedPosts);
-      } catch (err) {
-        console.error("Error fetching posts:", err);
-        setError("Failed to load posts");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadPosts();
-  }, [user.posts]);
-
-  if (loading) {
+const Posts: React.FC<PostsProps> = ({ user }) => {
+  const { data: posts , isLoading, isError, error } = useProfilePosts(user);
+  
+  if (isLoading) {
     return <div className="text-center py-4">Loading posts...</div>;
   }
 
-  if (error) {
-    return <div className="text-red-500 text-center py-4">{error}</div>;
+  if (isError) {
+    return (
+      <div className="text-red-500 text-center py-4">
+        {error.message || "Failed to load posts"}
+      </div>
+    );
   }
 
-  if (posts.length === 0) {
+  if (!posts || posts.length === 0) {
     return <div className="text-center py-4">No posts yet</div>;
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[768px]">
+    <div className="grid bg-accent-bg border border-dark-border rounded-md p-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[768px]">
       {posts.map((post) => (
-        <div key={post.id} className="bg-dark-bg aspect-square rounded-lg overflow-hidden">
+        <div key={post.id} className="aspect-square rounded-lg overflow-hidden">
           <Dialog>
             <DialogTrigger asChild>
               <img
                 src={post.imageUrl}
-                alt=""
+                alt={post.content}
                 className="w-full h-full object-cover"
               />
             </DialogTrigger>
