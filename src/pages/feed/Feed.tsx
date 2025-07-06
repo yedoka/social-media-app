@@ -1,32 +1,31 @@
-import React from "react";
-import { useFeedPosts } from "@/hooks/useFeedPosts";
-import PostComponent from "@/components/post/Post";
-import LoadingSpinner from "@/components/ui/spinner/LoadingSpinner";
-import ErrorMessage from "@/components/ui/spinner/ErrorMessage";
-import EmptyState from "@/components/ui/spinner/EmptyState";
+import { useEffect } from "react";
+import { usePost } from "@/hooks/usePost";
+import { Post } from "@/features/posts/ui/Post";
+import { Stack, Text } from "@chakra-ui/react";
+import { PostSkeleton } from "@/features/posts/ui/PostSkeleton";
+import { getPosts } from "@/services/api/posts";
 
-const Feed: React.FC = () => {
-  const { data: posts, isLoading, error } = useFeedPosts();
+export const Feed = () => {
+  const { data: posts, isLoading, error } = usePost();
+  useEffect(() => {
+    getPosts();
+  }, []);
 
   if (isLoading) {
-    return <LoadingSpinner />;
+    return (
+      <Stack w="full" align="center">
+        <PostSkeleton />
+      </Stack>
+    );
   }
-
-  if (error) {
-    return <ErrorMessage message={error.message || "Failed to load posts."} />;
-  }
-
-  if (!posts || posts.length === 0) {
-    return <EmptyState message="No posts available." />;
-  }
+  if (error) return <Text>Error occurred from feed</Text>;
+  if (!posts || posts.length === 0) return <Text>No posts available</Text>;
 
   return (
-    <div className="space-y-4">
+    <Stack w="full" align="center">
       {posts.map((post) => (
-        <PostComponent key={post.id} post={post} />
+        <Post key={post.id} post={post} />
       ))}
-    </div>
+    </Stack>
   );
 };
-
-export default Feed;

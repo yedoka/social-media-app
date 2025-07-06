@@ -14,16 +14,12 @@ export const checkFollowStatus = async (displayName: string) => {
   const q = query(usersRef, where("displayName", "==", displayName));
   const querySnapshot = await getDocs(q);
 
-  if (querySnapshot.empty) {
-    return false;
-  }
+  if (querySnapshot.empty) return false;
 
   const userDoc = querySnapshot.docs[0];
   const userData = userDoc.data() as User;
 
-  if (!userData.followers) {
-    return false;
-  }
+  if (!userData.followers) return false;
 
   const isFollower = (followerRef: User) => followerRef.id === currentUserId;
   return userData.followers.some(isFollower);
@@ -36,25 +32,19 @@ export const getAuthUser = () => {
 export const followUser= async (displayName: string) => {
   const currentUser = auth.currentUser;
   try {
-    if (!currentUser) {
-      throw new Error("User not authenticated");
-    }
+    if (!currentUser) throw new Error("User not authenticated");
 
     const usersRef = collection(db, "users");
     const q = query(usersRef, where("displayName", "==", displayName));
     const querySnapshot = await getDocs(q);
 
-    if (querySnapshot.empty) {
-      throw new Error("User not found");
-    }
+    if (querySnapshot.empty) throw new Error("User not found");
 
     const targetUser = querySnapshot.docs[0];
     const targetUserId = targetUser.id;
     const currentUserId = currentUser.uid;
 
-    if (currentUserId === targetUserId) {
-      throw new Error("You cannot follow yourself");
-    }
+    if (currentUserId === targetUserId) throw new Error("You cannot follow yourself");
 
     const userRef = doc(db, "users", targetUserId);
     const currentUserRef = doc(db, "users", currentUserId);
@@ -73,17 +63,13 @@ export const followUser= async (displayName: string) => {
 
 export const unfollowUser= async (displayName: string) => {
   try {
-    if (!auth.currentUser) {
-      throw new Error("User not authenticated");
-    }
+    if (!auth.currentUser) throw new Error("User not authenticated");
 
     const usersRef = collection(db, "users");
     const q = query(usersRef, where("displayName", "==", displayName));
     const querySnapshot = await getDocs(q);
 
-    if (querySnapshot.empty) {
-      throw new Error("User not found");
-    }
+    if (querySnapshot.empty) throw new Error("User not found");
 
     const targetUser = querySnapshot.docs[0];
     const targetUserId = targetUser.id;
@@ -107,17 +93,13 @@ export const unfollowUser= async (displayName: string) => {
 export const fetchCurrentLoggedUser = async () => {
   const currentUserId = auth.currentUser?.uid;
   
-  if (!currentUserId) {
-    return null;
-  }
+  if (!currentUserId) return null;
 
   try {
     const userRef = doc(db, "users", currentUserId);
     const docSnap = await getDoc(userRef);
     
-    if (!docSnap.exists()) {
-      return null;
-    }
+    if (!docSnap.exists()) return null;
 
     return docSnap.data() as User;
   } catch (err) {
@@ -127,11 +109,8 @@ export const fetchCurrentLoggedUser = async () => {
 }
 
 export const searchUsers = async (searchTerm: string): Promise<User[]> => {
-  
   const userRef = collection(db, "users");
-  
   const upperBound = searchTerm + '\uf8ff';
-  
   const q = query(
     userRef,
     where("displayName", ">=", searchTerm),
@@ -153,25 +132,12 @@ export const searchUsers = async (searchTerm: string): Promise<User[]> => {
 };
 
 export const fetchUserByUsername = async (displayName: string) => {
-  const userRef = collection(db, "users");
-  const q = query(userRef, where("displayName", "==", displayName));
-  const querySnapshot = await getDocs(q);
-
-  return querySnapshot.docs.map((doc) => {
-    const data  = doc.data() as User;
-    return { ...data, id: doc.id };
-  });
-};
-
-export const fetchUserByUsernameFunc = async (displayName: string) => {
   try {
     const usersRef = collection(db, "users");
     const q = query(usersRef, where("displayName", "==", displayName));
     const querySnapshot = await getDocs(q);
 
-    if (querySnapshot.empty) {
-      return null;
-    }
+    if (querySnapshot.empty) return null;
 
     const userDoc = querySnapshot.docs[0];
     return {

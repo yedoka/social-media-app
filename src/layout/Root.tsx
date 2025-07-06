@@ -1,16 +1,16 @@
 import { Outlet } from "react-router-dom";
-import SideBar from '@/components/core/sidebar/Sidebar';
-import { Toaster } from "@/components/ui/toaster";
+import { Sidebar } from "@/shared/ui/Sidebar";
+import { Toaster } from "@/shared/ui/toaster";
+import { Box, Flex } from "@chakra-ui/react";
 
-export default function RootLayout() {
-  
+export const RootLayout = () => {
   return (
-    <div className="flex text-primary-text h-full bg-dark-bg">
-      <SideBar />
-      <div className="mx-auto min-h-screen h-full">
+    <Flex>
+      <Sidebar />
+      <Box w="full">
         <Outlet />
         <Toaster />
-      </div>
-    </div>
+      </Box>
+    </Flex>
   );
-}
+};

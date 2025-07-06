@@ -1,32 +1,24 @@
-import EditForm from "@/components/profile/EditForm";
-import { RootState } from "@/store/store";
-import { useSelector } from "react-redux";
-import ProfileDetails from "@/components/profile/ProfileDetails";
-import LoadingSpinner from "@/components/ui/spinner/LoadingSpinner";
-import ErrorMessage from "@/components/ui/spinner/ErrorMessage";
-import { useProfile } from "@/hooks/useProfile";
+import { useProfileQuery } from "@/hooks/useProfileQuery";
+import { Text } from "@chakra-ui/react";
+import { EditForm } from "@/features/profile/ui/EditForm";
+import { ProfileDetails } from "@/features/profile/ui/ProfileDetails";
+import { useState } from "react";
 
-const Profile = () => {
-  const isEditing = useSelector((state: RootState) => state.editProfile.isEditing);
-  const { data, isLoading, isError, error } = useProfile();
+export const Profile = () => {
+  const { data, isLoading, error } = useProfileQuery();
+  const [isEditing, setEditing] = useState(false);
 
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
-
-  if (isError) {
-    return <ErrorMessage message="Failed to load user data. Please try again." />;
-  }
+  if (isLoading) return <Text>Loading...</Text>;
+  if (error) return <Text>Failed to load user data. Please try again.</Text>;
+  if (!data) return <Text>No user</Text>;
 
   return (
-    <section>
+    <>
       {isEditing ? (
-        <EditForm data={data} />
+        <EditForm data={data} onCancel={() => setEditing(false)} />
       ) : (
-        <ProfileDetails data={data} isLoading={isLoading} error={error} />
+        <ProfileDetails data={data} onEdit={() => setEditing(true)} />
       )}
-    </section>
+    </>
   );
 };
-
-export default Profile;
