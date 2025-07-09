@@ -1,10 +1,7 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { updateUserProfile } from "@/services/api/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EditFormSchema } from "@/features/auth/lib/validation";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { User } from "@/types/user";
-import { toaster } from "@/shared/ui/toaster";
+import { User } from "@/shared/types";
 import {
   Button,
   Container,
@@ -14,6 +11,8 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { useUpdateUserProfile } from "../api/useProfile";
+import { toast } from "react-toastify";
 
 interface FormValues {
   username: string;
@@ -26,7 +25,6 @@ interface EditFormProps {
 }
 
 export const EditForm = ({ data, onCancel }: EditFormProps) => {
-  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -39,31 +37,23 @@ export const EditForm = ({ data, onCancel }: EditFormProps) => {
     resolver: zodResolver(EditFormSchema),
     mode: "onSubmit",
   });
-
-  const mutation = useMutation({
-    mutationFn: (formData: FormValues) =>
-      updateUserProfile(formData.username, formData.imageUrl),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["currentUser"] });
-      queryClient.invalidateQueries({ queryKey: ["feedPosts"] });
-      toaster.create({
-        title: "Success",
-        description: "Profile updated successfully!",
-        type: "success",
-      });
-      onCancel();
-    },
-    onError: (error) => {
-      toaster.create({
-        title: `Error: ${error}`,
-        description: "Failed to update profile. Please try again.",
-        type: "error",
-      });
-    },
-  });
+  const { mutateAsync: updateUserProfile } = useUpdateUserProfile();
 
   const handleSave: SubmitHandler<FormValues> = async (formData) => {
-    await mutation.mutateAsync(formData);
+    try {
+      await updateUserProfile(formData);
+      toast.success("Profile updated successfully", {
+        position: "bottom-right",
+        theme: "dark",
+      });
+      onCancel();
+    } catch (error) {
+      console.error("Failed to update profile:", error);
+      toast.error("Failed to update profile. Please try again.", {
+        position: "bottom-right",
+        theme: "dark",
+      });
+    }
   };
 
   if (!data) {
@@ -101,9 +91,7 @@ export const EditForm = ({ data, onCancel }: EditFormProps) => {
               {errors.imageUrl && <Text>{errors.imageUrl?.message}</Text>}
             </Field.ErrorText>
           </Field.Root>
-          <Button type="submit" disabled={mutation.isPending}>
-            {mutation.isPending ? "Saving..." : "Save"}
-          </Button>
+          <Button type="submit">Save</Button>
           <Button type="button" variant="surface" onClick={onCancel}>
             Cancel
           </Button>

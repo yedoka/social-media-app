@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { Sidebar } from "@/shared/ui/Sidebar";
-import { Toaster } from "@/shared/ui/toaster";
 import { Box, Flex } from "@chakra-ui/react";
+import { ToastContainer } from "react-toastify";
 
 export const RootLayout = () => {
   return (
@@ -9,7 +9,7 @@ export const RootLayout = () => {
       <Sidebar />
       <Box w="full">
         <Outlet />
-        <Toaster />
+        <ToastContainer />
       </Box>
     </Flex>
   );
