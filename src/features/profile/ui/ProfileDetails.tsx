@@ -3,7 +3,7 @@ import { User } from "@/shared/types";
 import { Avatar, Button, Heading, HStack, Stack, Text } from "@chakra-ui/react";
 import { useToggleFollow } from "../api/useProfile";
 import { useFollowStatus } from "@/shared/api/useFollowStatus";
-import { auth } from "@/services/api/config";
+import { checkIsOwnProfile } from "../lib/checkIsOwnProfile";
 
 interface ProfileDetailsProps {
   userData: User;
@@ -11,11 +11,9 @@ interface ProfileDetailsProps {
 }
 
 export const ProfileDetails = ({ userData, onEdit }: ProfileDetailsProps) => {
-  const isOwnProfile = auth.currentUser?.displayName === userData.displayName;
+  const isOwnProfile = checkIsOwnProfile(userData.displayName);
   const { data: isFollowing } = useFollowStatus(userData.displayName);
-  const { mutateAsync: toggleFollowMutation } = useToggleFollow(
-    userData.displayName
-  );
+  const { mutateAsync: toggleFollow } = useToggleFollow(userData.displayName);
 
   return (
     <Stack w="full" align="center">
@@ -32,7 +30,7 @@ export const ProfileDetails = ({ userData, onEdit }: ProfileDetailsProps) => {
                 Edit profile
               </Button>
             ) : (
-              <Button onClick={() => toggleFollowMutation(!isFollowing)}>
+              <Button onClick={() => toggleFollow(!isFollowing)}>
                 {isFollowing ? "Unfollow" : "Follow"}
               </Button>
             )}
