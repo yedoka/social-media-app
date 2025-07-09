@@ -1,46 +1,50 @@
 import { Posts } from "@/features/profile/ui/ProfilePosts";
 import { User } from "@/shared/types";
 import { Avatar, Button, Heading, HStack, Stack, Text } from "@chakra-ui/react";
-import { useFollow } from "@/hooks/useFollow";
+import { useToggleFollow } from "../api/useProfile";
+import { useFollowStatus } from "@/shared/api/useFollowStatus";
+import { auth } from "@/services/api/config";
 
 interface ProfileDetailsProps {
-  data: User;
+  userData: User;
   onEdit?: () => void;
 }
 
-export const ProfileDetails = ({ data, onEdit }: ProfileDetailsProps) => {
-  const { isOwnProfile, isFollowing, toggleFollow } = useFollow(
-    data.displayName
+export const ProfileDetails = ({ userData, onEdit }: ProfileDetailsProps) => {
+  const isOwnProfile = auth.currentUser?.displayName === userData.displayName;
+  const { data: isFollowing } = useFollowStatus(userData.displayName);
+  const { mutateAsync: toggleFollowMutation } = useToggleFollow(
+    userData.displayName
   );
 
   return (
     <Stack w="full" align="center">
       <HStack gap={8} p={8}>
         <Avatar.Root size="2xl">
-          <Avatar.Image src={data.profilePicture} />
-          <Avatar.Fallback name={data.displayName} />
+          <Avatar.Image src={userData.profilePicture} />
+          <Avatar.Fallback name={userData.displayName} />
         </Avatar.Root>
         <Stack>
           <HStack justify="space-between">
-            <Heading>{data.displayName}</Heading>
+            <Heading>{userData.displayName}</Heading>
             {isOwnProfile ? (
               <Button variant="subtle" onClick={onEdit}>
                 Edit profile
               </Button>
             ) : (
-              <Button onClick={toggleFollow}>
+              <Button onClick={() => toggleFollowMutation(!isFollowing)}>
                 {isFollowing ? "Unfollow" : "Follow"}
               </Button>
             )}
           </HStack>
           <HStack fontSize="sm">
-            <Text>Posts: {data.posts.length}</Text>
-            <Text>Followers: {data.followers.length}</Text>
-            <Text>Following: {data.following.length}</Text>
+            <Text>Posts: {userData.posts.length}</Text>
+            <Text>Followers: {userData.followers.length}</Text>
+            <Text>Following: {userData.following.length}</Text>
           </HStack>
         </Stack>
       </HStack>
-      <Posts user={data} />
+      <Posts user={userData} />
     </Stack>
   );
 };

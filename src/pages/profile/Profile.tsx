@@ -1,4 +1,4 @@
-import { useProfileQuery } from "@/hooks/useProfileQuery";
+import { useProfileQuery } from "@/shared/api";
 import { Text } from "@chakra-ui/react";
 import { EditForm } from "@/features/profile/ui/ProfileEditForm";
 import { ProfileDetails } from "@/features/profile/ui/ProfileDetails";
@@ -17,7 +17,7 @@ export const Profile = () => {
       {isEditing ? (
         <EditForm data={data} onCancel={() => setEditing(false)} />
       ) : (
-        <ProfileDetails data={data} onEdit={() => setEditing(true)} />
+        <ProfileDetails userData={data} onEdit={() => setEditing(true)} />
       )}
     </>
   );

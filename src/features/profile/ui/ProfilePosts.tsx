@@ -13,7 +13,7 @@ import {
   Avatar,
   Text,
 } from "@chakra-ui/react";
-import { useProfilePosts } from "@/hooks/useProfilePosts";
+import { useProfilePosts } from "@/shared/api";
 import { Link } from "react-router-dom";
 import { Comments } from "@/features/posts/ui";
 
