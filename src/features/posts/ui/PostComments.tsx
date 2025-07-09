@@ -1,10 +1,10 @@
 import { Box, Text } from "@chakra-ui/react";
-import { Post } from "../types";
+import { TPost } from "@/shared/types";
 import { Comment } from "./PostComment";
 import { CommentInput } from "./PostCommentInput";
 
 interface PostComponentsProps {
-  post: Post;
+  post: TPost;
 }
 
 export const Comments = ({ post }: PostComponentsProps) => {

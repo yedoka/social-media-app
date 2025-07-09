@@ -1,4 +1,4 @@
-import { Posts } from "@/features/profile/ui/Posts";
+import { Posts } from "@/features/profile/ui/ProfilePosts";
 import { User } from "@/shared/types";
 import { Avatar, Button, Heading, HStack, Stack, Text } from "@chakra-ui/react";
 import { useFollow } from "@/hooks/useFollow";

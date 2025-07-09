@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Button, Group, Input } from "@chakra-ui/react";
 import { usePost } from "@/hooks/usePost";
-import { Post } from "../types";
+import { TPost } from "@/shared/types";
 
 interface PostCommentInputProps {
-  post: Post;
+  post: TPost;
 }
 
 export const CommentInput = ({ post }: PostCommentInputProps) => {

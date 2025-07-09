@@ -1,6 +1,6 @@
 import { useProfileQuery } from "@/hooks/useProfileQuery";
 import { Text } from "@chakra-ui/react";
-import { EditForm } from "@/features/profile/ui/EditForm";
+import { EditForm } from "@/features/profile/ui/ProfileEditForm";
 import { ProfileDetails } from "@/features/profile/ui/ProfileDetails";
 import { useState } from "react";
 

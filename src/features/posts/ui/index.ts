@@ -1,9 +1,9 @@
-export { Actions } from "./PostActions";
+export { PostActions } from "./PostActions";
 export { Comment } from "./PostComment";
 export { CommentInput } from "./PostCommentInput";
 export { Comments } from "./PostComments";
-export { Footer } from "./PostFooter";
-export { Header } from "./PostHeader";
+export { PostFooter } from "./PostFooter";
+export { PostHeader } from "./PostHeader";
 export { Post } from "./Post";
 export { PostDialog } from "./PostDialog";
 export { PostSkeleton } from "./PostSkeleton";
