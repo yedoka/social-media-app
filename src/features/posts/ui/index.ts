@@ -5,5 +5,4 @@ export { Comments } from "./PostComments";
 export { PostFooter } from "./PostFooter";
 export { PostHeader } from "./PostHeader";
 export { Post } from "./Post";
-export { PostDialog } from "./PostDialog";
 export { PostSkeleton } from "./PostSkeleton";

@@ -8,9 +8,14 @@ import {
   Spinner,
   Container,
   useBreakpointValue,
+  Dialog,
+  Portal,
+  Avatar,
+  Text,
 } from "@chakra-ui/react";
 import { useProfilePosts } from "@/hooks/useProfilePosts";
-import { PostDialog } from "@/features/posts/ui/PostDialog";
+import { Link } from "react-router-dom";
+import { Comments } from "@/features/posts/ui";
 
 interface PostsProps {
   user: User;
@@ -56,20 +61,71 @@ export const Posts = ({ user }: PostsProps) => {
       >
         {posts.map((post) => (
           <Box key={post.id} borderRadius="lg" overflow="hidden">
-            <PostDialog
-              post={post}
-              trigger={
-                <AspectRatio ratio={1}>
-                  <Image
-                    src={post.imageUrl}
-                    alt={post.content}
-                    objectFit="cover"
-                    transition="transform 0.3s"
-                    _hover={{ transform: "scale(1.05)", cursor: "pointer" }}
-                  />
-                </AspectRatio>
-              }
-            />
+            <Dialog.Root
+              size="xl"
+              placement="center"
+              motionPreset="slide-in-bottom"
+            >
+              <Dialog.Trigger asChild>
+                {
+                  <AspectRatio ratio={1}>
+                    <Image
+                      src={post.imageUrl}
+                      alt={post.content}
+                      objectFit="cover"
+                      transition="transform 0.3s"
+                      _hover={{ transform: "scale(1.05)", cursor: "pointer" }}
+                    />
+                  </AspectRatio>
+                }
+              </Dialog.Trigger>
+              <Portal>
+                <Dialog.Backdrop
+                  bg="blackAlpha.600"
+                  backdropFilter="blur(4px)"
+                />
+                <Dialog.Positioner>
+                  <Dialog.Content borderRadius="sm">
+                    <Flex>
+                      <Box bg="black">
+                        <Image
+                          src={post.imageUrl}
+                          alt="Post"
+                          objectFit="contain"
+                        />
+                      </Box>
+                      <Flex
+                        direction="column"
+                        p={4}
+                        overflow="hidden"
+                        justify="space-between"
+                      >
+                        <Box>
+                          <Flex
+                            align="center"
+                            pb={4}
+                            borderBottomWidth="1px"
+                            mb={4}
+                          >
+                            <Avatar.Root size="md" mr={3}>
+                              <Avatar.Image src={post.author.profilePicture} />
+                              <Avatar.Fallback name={post.author.displayName} />
+                            </Avatar.Root>
+                            <Link to={`/user/${post.author.displayName}`}>
+                              <Text fontWeight="bold">
+                                {post.author.displayName}
+                              </Text>
+                            </Link>
+                          </Flex>
+                          <Text>{post.content}</Text>
+                        </Box>
+                        <Comments post={post} />
+                      </Flex>
+                    </Flex>
+                  </Dialog.Content>
+                </Dialog.Positioner>
+              </Portal>
+            </Dialog.Root>
           </Box>
         ))}
       </Grid>

@@ -2,29 +2,26 @@ import { HStack, Avatar, Menu, Portal, Flex } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { Ellipsis } from "lucide-react";
 
-import { usePost } from "@/hooks/usePost";
-
-import type { TPost } from "@/shared/types";
+import { useDeletePost } from "../api/usePostActions";
 
 interface PostHeaderProps {
-  post: TPost;
+  author: {
+    displayName: string;
+    profilePicture: string;
+  };
+  postId: string;
 }
 
-export const PostHeader = ({ post }: PostHeaderProps) => {
-  const { handleDeletePost } = usePost();
+export const PostHeader = ({ author, postId }: PostHeaderProps) => {
+  const { mutateAsync: deletePost } = useDeletePost();
   return (
     <HStack px={4} justifyContent="space-between">
       <Flex alignItems="center" gap={4}>
         <Avatar.Root size="xs">
-          <Avatar.Image
-            src={post.author.profilePicture}
-            alt={post.author.displayName}
-          />
-          <Avatar.Fallback name={post.author.displayName} />
+          <Avatar.Image src={author.profilePicture} alt={author.displayName} />
+          <Avatar.Fallback name={author.displayName} />
         </Avatar.Root>
-        <Link to={`user/${post.author.displayName}`}>
-          {post.author.displayName}
-        </Link>
+        <Link to={`/user/${author.displayName}`}>{author.displayName}</Link>
       </Flex>
       <Menu.Root>
         <Menu.Trigger asChild>
@@ -36,7 +33,7 @@ export const PostHeader = ({ post }: PostHeaderProps) => {
               <Menu.Item
                 value="delete"
                 color="fg.error"
-                onClick={() => handleDeletePost(post.id)}
+                onClick={() => deletePost(postId)}
                 cursor="pointer"
               >
                 Delete...

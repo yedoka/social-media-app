@@ -1,23 +1,23 @@
 import { useState } from "react";
 import { Button, Group, Input } from "@chakra-ui/react";
-import { usePost } from "@/hooks/usePost";
 import { TPost } from "@/shared/types";
+import { useAddComment } from "../api/usePostActions";
 
 interface PostCommentInputProps {
   post: TPost;
 }
 
 export const CommentInput = ({ post }: PostCommentInputProps) => {
-  const [comment, setComment] = useState("");
-  const { handleAddComment } = usePost();
+  const [commentText, setCommentText] = useState("");
+  const { mutateAsync: addComment } = useAddComment();
 
   const onSubmit = async () => {
-    await handleAddComment(post.id, comment);
-    setComment("");
+    await addComment({ postId: post.id, text: commentText });
+    setCommentText("");
   };
 
   const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setComment(event.target.value);
+    setCommentText(event.target.value);
   };
 
   return (
@@ -26,7 +26,7 @@ export const CommentInput = ({ post }: PostCommentInputProps) => {
         id="text"
         type="text"
         placeholder="Your comment..."
-        value={comment}
+        value={commentText}
         onChange={handleCommentChange}
       />
       <Button onClick={onSubmit}>Post</Button>
