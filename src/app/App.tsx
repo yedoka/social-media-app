@@ -1,6 +1,8 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { routes } from "@/app/routes";
-import { AppProviders } from "@/app/AppProviders";
+
+import { routes } from "./routes";
+import { AppProviders } from "./AppProviders";
+
 import "@/app/index.css";
 
 export const App = () => {

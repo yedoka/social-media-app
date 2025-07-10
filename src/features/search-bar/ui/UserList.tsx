@@ -1,10 +1,12 @@
-import { User } from "@/types/user";
-import { Link } from "react-router-dom";
-import { Avatar, HStack, Popover, Portal, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
+import { Link } from "react-router-dom";
+import { Avatar, HStack, Popover, Portal, Text } from "@chakra-ui/react";
+
+import type { UserType } from "@/shared/types";
+
 interface UserListProps {
-  foundUsers: User[];
+  foundUsers: UserType[];
   onUserSelect: () => void;
 }
 

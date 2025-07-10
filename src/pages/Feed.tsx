@@ -25,7 +25,7 @@ export const Feed = () => {
         <Heading as="h2" size="xl" mt={6} mb={2}>
           Nothing to see here yet
         </Heading>
-        <Text color={"gray.500"}>
+        <Text color="gray.500">
           Follow other users or create your own posts to get started.
         </Text>
       </Box>

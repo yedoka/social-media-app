@@ -1,7 +1,8 @@
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import type { SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EditFormSchema } from "@/features/auth/lib/validation";
-import { User } from "@/shared/types";
+import { toast } from "react-toastify";
 import {
   Button,
   Container,
@@ -11,8 +12,10 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { useUpdateUserProfile } from "../api/useProfile";
-import { toast } from "react-toastify";
+
+import type { UserType } from "@/shared/types";
+
+import { useUpdateUserProfile } from "../api";
 
 interface FormValues {
   username: string;
@@ -20,7 +23,7 @@ interface FormValues {
 }
 
 interface EditFormProps {
-  data: User;
+  data: UserType;
   onCancel: () => void;
 }
 

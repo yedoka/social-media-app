@@ -2,7 +2,7 @@ import { HStack, Avatar, Menu, Portal, Flex } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { Ellipsis } from "lucide-react";
 
-import { useDeletePost } from "../api/usePostActions";
+import { useDeletePost } from "../api";
 
 interface PostHeaderProps {
   author: {

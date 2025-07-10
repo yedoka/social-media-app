@@ -1,4 +1,4 @@
-import { auth, db } from "@/services/api/config";
+import { auth, db } from "@/shared/config/config";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -34,7 +34,7 @@ export const signUp = async (
     }
 
     return { success: true, userCredential };
-  } catch (error: any) {
+  } catch (error: unknown) {
     return { success: false, message: error.message };
   }
 };
@@ -47,7 +47,7 @@ export const signIn = async (email: string, password: string) => {
       password
     );
     return { success: true, userCredential };
-  } catch (error: any) {
+  } catch (error: unknown) {
     return { success: false, message: error.message };
   }
 };

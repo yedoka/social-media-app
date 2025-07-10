@@ -11,7 +11,8 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Lock, Mail, User } from "lucide-react";
-import { useSignUp } from "../api/useAuth";
+
+import { useSignUp } from "../api";
 
 interface FormValues {
   email: string;

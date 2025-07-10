@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { UseFormReset } from "react-hook-form";
+import type { UseFormReset } from "react-hook-form";
 import { toast } from "react-toastify";
 
 import { createPost } from "@/services/api/posts";

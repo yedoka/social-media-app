@@ -1,6 +1,16 @@
-import { collection, query, where, getDocs, doc, updateDoc, getDoc, arrayUnion, arrayRemove } from "firebase/firestore";
-import { auth, db } from "@/services/api/config";
-import type { User } from "@/types/user";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  updateDoc,
+  getDoc,
+  arrayUnion,
+  arrayRemove,
+} from "firebase/firestore";
+import { auth, db } from "@/shared/config/config";
+import type { UserType } from "@/shared/types";
 import { updateProfile } from "firebase/auth";
 
 export const checkFollowStatus = async (displayName: string) => {
@@ -9,7 +19,7 @@ export const checkFollowStatus = async (displayName: string) => {
   }
 
   const currentUserId = auth.currentUser.uid;
-  
+
   const usersRef = collection(db, "users");
   const q = query(usersRef, where("displayName", "==", displayName));
   const querySnapshot = await getDocs(q);
@@ -17,19 +27,20 @@ export const checkFollowStatus = async (displayName: string) => {
   if (querySnapshot.empty) return false;
 
   const userDoc = querySnapshot.docs[0];
-  const userData = userDoc.data() as User;
+  const userData = userDoc.data() as UserType;
 
   if (!userData.followers) return false;
 
-  const isFollower = (followerRef: User) => followerRef.id === currentUserId;
+  const isFollower = (followerRef: UserType) =>
+    followerRef.id === currentUserId;
   return userData.followers.some(isFollower);
 };
 
 export const getAuthUser = () => {
   return auth.currentUser;
-}
+};
 
-export const followUser= async (displayName: string) => {
+export const followUser = async (displayName: string) => {
   const currentUser = auth.currentUser;
   try {
     if (!currentUser) throw new Error("User not authenticated");
@@ -44,7 +55,8 @@ export const followUser= async (displayName: string) => {
     const targetUserId = targetUser.id;
     const currentUserId = currentUser.uid;
 
-    if (currentUserId === targetUserId) throw new Error("You cannot follow yourself");
+    if (currentUserId === targetUserId)
+      throw new Error("You cannot follow yourself");
 
     const userRef = doc(db, "users", targetUserId);
     const currentUserRef = doc(db, "users", currentUserId);
@@ -61,7 +73,7 @@ export const followUser= async (displayName: string) => {
   }
 };
 
-export const unfollowUser= async (displayName: string) => {
+export const unfollowUser = async (displayName: string) => {
   try {
     if (!auth.currentUser) throw new Error("User not authenticated");
 
@@ -92,25 +104,25 @@ export const unfollowUser= async (displayName: string) => {
 
 export const fetchCurrentLoggedUser = async () => {
   const currentUserId = auth.currentUser?.uid;
-  
+
   if (!currentUserId) return null;
 
   try {
     const userRef = doc(db, "users", currentUserId);
     const docSnap = await getDoc(userRef);
-    
+
     if (!docSnap.exists()) return null;
 
-    return docSnap.data() as User;
+    return docSnap.data() as UserType;
   } catch (err) {
     console.error("Error fetching current user by Id:", err);
     throw err;
   }
-}
+};
 
-export const searchUsers = async (searchTerm: string): Promise<User[]> => {
+export const searchUsers = async (searchTerm: string): Promise<UserType[]> => {
   const userRef = collection(db, "users");
-  const upperBound = searchTerm + '\uf8ff';
+  const upperBound = searchTerm + "\uf8ff";
   const q = query(
     userRef,
     where("displayName", ">=", searchTerm),
@@ -119,10 +131,10 @@ export const searchUsers = async (searchTerm: string): Promise<User[]> => {
 
   try {
     const querySnapshot = await getDocs(q);
-    
-    const users: User[] = [];
+
+    const users: UserType[] = [];
     querySnapshot.forEach((doc) => {
-      users.push({ id: doc.id, ...doc.data() } as User);
+      users.push({ id: doc.id, ...doc.data() } as UserType);
     });
     return users;
   } catch (error) {
@@ -141,8 +153,8 @@ export const fetchUserByUsername = async (displayName: string) => {
 
     const userDoc = querySnapshot.docs[0];
     return {
-      ...userDoc.data() as User,
-      id: userDoc.id
+      ...(userDoc.data() as UserType),
+      id: userDoc.id,
     };
   } catch (err) {
     console.error("Error fetching user:", err);
@@ -150,7 +162,10 @@ export const fetchUserByUsername = async (displayName: string) => {
   }
 };
 
-export const updateUserProfile = async (newUsername: string, newProfilePicture: string): Promise<void> => {
+export const updateUserProfile = async (
+  newUsername: string,
+  newProfilePicture: string
+): Promise<void> => {
   if (auth.currentUser) {
     await updateProfile(auth.currentUser, {
       displayName: newUsername,

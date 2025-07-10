@@ -1,12 +1,14 @@
-import { Posts } from "@/features/profile/ui/ProfilePosts";
-import { User } from "@/shared/types";
 import { Avatar, Button, Heading, HStack, Stack, Text } from "@chakra-ui/react";
-import { useToggleFollow } from "../api/useProfile";
+
+import { Posts } from "@/features/profile/ui/ProfilePosts";
+import type { UserType } from "@/shared/types";
 import { useFollowStatus } from "@/shared/api/useFollowStatus";
-import { checkIsOwnProfile } from "../lib/checkIsOwnProfile";
+
+import { useToggleFollow } from "../api";
+import { checkIsOwnProfile } from "../lib";
 
 interface ProfileDetailsProps {
-  userData: User;
+  userData: UserType;
   onEdit?: () => void;
 }
 

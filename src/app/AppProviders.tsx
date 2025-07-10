@@ -1,6 +1,7 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { CookiesProvider } from "react-cookie";
+
 import { Provider as ChakraProvider } from "@/shared/ui/provider";
 
 interface AppProvidersProps {

@@ -11,13 +11,13 @@ import {
   Avatar,
 } from "@chakra-ui/react";
 
-import { TPost } from "@/shared/types";
+import type { PostType } from "@/shared/types";
 
-import { Comments } from "./PostComments";
-import { useLikePost } from "../api/usePostActions";
+import { PostComments } from "./PostComments";
+import { useLikePost } from "../api";
 
 interface PostActionsProps {
-  post: TPost;
+  post: PostType;
 }
 
 export const PostActions = ({ post }: PostActionsProps) => {
@@ -61,7 +61,7 @@ export const PostActions = ({ post }: PostActionsProps) => {
                     </Flex>
                     <Text>{post.content}</Text>
                   </Box>
-                  <Comments post={post} />
+                  <PostComments post={post} />
                 </Flex>
               </Flex>
             </Dialog.Content>

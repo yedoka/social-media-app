@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import type { SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-
 import { zodResolver } from "@hookform/resolvers/zod";
-
-import { loginSchema } from "@/features/auth/lib/validation";
+import { User, Lock, Eye, EyeClosed } from "lucide-react";
 import {
   Button,
   Field,
@@ -16,7 +15,9 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { User, Lock, Eye, EyeClosed } from "lucide-react";
+
+import { loginSchema } from "../lib";
+
 import { useLogin } from "../api";
 
 interface FormValues {

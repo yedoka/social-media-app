@@ -1,4 +1,4 @@
-import { ReactNode, ReactElement } from "react";
+import type { ReactNode, ReactElement } from "react";
 import { useCookies } from "react-cookie";
 import { Navigate } from "react-router-dom";
 

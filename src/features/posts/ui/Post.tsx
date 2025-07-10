@@ -1,11 +1,12 @@
 import { Image, Stack } from "@chakra-ui/react";
-import type { TPost } from "@/shared/types";
 
-import { PostHeader } from "@/features/posts/ui/PostHeader";
-import { PostFooter } from "@/features/posts/ui/PostFooter";
+import type { PostType } from "@/shared/types";
+
+import { PostFooter } from "./PostFooter";
+import { PostHeader } from "./PostHeader";
 
 interface PostProps {
-  post: TPost;
+  post: PostType;
 }
 
 export const Post = ({ post }: PostProps) => {

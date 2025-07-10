@@ -1,13 +1,15 @@
 import { useState } from "react";
-import { searchUsers } from "@/services/api/user";
-import { User } from "@/types/user";
-import { UserList } from "@/features/search-bar/UserList";
+
 import { Search } from "lucide-react";
 import { Input, InputGroup, Stack, Text } from "@chakra-ui/react";
 
+import { searchUsers } from "@/services/api";
+import type { UserType } from "@/shared/types";
+import { UserList } from "@/features/search-bar/ui/UserList";
+
 export const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [results, setResults] = useState<User[]>([]);
+  const [results, setResults] = useState<UserType[]>([]);
   const [userNotFound, setUserNotFound] = useState<boolean>(false);
 
   const handleChange = async (value: string) => {

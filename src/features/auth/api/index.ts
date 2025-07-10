@@ -1,1 +1,1 @@
-export { useLogin } from "./useAuth";
+export * from "./useAuth";

@@ -13,8 +13,8 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { auth, db } from "@/services/api/config";
-import type { TPost, User } from "@/shared/types";
+import { auth, db } from "@/shared/config/config";
+import type { PostType, UserType } from "@/shared/types";
 
 export const postsCollectionRef = collection(db, "posts");
 
@@ -103,14 +103,14 @@ export async function deletePost(postId: string): Promise<void> {
   }
 }
 
-function sortPostsByTimestampDesc(posts: TPost[]): TPost[] {
+function sortPostsByTimestampDesc(posts: PostType[]): PostType[] {
   return posts.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
 }
 
-export async function getPosts(): Promise<TPost[]> {
+export async function getPosts(): Promise<PostType[]> {
   const postQuery = query(collection(db, "posts"));
   const querySnapshot = await getDocs(postQuery);
-  const fetchedPosts: TPost[] = [];
+  const fetchedPosts: PostType[] = [];
   for (const docSnapshot of querySnapshot.docs) {
     const data = docSnapshot.data();
     const authorRef = data.author;
@@ -119,16 +119,19 @@ export async function getPosts(): Promise<TPost[]> {
       console.error("Author not found for post: ", docSnapshot.id);
       continue;
     }
-    const authorData = authorSnap.data() as User;
+    const authorData = authorSnap.data() as UserType;
     const comments = await Promise.all(
       (data.comments || []).map(
-        async (comment: { text: string; author: DocumentReference<User> }) => {
+        async (comment: {
+          text: string;
+          author: DocumentReference<UserType>;
+        }) => {
           const authorSnap = await getDoc(comment.author);
           if (!authorSnap.exists()) {
             console.warn("Author not found for comment");
             return null;
           }
-          const commentAuthorData = authorSnap.data() as User;
+          const commentAuthorData = authorSnap.data() as UserType;
           return {
             text: comment.text,
             author: {
@@ -140,17 +143,18 @@ export async function getPosts(): Promise<TPost[]> {
       )
     );
 
-    const post: TPost = {
+    const post: PostType = {
       id: docSnapshot.id,
       author: { ...authorData },
       content: data.content,
       imageUrl: data.imageUrl,
       isLikedByUser: data.isLikedByUser,
-      likes: data.likes.map((like: User) => ({
-        displayName: like.displayName,
-        email: like.email,
-        profilePicture: like.profilePicture,
-      })),
+      likes: await Promise.all(
+        (data.likes || []).map(async (likeRef: DocumentReference) => {
+          const likeSnap = await getDoc(likeRef);
+          return likeSnap.exists() ? (likeSnap.data() as UserType).id : null;
+        })
+      ).then((results) => results.filter(Boolean) as string[]),
       timestamp: new Date(data.timestamp.seconds * 1000),
       comments: comments.filter(Boolean),
     };
@@ -160,7 +164,7 @@ export async function getPosts(): Promise<TPost[]> {
   return sortPostsByTimestampDesc(fetchedPosts);
 }
 
-export async function getUserPosts(email: string): Promise<TPost[]> {
+export async function getUserPosts(email: string): Promise<PostType[]> {
   try {
     const userDocs = await getDocs(
       query(collection(db, "users"), where("email", "==", email))
@@ -176,16 +180,17 @@ export async function getUserPosts(email: string): Promise<TPost[]> {
     const posts = await Promise.all(
       postsSnapshot.docs.map(async (postDoc) => {
         const data = postDoc.data();
-        const authorData = userDocs.docs[0].data() as User;
+        const authorData = userDocs.docs[0].data() as UserType;
+        console.log(userDocs.docs[0].id);
         const comments = await Promise.all(
           (data.comments || []).map(
             async (comment: {
               text: string;
-              author: DocumentReference<User>;
+              author: DocumentReference<UserType>;
             }) => {
               const snap = await getDoc(comment.author);
               if (!snap.exists()) return null;
-              const commentAuthor = snap.data() as User;
+              const commentAuthor = snap.data() as UserType;
               return {
                 text: comment.text,
                 author: {
@@ -202,14 +207,17 @@ export async function getUserPosts(email: string): Promise<TPost[]> {
           content: data.content,
           imageUrl: data.imageUrl,
           isLikedByUser: data.isLikedByUser || false,
-          likes: (data.likes || []).map((like: User) => ({
-            displayName: like.displayName,
-            email: like.email,
-            profilePicture: like.profilePicture,
-          })),
+          likes: await Promise.all(
+            (data.likes || []).map(async (likeRef: DocumentReference) => {
+              const likeSnap = await getDoc(likeRef);
+              return likeSnap.exists()
+                ? (likeSnap.data() as UserType).id
+                : null;
+            })
+          ).then((results) => results.filter(Boolean) as string[]),
           timestamp: new Date(data.timestamp.seconds * 1000),
           comments: comments.filter(Boolean),
-        } as TPost;
+        } as PostType;
       })
     );
 

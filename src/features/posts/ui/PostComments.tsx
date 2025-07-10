@@ -1,13 +1,15 @@
 import { Box, Text } from "@chakra-ui/react";
-import { TPost } from "@/shared/types";
-import { Comment } from "./PostComment";
-import { CommentInput } from "./PostCommentInput";
+
+import type { PostType } from "@/shared/types";
+
+import { PostComment } from "./PostComment";
+import { PostCommentInput } from "./PostCommentInput";
 
 interface PostComponentsProps {
-  post: TPost;
+  post: PostType;
 }
 
-export const Comments = ({ post }: PostComponentsProps) => {
+export const PostComments = ({ post }: PostComponentsProps) => {
   return (
     <Box>
       <Text fontWeight="semibold" mb={2}>
@@ -16,9 +18,9 @@ export const Comments = ({ post }: PostComponentsProps) => {
       <Box maxH="300px" overflowY="auto" pr={2}>
         {post.comments.length !== 0 &&
           post.comments.map((comment) => (
-            <Comment key={comment.text} comment={comment} />
+            <PostComment key={comment.text} comment={comment} />
           ))}
-        <CommentInput post={post} />
+        <PostCommentInput post={post} />
       </Box>
     </Box>
   );

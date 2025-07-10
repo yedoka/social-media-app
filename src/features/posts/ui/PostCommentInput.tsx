@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { Button, Group, Input } from "@chakra-ui/react";
-import { TPost } from "@/shared/types";
-import { useAddComment } from "../api/usePostActions";
+
+import type { PostType } from "@/shared/types";
+
+import { useAddComment } from "../api";
 
 interface PostCommentInputProps {
-  post: TPost;
+  post: PostType;
 }
 
-export const CommentInput = ({ post }: PostCommentInputProps) => {
+export const PostCommentInput = ({ post }: PostCommentInputProps) => {
   const [commentText, setCommentText] = useState("");
   const { mutateAsync: addComment } = useAddComment();
 

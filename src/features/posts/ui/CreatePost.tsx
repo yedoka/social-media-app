@@ -11,8 +11,9 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import { useCreatePost } from "../api/usePostActions";
 import { Edit3 } from "lucide-react";
+
+import { useCreatePost } from "../api";
 
 interface FormValues {
   content: string;

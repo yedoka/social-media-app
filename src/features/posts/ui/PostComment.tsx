@@ -1,11 +1,11 @@
-import type { TComment } from "@/shared/types";
 import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
+import type { CommentType } from "@/shared/types";
 
 interface PostCommentProps {
-  comment: TComment;
+  comment: CommentType;
 }
 
-export const Comment = ({ comment }: PostCommentProps) => {
+export const PostComment = ({ comment }: PostCommentProps) => {
   return (
     <Flex key={comment.author.displayName} mb={3} align="start">
       <Avatar.Root size="sm" mr={2}>

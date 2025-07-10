@@ -1,7 +1,8 @@
 import { Outlet } from "react-router-dom";
-import { Sidebar } from "@/shared/ui/Sidebar";
 import { Box, Flex } from "@chakra-ui/react";
 import { ToastContainer } from "react-toastify";
+
+import { Sidebar } from "@/shared/ui/Sidebar";
 
 export const RootLayout = () => {
   return (

@@ -1,4 +1,3 @@
-import { User } from "@/shared/types";
 import {
   Box,
   Grid,
@@ -13,12 +12,14 @@ import {
   Avatar,
   Text,
 } from "@chakra-ui/react";
-import { useProfilePosts } from "@/shared/api";
 import { Link } from "react-router-dom";
-import { Comments } from "@/features/posts/ui";
+
+import type { UserType } from "@/shared/types";
+import { useProfilePosts } from "@/shared/api";
+import { PostComments } from "@/features/posts/ui";
 
 interface PostsProps {
-  user: User;
+  user: UserType;
 }
 
 export const Posts = ({ user }: PostsProps) => {
@@ -119,7 +120,7 @@ export const Posts = ({ user }: PostsProps) => {
                           </Flex>
                           <Text>{post.content}</Text>
                         </Box>
-                        <Comments post={post} />
+                        <PostComments post={post} />
                       </Flex>
                     </Flex>
                   </Dialog.Content>

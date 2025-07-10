@@ -1,11 +1,11 @@
 import { Stack, Text } from "@chakra-ui/react";
 
-import { PostActions } from "@/features/posts/ui/PostActions";
+import type { PostType } from "@/shared/types";
 
-import type { TPost } from "@/shared/types";
+import { PostActions } from "./PostActions";
 
 interface PostFooterProps {
-  post: TPost;
+  post: PostType;
 }
 
 export const PostFooter = ({ post }: PostFooterProps) => {

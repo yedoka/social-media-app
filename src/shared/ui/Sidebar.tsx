@@ -3,7 +3,7 @@ import { logout } from "@/services/api/auth";
 import { Newspaper, User, LogOutIcon } from "lucide-react";
 import { useCookies } from "react-cookie";
 import { Box, Button, HStack, Icon, List, Stack, Text } from "@chakra-ui/react";
-import { SearchBar } from "@/features/search-bar/SearchBar";
+import { SearchBar } from "@/features/search-bar/ui/SearchBar";
 import { CreatePost } from "@/features/posts/ui/CreatePost";
 
 export const Sidebar = () => {

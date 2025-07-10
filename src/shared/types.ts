@@ -1,25 +1,25 @@
-export type TPost = {
+export type PostType = {
   id: string;
-  author: User;
+  author: UserType;
   content: string;
   imageUrl: string;
   isLikedByUser: boolean;
   likes: string[];
   timestamp: Date;
-  comments: TComment[];
+  comments: CommentType[];
 };
 
-export type TComment = {
-  author: User;
+export type CommentType = {
+  author: UserType;
   text: string;
 };
 
-export type User = {
+export type UserType = {
   id: string;
   displayName: string;
   email: string;
   profilePicture: string;
-  followers: User[];
-  following: User[];
-  posts: TPost[];
+  followers: UserType[];
+  following: UserType[];
+  posts: PostType[];
 };

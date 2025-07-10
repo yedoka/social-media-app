@@ -1,10 +1,8 @@
-import { RootLayout } from "../layout/Root";
-
-import { Feed } from "@/pages/feed/Feed";
-import { Profile } from "@/pages/profile/Profile";
+import { RootLayout } from "@/layout/Root";
 import { ProtectedRoute } from "@/app/ProtectedRoute";
-import { User } from "@/pages/user/User";
-import { Auth } from "@/pages/auth/Auth";
+
+import { Feed, User, Profile, Auth } from "@/pages";
+import { AuthLayout } from "@/layout";
 
 const protectedRoutes = [
   {
@@ -32,6 +30,12 @@ export const routes = [
   },
   {
     path: "/auth",
-    element: <Auth />,
+    element: <AuthLayout />,
+    children: [
+      {
+        index: true,
+        element: <Auth />,
+      },
+    ],
   },
 ];

@@ -1,7 +1,7 @@
 export { PostActions } from "./PostActions";
-export { Comment } from "./PostComment";
-export { CommentInput } from "./PostCommentInput";
-export { Comments } from "./PostComments";
+export { PostComment } from "./PostComment";
+export { PostCommentInput } from "./PostCommentInput";
+export { PostComments } from "./PostComments";
 export { PostFooter } from "./PostFooter";
 export { PostHeader } from "./PostHeader";
 export { Post } from "./Post";
