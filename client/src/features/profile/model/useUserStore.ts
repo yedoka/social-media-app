@@ -1,16 +1,6 @@
 import apiClient from "@/services/api/apiClient";
-import type { UserType, PostType } from "@/shared/types";
+import type { UserType } from "@/shared/types";
 import { create } from "zustand";
-
-interface UserProfile {
-  user: UserType;
-  posts: PostType[];
-  stats: {
-    postsCount: number;
-    followersCount: number;
-    followingCount: number;
-  };
-}
 
 interface UpdateProfileData {
   name?: string;
@@ -19,8 +9,8 @@ interface UpdateProfileData {
 }
 
 interface UserStore {
-  currentUserProfile: UserProfile | null;
-  visitedUserProfile: UserProfile | null;
+  currentUserProfile: UserType | null;
+  visitedUserProfile: UserType | null;
   suggestedUsers: UserType[];
   searchResults: UserType[];
 
@@ -107,11 +97,10 @@ export const useUserStore = create<UserStore>((set, get) => ({
           return {
             visitedUserProfile: {
               ...state.visitedUserProfile,
-              stats: {
-                ...state.visitedUserProfile.stats,
-                followersCount:
-                  state.visitedUserProfile.stats.followersCount + 1,
-              },
+              followers: [
+                ...state.visitedUserProfile.followers,
+                state.currentUserProfile,
+              ] as UserType[],
             },
           };
         }
@@ -123,11 +112,10 @@ export const useUserStore = create<UserStore>((set, get) => ({
           return {
             currentUserProfile: {
               ...state.currentUserProfile,
-              stats: {
-                ...state.currentUserProfile.stats,
-                followingCount:
-                  state.currentUserProfile.stats.followingCount + 1,
-              },
+              following: [
+                ...state.currentUserProfile.following,
+                state.visitedUserProfile,
+              ] as UserType[],
             },
           };
         }
@@ -151,11 +139,11 @@ export const useUserStore = create<UserStore>((set, get) => ({
           return {
             visitedUserProfile: {
               ...state.visitedUserProfile,
-              stats: {
-                ...state.visitedUserProfile.stats,
-                followersCount:
-                  state.visitedUserProfile.stats.followersCount - 1,
-              },
+              followers: [
+                ...state.visitedUserProfile.followers.filter(
+                  (follower) => follower._id !== state.currentUserProfile?._id
+                ),
+              ],
             },
           };
         }
@@ -167,11 +155,11 @@ export const useUserStore = create<UserStore>((set, get) => ({
           return {
             currentUserProfile: {
               ...state.currentUserProfile,
-              stats: {
-                ...state.currentUserProfile.stats,
-                followingCount:
-                  state.currentUserProfile.stats.followingCount - 1,
-              },
+              following: [
+                ...state.currentUserProfile.following.filter(
+                  (followed) => followed._id !== userId
+                ),
+              ],
             },
           };
         }

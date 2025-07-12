@@ -23,9 +23,9 @@ export interface UserType {
   email: string;
   bio: string;
   avatar: string;
-  followers: string[] | UserType[]; // Can be populated or not
-  following: string[] | UserType[]; // Can be populated or not
-  posts: string[] | PostType[]; // Can be populated or not
+  followers: UserType[]; // Can be populated or not
+  following: UserType[]; // Can be populated or not
+  posts: PostType[]; // Can be populated or not
   createdAt: string; // ISO date string
   updatedAt: string; // ISO date string
 }
