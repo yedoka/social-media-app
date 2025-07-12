@@ -27,8 +27,8 @@ export const signupSchema = z
   });
 
 export const EditFormSchema = z.object({
-  username: z.string().nonempty("Username is required"),
-  imageUrl: z.string().nonempty("Image URL is required"),
+  name: z.string().nonempty("Username is required"),
+  avatar: z.string().nonempty("Image URL is required"),
 });
 
 export const CommentSchema = z.object({

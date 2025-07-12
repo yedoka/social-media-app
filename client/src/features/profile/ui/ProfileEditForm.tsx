@@ -14,12 +14,11 @@ import {
 } from "@chakra-ui/react";
 
 import type { UserType } from "@/shared/types";
-
-import { useUpdateUserProfile } from "../api";
+import { useUserStore } from "../model/useUserStore";
 
 interface FormValues {
-  username: string;
-  imageUrl: string;
+  name: string;
+  avatar: string;
 }
 
 interface EditFormProps {
@@ -34,17 +33,17 @@ export const EditForm = ({ data, onCancel }: EditFormProps) => {
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      username: data?.displayName || "",
-      imageUrl: data?.profilePicture || "",
+      name: data?.name || "",
+      avatar: data?.avatar || "",
     },
     resolver: zodResolver(EditFormSchema),
     mode: "onSubmit",
   });
-  const { mutateAsync: updateUserProfile } = useUpdateUserProfile();
+  const { updateProfile } = useUserStore();
 
   const handleSave: SubmitHandler<FormValues> = async (formData) => {
     try {
-      await updateUserProfile(formData);
+      await updateProfile(formData);
       toast.success("Profile updated successfully", {
         position: "bottom-right",
         theme: "dark",
@@ -68,30 +67,30 @@ export const EditForm = ({ data, onCancel }: EditFormProps) => {
       <Heading>Edit profile</Heading>
       <form onSubmit={handleSubmit(handleSave)}>
         <Stack gap={4}>
-          <Field.Root invalid={!!errors.username}>
-            <Field.Label>Username</Field.Label>
+          <Field.Root invalid={!!errors.name}>
+            <Field.Label>name</Field.Label>
             <Input
-              id="username"
+              id="name"
               type="text"
-              placeholder="New username"
-              {...register("username")}
+              placeholder="New name"
+              {...register("name")}
             />
             <Field.ErrorText>
-              {errors.username && <Text>{errors.username?.message}</Text>}
+              {errors.name && <Text>{errors.name?.message}</Text>}
             </Field.ErrorText>
           </Field.Root>
 
-          <Field.Root invalid={!!errors.imageUrl}>
+          <Field.Root invalid={!!errors.avatar}>
             <Field.Label>Image URL</Field.Label>
             <Input
-              id="imageUrl"
+              id="avatar"
               type="text"
               placeholder="Image URL"
-              {...register("imageUrl")}
+              {...register("avatar")}
             />
 
             <Field.ErrorText>
-              {errors.imageUrl && <Text>{errors.imageUrl?.message}</Text>}
+              {errors.avatar && <Text>{errors.avatar?.message}</Text>}
             </Field.ErrorText>
           </Field.Root>
           <Button type="submit">Save</Button>

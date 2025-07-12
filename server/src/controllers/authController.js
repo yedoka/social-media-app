@@ -2,6 +2,8 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const { generateToken } = require("../lib/utils");
 
+// @desc    Register a new user
+// @route   POST /api/auth/register
 exports.registerUser = async (req, res) => {
   const { name, email, password } = req.body;
   try {
@@ -89,6 +91,8 @@ exports.logoutUser = (req, res) => {
   }
 };
 
+// @desc    Check if user is authenticated
+// @route   GET /api/auth/check
 exports.checkAuth = (req, res) => {
   try {
     res.status(200).json(req.user);

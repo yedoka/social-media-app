@@ -15,17 +15,21 @@ import {
 import { Link } from "react-router-dom";
 
 import type { UserType } from "@/shared/types";
-import { useProfilePosts } from "@/shared/api";
 import { PostComments } from "@/features/posts/ui";
+import { useUserStore } from "../model/useUserStore";
 
 interface PostsProps {
   user: UserType;
 }
 
 export const Posts = ({ user }: PostsProps) => {
-  const { data: posts, isLoading, isError, error } = useProfilePosts(user);
-
   const columns = useBreakpointValue({ base: 1, sm: 2, md: 3 });
+  const { posts, isLoading, isError, error } = useUserStore((state) => ({
+    posts: state.visitedUserProfile?.posts || [],
+    isLoading: state.isLoadingProfile,
+    isError: !!state.error,
+    error: state.error,
+  }));
 
   if (isLoading) {
     return (
@@ -38,7 +42,7 @@ export const Posts = ({ user }: PostsProps) => {
   if (isError) {
     return (
       <Box textAlign="center" py={8} color="red.500">
-        {error.message || "Failed to load posts"}
+        {error || "Failed to load posts"}
       </Box>
     );
   }
@@ -61,7 +65,7 @@ export const Posts = ({ user }: PostsProps) => {
         pt={8}
       >
         {posts.map((post) => (
-          <Box key={post.id} borderRadius="lg" overflow="hidden">
+          <Box key={post._id} borderRadius="lg" overflow="hidden">
             <Dialog.Root
               size="xl"
               placement="center"
@@ -71,8 +75,8 @@ export const Posts = ({ user }: PostsProps) => {
                 {
                   <AspectRatio ratio={1}>
                     <Image
-                      src={post.imageUrl}
-                      alt={post.content}
+                      src={post.image}
+                      alt={post.text}
                       objectFit="cover"
                       transition="transform 0.3s"
                       _hover={{ transform: "scale(1.05)", cursor: "pointer" }}
@@ -90,7 +94,7 @@ export const Posts = ({ user }: PostsProps) => {
                     <Flex>
                       <Box bg="black">
                         <Image
-                          src={post.imageUrl}
+                          src={post.image}
                           alt="Post"
                           objectFit="contain"
                         />
@@ -109,16 +113,14 @@ export const Posts = ({ user }: PostsProps) => {
                             mb={4}
                           >
                             <Avatar.Root size="md" mr={3}>
-                              <Avatar.Image src={post.author.profilePicture} />
-                              <Avatar.Fallback name={post.author.displayName} />
+                              <Avatar.Image src={post.user.avatar} />
+                              <Avatar.Fallback name={post.user.name} />
                             </Avatar.Root>
-                            <Link to={`/user/${post.author.displayName}`}>
-                              <Text fontWeight="bold">
-                                {post.author.displayName}
-                              </Text>
+                            <Link to={`/user/${post.user.name}`}>
+                              <Text fontWeight="bold">{post.user.name}</Text>
                             </Link>
                           </Flex>
-                          <Text>{post.content}</Text>
+                          <Text>{post.text}</Text>
                         </Box>
                         <PostComments post={post} />
                       </Flex>

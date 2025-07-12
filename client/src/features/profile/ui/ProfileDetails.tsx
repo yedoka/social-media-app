@@ -2,10 +2,7 @@ import { Avatar, Button, Heading, HStack, Stack, Text } from "@chakra-ui/react";
 
 import { Posts } from "@/features/profile/ui/ProfilePosts";
 import type { UserType } from "@/shared/types";
-import { useFollowStatus } from "@/shared/api/useFollowStatus";
-
-import { useToggleFollow } from "../api";
-import { checkIsOwnProfile } from "../lib";
+import { useUserStore } from "../model/useUserStore";
 
 interface ProfileDetailsProps {
   userData: UserType;
@@ -13,27 +10,48 @@ interface ProfileDetailsProps {
 }
 
 export const ProfileDetails = ({ userData, onEdit }: ProfileDetailsProps) => {
-  const isOwnProfile = checkIsOwnProfile(userData.displayName);
-  const { data: isFollowing } = useFollowStatus(userData.displayName);
-  const { mutateAsync: toggleFollow } = useToggleFollow(userData.displayName);
+  const {
+    currentUserProfile,
+    visitedUserProfile,
+    followUser,
+    unfollowUser,
+    isFollowingUser,
+  } = useUserStore();
+
+  const isOwnProfile = currentUserProfile?.user._id === userData._id;
+
+  const isFollowing = () => {
+    if (!visitedUserProfile || !currentUserProfile) return false;
+    return visitedUserProfile.stats.followersCount > 0;
+  };
+
+  const toggleFollow = async () => {
+    if (!userData) return;
+
+    if (isFollowing()) {
+      await unfollowUser(userData._id);
+    } else {
+      await followUser(userData._id);
+    }
+  };
 
   return (
     <Stack w="full" align="center">
       <HStack gap={8} p={8}>
         <Avatar.Root size="2xl">
-          <Avatar.Image src={userData.profilePicture} />
-          <Avatar.Fallback name={userData.displayName} />
+          <Avatar.Image src={userData.avatar} />
+          <Avatar.Fallback name={userData.name} />
         </Avatar.Root>
         <Stack>
           <HStack justify="space-between">
-            <Heading>{userData.displayName}</Heading>
+            <Heading>{userData.name}</Heading>
             {isOwnProfile ? (
               <Button variant="subtle" onClick={onEdit}>
                 Edit profile
               </Button>
             ) : (
-              <Button onClick={() => toggleFollow(!isFollowing)}>
-                {isFollowing ? "Unfollow" : "Follow"}
+              <Button onClick={() => toggleFollow()}>
+                {isFollowing() ? "Unfollow" : "Follow"}
               </Button>
             )}
           </HStack>
