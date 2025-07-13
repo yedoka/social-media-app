@@ -4,22 +4,25 @@ import { Ellipsis } from "lucide-react";
 
 import type { UserType } from "@/shared/types";
 import { usePostStore } from "../model/usePostStore";
+import { useAuthStore } from "@/features/auth/model/useAuthStore";
 
 interface PostHeaderProps {
-  author: UserType;
+  user: UserType;
   postId: string;
 }
 
-export const PostHeader = ({ author, postId }: PostHeaderProps) => {
+export const PostHeader = ({ user, postId }: PostHeaderProps) => {
   const { deletePost } = usePostStore();
+  const isOwnPost = user._id === useAuthStore.getState().authUser?._id;
+
   return (
     <HStack px={4} justifyContent="space-between">
       <Flex alignItems="center" gap={4}>
         <Avatar.Root size="xs">
-          <Avatar.Image src={author.avatar} alt={author.name} />
-          <Avatar.Fallback name={author.name} />
+          <Avatar.Image src={user.avatar} alt={user.name} />
+          <Avatar.Fallback name={user.name} />
         </Avatar.Root>
-        <Link to={`/user/${author.name}`}>{author.name}</Link>
+        <Link to={`/user/${user.name}`}>{user.name}</Link>
       </Flex>
       <Menu.Root>
         <Menu.Trigger asChild>
@@ -28,14 +31,16 @@ export const PostHeader = ({ author, postId }: PostHeaderProps) => {
         <Portal>
           <Menu.Positioner>
             <Menu.Content>
-              <Menu.Item
-                value="delete"
-                color="fg.error"
-                onClick={() => deletePost(postId)}
-                cursor="pointer"
-              >
-                Delete
-              </Menu.Item>
+              {isOwnPost && (
+                <Menu.Item
+                  value="delete"
+                  color="fg.error"
+                  onClick={() => deletePost(postId)}
+                  cursor="pointer"
+                >
+                  Delete
+                </Menu.Item>
+              )}
             </Menu.Content>
           </Menu.Positioner>
         </Portal>

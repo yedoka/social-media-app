@@ -74,7 +74,7 @@ export const usePostStore = create<PostStore>((set, get) => ({
       const res = await apiClient.put(`/posts/like/${postId}`);
       set((state) => ({
         posts: state.posts.map((post) =>
-          post._id === postId ? res.data : post
+          post._id === postId ? { ...post, ...res.data } : post
         ),
       }));
     } catch (error) {
@@ -87,7 +87,7 @@ export const usePostStore = create<PostStore>((set, get) => ({
       const res = await apiClient.put(`/posts/unlike/${postId}`);
       set((state) => ({
         posts: state.posts.map((post) =>
-          post._id === postId ? res.data : post
+          post._id === postId ? { ...post, ...res.data } : post
         ),
       }));
     } catch (error) {

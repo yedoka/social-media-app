@@ -20,7 +20,7 @@ export const Post = ({ post }: PostProps) => {
       py="4"
       mb="4"
     >
-      <PostHeader author={post.user} postId={post._id} />
+      <PostHeader user={post.user} postId={post._id} />
       <Image src={post.image} alt={post.text} loading="lazy" w="lg" h="lg" />
       <PostFooter post={post} />
     </Stack>

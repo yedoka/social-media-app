@@ -39,6 +39,7 @@ exports.getPosts = async (req, res) => {
     const posts = await Post.find()
       .populate("user")
       .populate("comments.user")
+      .populate("likes")
       .sort({ createdAt: -1 });
 
     res.json(posts);
@@ -101,7 +102,10 @@ exports.deletePost = async (req, res) => {
 // @route   PUT /api/posts/like/:id
 exports.likePost = async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findById(req.params.id).populate(
+      "user",
+      "name avatar"
+    );
 
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
@@ -126,7 +130,10 @@ exports.likePost = async (req, res) => {
 // @route   PUT /api/posts/unlike/:id
 exports.unlikePost = async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findById(req.params.id).populate(
+      "user",
+      "name avatar"
+    );
 
     if (!post) {
       return res.status(404).json({ message: "Post not found" });

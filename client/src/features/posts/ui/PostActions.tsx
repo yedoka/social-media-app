@@ -14,9 +14,9 @@ import {
 import type { PostType } from "@/shared/types";
 
 import { PostComments } from "./PostComments";
-import { isPostLikedByUser, getLikesCount } from "../lib";
 import { useAuthStore } from "@/features/auth/model/useAuthStore";
 import { usePostStore } from "../model/usePostStore";
+import { checkIsLikedByUser } from "../lib";
 
 interface PostActionsProps {
   post: PostType;
@@ -26,16 +26,20 @@ export const PostActions = ({ post }: PostActionsProps) => {
   const { likePost, unlikePost } = usePostStore();
   const { authUser } = useAuthStore();
 
-  const isLikedByUser = authUser
-    ? isPostLikedByUser(post, authUser._id)
-    : false;
+  const isLikedByUser = checkIsLikedByUser(post.likes, authUser?._id || "");
 
-  const likesCount = getLikesCount(post);
+  const handlePostLike = (postId: string) => {
+    if (isLikedByUser) {
+      unlikePost(postId);
+    } else {
+      likePost(postId);
+    }
+  };
 
   return (
     <HStack>
       <Heart
-        onClick={() => likePost(post._id)}
+        onClick={() => handlePostLike(post._id)}
         fill={isLikedByUser ? "red" : "none"}
         size={20}
         cursor="pointer"
