@@ -22,12 +22,11 @@ interface PostsProps {
   user: UserType;
 }
 
-export const Posts = ({ user }: PostsProps) => {
+export const ProfilePosts = ({ user }: PostsProps) => {
   const columns = useBreakpointValue({ base: 1, sm: 2, md: 3 });
   const isLoading = useUserStore((state) => state.isLoadingProfile);
   const isError = useUserStore((state) => !!state.error);
   const error = useUserStore((state) => state.error);
-  console.log(user.posts);
 
   if (isLoading) {
     return (

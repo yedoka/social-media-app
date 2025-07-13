@@ -40,9 +40,26 @@ exports.getUserProfile = async (req, res) => {
 exports.getCurrentUserProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id)
-      .populate("followers", "name avatar")
-      .populate("following", "name avatar")
-      .populate("posts")
+      .populate("followers")
+      .populate("following")
+      .populate({
+        path: "posts",
+        populate: [
+          {
+            path: "user",
+            select: "name avatar",
+          },
+          {
+            path: "comments.user",
+            select: "name avatar",
+          },
+          {
+            path: "likes",
+            select: "name avatar",
+          },
+        ],
+        options: { sort: { createdAt: -1 } },
+      })
       .select("-password");
 
     if (!user) {

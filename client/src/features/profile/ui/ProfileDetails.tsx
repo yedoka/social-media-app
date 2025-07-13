@@ -1,6 +1,6 @@
 import { Avatar, Button, Heading, HStack, Stack, Text } from "@chakra-ui/react";
 
-import { Posts } from "@/features/profile/ui/ProfilePosts";
+import { ProfilePosts } from "@/features/profile/ui/ProfilePosts";
 import type { UserType } from "@/shared/types";
 import { useUserStore } from "../model/useUserStore";
 
@@ -57,7 +57,7 @@ export const ProfileDetails = ({ userData, onEdit }: ProfileDetailsProps) => {
           </HStack>
         </Stack>
       </HStack>
-      <Posts user={userData} />
+      <ProfilePosts user={userData} />
     </Stack>
   );
 };
