@@ -24,12 +24,10 @@ interface PostsProps {
 
 export const Posts = ({ user }: PostsProps) => {
   const columns = useBreakpointValue({ base: 1, sm: 2, md: 3 });
-  const { posts, isLoading, isError, error } = useUserStore((state) => ({
-    posts: state.visitedUserProfile?.posts || [],
-    isLoading: state.isLoadingProfile,
-    isError: !!state.error,
-    error: state.error,
-  }));
+  const isLoading = useUserStore((state) => state.isLoadingProfile);
+  const isError = useUserStore((state) => !!state.error);
+  const error = useUserStore((state) => state.error);
+  console.log(user.posts);
 
   if (isLoading) {
     return (
@@ -47,7 +45,7 @@ export const Posts = ({ user }: PostsProps) => {
     );
   }
 
-  if (!posts || posts.length === 0) {
+  if (!user.posts || user.posts.length === 0) {
     return (
       <Box textAlign="center" py={8} color="gray.500">
         No posts yet
@@ -64,7 +62,7 @@ export const Posts = ({ user }: PostsProps) => {
         borderTopWidth="1px"
         pt={8}
       >
-        {posts.map((post) => (
+        {user.posts.map((post) => (
           <Box key={post._id} borderRadius="lg" overflow="hidden">
             <Dialog.Root
               size="xl"

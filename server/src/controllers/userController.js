@@ -42,27 +42,13 @@ exports.getCurrentUserProfile = async (req, res) => {
     const user = await User.findById(req.user.id)
       .populate("followers", "name avatar")
       .populate("following", "name avatar")
+      .populate("posts")
       .select("-password");
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-
-    const posts = await Post.find({ user: req.user.id })
-      .populate("user", "name avatar")
-      .populate("likes", "name avatar")
-      .populate("comments.user", "name avatar")
-      .sort({ createdAt: -1 });
-
-    res.json({
-      user,
-      posts,
-      stats: {
-        postsCount: posts.length,
-        followersCount: user.followers.length,
-        followingCount: user.following.length,
-      },
-    });
+    res.json(user);
   } catch (error) {
     console.error("Error in getCurrentUserProfile:", error.message);
     res.status(500).json({ message: "Internal Server Error" });

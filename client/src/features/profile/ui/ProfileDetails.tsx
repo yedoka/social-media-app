@@ -10,19 +10,14 @@ interface ProfileDetailsProps {
 }
 
 export const ProfileDetails = ({ userData, onEdit }: ProfileDetailsProps) => {
-  const {
-    currentUserProfile,
-    visitedUserProfile,
-    followUser,
-    unfollowUser,
-    isFollowingUser,
-  } = useUserStore();
+  const { currentUserProfile, visitedUserProfile, followUser, unfollowUser } =
+    useUserStore();
 
-  const isOwnProfile = currentUserProfile?.user._id === userData._id;
+  const isOwnProfile = currentUserProfile?._id === userData._id;
 
   const isFollowing = () => {
     if (!visitedUserProfile || !currentUserProfile) return false;
-    return visitedUserProfile.stats.followersCount > 0;
+    return visitedUserProfile?.followers.length > 0;
   };
 
   const toggleFollow = async () => {

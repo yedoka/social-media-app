@@ -46,7 +46,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
   getCurrentUserProfile: async () => {
     try {
       set({ isLoadingProfile: true, error: null });
-      const res = await apiClient.get("/users/me");
+      const res = await apiClient.get("/user/me");
       set({ currentUserProfile: res.data });
     } catch (error) {
       console.error("Error fetching current user profile:", error);
@@ -59,7 +59,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
   getUserProfile: async (userId: string) => {
     try {
       set({ isLoadingProfile: true, error: null });
-      const res = await apiClient.get(`/users/profile/${userId}`);
+      const res = await apiClient.get(`/user/profile/${userId}`);
       set({ visitedUserProfile: res.data });
     } catch (error) {
       console.error("Error fetching user profile:", error);
@@ -72,7 +72,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
   updateProfile: async (data: UpdateProfileData) => {
     try {
       set({ isUpdatingProfile: true, error: null });
-      const res = await apiClient.put("/users/profile", data);
+      const res = await apiClient.put("/user/profile", data);
 
       set((state) => ({
         currentUserProfile: state.currentUserProfile
@@ -90,7 +90,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
   followUser: async (userId: string) => {
     try {
       set({ isFollowingUser: true, error: null });
-      await apiClient.put(`/users/follow/${userId}`);
+      await apiClient.put(`/user/follow/${userId}`);
 
       set((state) => {
         if (state.visitedUserProfile) {
@@ -132,7 +132,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
   unfollowUser: async (userId: string) => {
     try {
       set({ isFollowingUser: true, error: null });
-      await apiClient.put(`/users/unfollow/${userId}`);
+      await apiClient.put(`/user/unfollow/${userId}`);
 
       set((state) => {
         if (state.visitedUserProfile) {
@@ -181,7 +181,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
 
     try {
       set({ isLoadingSearch: true, error: null });
-      const res = await apiClient.get("/users/search", { params: { query } });
+      const res = await apiClient.get("/user/search", { params: { query } });
       set({ searchResults: res.data });
     } catch (error) {
       console.error("Error searching users:", error);
@@ -194,7 +194,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
   getSuggestedUsers: async () => {
     try {
       set({ error: null });
-      const res = await apiClient.get("/users/suggestions");
+      const res = await apiClient.get("/user/suggestions");
       set({ suggestedUsers: res.data });
     } catch (error) {
       console.error("Error fetching suggested users:", error);

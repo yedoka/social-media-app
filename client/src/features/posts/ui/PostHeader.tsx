@@ -34,7 +34,7 @@ export const PostHeader = ({ author, postId }: PostHeaderProps) => {
                 onClick={() => deletePost(postId)}
                 cursor="pointer"
               >
-                Delete...
+                Delete
               </Menu.Item>
             </Menu.Content>
           </Menu.Positioner>
