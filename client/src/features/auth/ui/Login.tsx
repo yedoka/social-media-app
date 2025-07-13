@@ -2,7 +2,6 @@ import { useState } from "react";
 
 import { useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { User, Lock, Eye, EyeClosed } from "lucide-react";
 import {
@@ -25,7 +24,7 @@ interface FormValues {
 }
 
 export const Login = () => {
-  const { register, handleSubmit } = useForm<FormValues>({
+  const { register, handleSubmit, reset } = useForm<FormValues>({
     defaultValues: {
       email: "",
       password: "",
@@ -36,11 +35,10 @@ export const Login = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const { logIn, isPending } = useAuthStore();
-  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     logIn(data);
-    navigate("/");
+    reset();
   };
 
   return (

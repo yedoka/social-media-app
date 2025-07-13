@@ -1,6 +1,8 @@
+import { create } from "zustand";
 import apiClient from "@/services/api/apiClient";
 import type { UserType } from "@/shared/types";
-import { create } from "zustand";
+import { toast } from "react-toastify";
+import type { AxiosError } from "axios";
 
 interface LoginData {
   email: string;
@@ -46,8 +48,11 @@ export const useAuthStore = create<AuthUserStore>((set) => ({
       const res = await apiClient.post("/auth/login", data);
       set({ authUser: res.data });
     } catch (error) {
-      console.error("Error during login:", error);
-      throw error;
+      const err = error as AxiosError<{ message: string }>;
+      toast.error(err.response?.data?.message, {
+        theme: "dark",
+        position: "top-center",
+      });
     } finally {
       set({ isPending: false });
     }
@@ -58,8 +63,11 @@ export const useAuthStore = create<AuthUserStore>((set) => ({
       const res = await apiClient.post("/auth/register", data);
       set({ authUser: res.data });
     } catch (error) {
-      console.error("Error during registration:", error);
-      throw error;
+      const err = error as AxiosError<{ message: string }>;
+      toast.error(err.response?.data?.message, {
+        theme: "dark",
+        position: "top-center",
+      });
     } finally {
       set({ isPending: false });
     }
@@ -69,7 +77,11 @@ export const useAuthStore = create<AuthUserStore>((set) => ({
       await apiClient.post("/auth/logout");
       set({ authUser: null });
     } catch (error) {
-      console.error("Error during logout:", error);
+      const err = error as AxiosError<{ message: string }>;
+      toast.error(err.response?.data?.message, {
+        theme: "dark",
+        position: "top-center",
+      });
     }
   },
 }));
