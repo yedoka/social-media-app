@@ -16,7 +16,6 @@ import { Link } from "react-router-dom";
 
 import type { UserType } from "@/shared/types";
 import { PostComments } from "@/features/posts/ui";
-import { useUserStore } from "../model/useUserStore";
 
 interface PostsProps {
   user: UserType;
@@ -24,25 +23,6 @@ interface PostsProps {
 
 export const ProfilePosts = ({ user }: PostsProps) => {
   const columns = useBreakpointValue({ base: 1, sm: 2, md: 3 });
-  const isLoading = useUserStore((state) => state.isLoadingProfile);
-  const isError = useUserStore((state) => !!state.error);
-  const error = useUserStore((state) => state.error);
-
-  if (isLoading) {
-    return (
-      <Flex justify="center" py={8}>
-        <Spinner color="gray.500" size="lg" />
-      </Flex>
-    );
-  }
-
-  if (isError) {
-    return (
-      <Box textAlign="center" py={8} color="red.500">
-        {error || "Failed to load posts"}
-      </Box>
-    );
-  }
 
   if (!user.posts || user.posts.length === 0) {
     return (

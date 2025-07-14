@@ -10,20 +10,21 @@ interface ProfileDetailsProps {
 }
 
 export const ProfileDetails = ({ userData, onEdit }: ProfileDetailsProps) => {
-  const { currentUserProfile, visitedUserProfile, followUser, unfollowUser } =
-    useUserStore();
+  const currentUserProfile = useUserStore((state) => state.currentUserProfile);
+  const followUser = useUserStore((state) => state.followUser);
+  const unfollowUser = useUserStore((state) => state.unfollowUser);
 
-  const isOwnProfile = currentUserProfile?._id === userData._id;
+  const isOwnProfile = !!onEdit;
 
-  const isFollowing = () => {
-    if (!visitedUserProfile || !currentUserProfile) return false;
-    return visitedUserProfile?.followers.length > 0;
-  };
+  const isFollowing =
+    currentUserProfile?.following?.some(
+      (followedUser) => followedUser._id === userData._id
+    ) || false;
 
   const toggleFollow = async () => {
-    if (!userData) return;
+    if (!userData || !currentUserProfile) return;
 
-    if (isFollowing()) {
+    if (isFollowing) {
       await unfollowUser(userData._id);
     } else {
       await followUser(userData._id);
@@ -46,7 +47,7 @@ export const ProfileDetails = ({ userData, onEdit }: ProfileDetailsProps) => {
               </Button>
             ) : (
               <Button onClick={() => toggleFollow()}>
-                {isFollowing() ? "Unfollow" : "Follow"}
+                {isFollowing ? "Unfollow" : "Follow"}
               </Button>
             )}
           </HStack>

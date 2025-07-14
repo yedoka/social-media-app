@@ -11,7 +11,7 @@ const {
 } = require("../controllers/userController");
 const { authMiddleware } = require("../middleware/authMiddleware");
 
-router.get("/profile/:id", getUserProfile);
+router.get("/profile/:name", getUserProfile);
 router.get("/search", searchUsers);
 
 router.get("/me", authMiddleware, getCurrentUserProfile);

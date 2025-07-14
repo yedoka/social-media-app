@@ -181,7 +181,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
 
     try {
       set({ isLoadingSearch: true, error: null });
-      const res = await apiClient.get("/user/search", { params: { query } });
+      const res = await apiClient.get("/user/search", { params: { q: query } });
       set({ searchResults: res.data });
     } catch (error) {
       console.error("Error searching users:", error);

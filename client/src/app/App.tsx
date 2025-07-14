@@ -27,6 +27,10 @@ export const App = () => {
             path="/profile"
             element={authUser ? <Profile /> : <Navigate to="/auth/login" />}
           />
+          <Route
+            path="/user/:username"
+            element={authUser ? <Profile /> : <Navigate to="/auth/login" />}
+          />
         </Route>
         <Route path="/auth" element={<AuthLayout />}>
           <Route
