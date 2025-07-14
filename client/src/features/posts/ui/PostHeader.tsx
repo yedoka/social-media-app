@@ -1,4 +1,4 @@
-import { HStack, Avatar, Menu, Portal, Flex } from "@chakra-ui/react";
+import { HStack, Avatar, Menu, Portal, Flex, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { Ellipsis } from "lucide-react";
 
@@ -16,13 +16,17 @@ export const PostHeader = ({ user, postId }: PostHeaderProps) => {
   const isOwnPost = user._id === useAuthStore.getState().authUser?._id;
 
   return (
-    <HStack px={4} justifyContent="space-between">
-      <Flex alignItems="center" gap={4}>
+    <HStack justifyContent="space-between">
+      <Flex alignItems="center" gap={3}>
         <Avatar.Root size="xs">
           <Avatar.Image src={user.avatar} alt={user.name} />
           <Avatar.Fallback name={user.name} />
         </Avatar.Root>
-        <Link to={`/user/${user.name}`}>{user.name}</Link>
+        <Link to={`/user/${user.name}`}>
+          <Text fontSize="14px" fontWeight={600}>
+            {user.name}
+          </Text>
+        </Link>
       </Flex>
       <Menu.Root>
         <Menu.Trigger asChild>

@@ -13,7 +13,7 @@ export const PostFooter = ({ post }: PostFooterProps) => {
   const likesCount = getLikesCount(post);
 
   return (
-    <Stack px={4} fontSize="sm">
+    <Stack fontSize="sm">
       <PostActions post={post} />
       {post.likes.length > 0 && (
         <Text>
@@ -21,7 +21,7 @@ export const PostFooter = ({ post }: PostFooterProps) => {
         </Text>
       )}
       <Text>
-        <Text as="span" fontWeight="bold">
+        <Text as="span" fontWeight="600">
           {post.user.name}
         </Text>{" "}
         {post.text}

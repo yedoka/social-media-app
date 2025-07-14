@@ -14,7 +14,7 @@ export const Post = ({ post }: PostProps) => {
     <Stack
       gap={4}
       w="lg"
-      border="1px solid"
+      borderBottom="1px solid"
       borderColor="gray.800"
       borderRadius="sm"
       py="4"
