@@ -6,7 +6,16 @@ const Post = require("../models/Post");
 exports.getUserProfile = async (req, res) => {
   try {
     const user = await User.findOne({ name: req.params.name })
-      .populate("posts")
+      .populate({
+        path: "posts",
+        populate: [
+          { path: "user", select: "name avatar" },
+          {
+            path: "comments.user",
+            select: "name avatar",
+          },
+        ],
+      })
       .select("-password");
 
     if (!user) {
