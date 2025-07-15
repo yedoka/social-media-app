@@ -12,8 +12,12 @@ interface PostHeaderProps {
 }
 
 export const PostHeader = ({ user, postId }: PostHeaderProps) => {
+  const authUser = useAuthStore((state) => state.authUser);
   const { deletePost } = usePostStore();
+
   const isOwnPost = user._id === useAuthStore.getState().authUser?._id;
+  const isOwnProfile = authUser?._id === user._id;
+  const linkToProfile = isOwnProfile ? "/profile" : `/user/${user.name}`;
 
   return (
     <HStack justifyContent="space-between">
@@ -22,7 +26,7 @@ export const PostHeader = ({ user, postId }: PostHeaderProps) => {
           <Avatar.Image src={user.avatar} alt={user.name} />
           <Avatar.Fallback name={user.name} />
         </Avatar.Root>
-        <Link to={`/user/${user.name}`}>
+        <Link to={linkToProfile}>
           <Text fontSize="14px" fontWeight={600}>
             {user.name}
           </Text>
