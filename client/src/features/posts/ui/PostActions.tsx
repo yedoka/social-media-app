@@ -9,6 +9,7 @@ import {
   Image,
   Text,
   Avatar,
+  CloseButton,
 } from "@chakra-ui/react";
 
 import type { PostType } from "@/shared/types";
@@ -58,18 +59,17 @@ export const PostActions = ({ post }: PostActionsProps) => {
           <Dialog.Positioner>
             <Dialog.Content borderRadius="sm">
               <Flex>
-                <Box bg="black">
-                  <Image src={post.image} alt="Post" objectFit="contain" />
-                </Box>
+                <Image src={post.image} alt="Post" objectFit="contain" />
                 <Flex
                   direction="column"
                   p={4}
                   overflow="hidden"
                   justify="space-between"
+                  flex="1"
                 >
                   <Box>
                     <Flex align="center" pb={4} borderBottomWidth="1px" mb={4}>
-                      <Avatar.Root size="md" mr={3}>
+                      <Avatar.Root size="xs" mr={3}>
                         <Avatar.Image src={post.user.avatar} />
                         <Avatar.Fallback name={post.user.name} />
                       </Avatar.Root>
@@ -77,11 +77,19 @@ export const PostActions = ({ post }: PostActionsProps) => {
                         <Text fontWeight="bold">{post.user.name}</Text>
                       </Link>
                     </Flex>
-                    <Text>{post.text}</Text>
+                    <Text>
+                      <Text as="span" fontWeight={600}>
+                        {post.user.name}{" "}
+                      </Text>
+                      {post.text}
+                    </Text>
                   </Box>
                   <PostComments post={post} />
                 </Flex>
               </Flex>
+              <Dialog.CloseTrigger asChild>
+                <CloseButton size="sm" />
+              </Dialog.CloseTrigger>
             </Dialog.Content>
           </Dialog.Positioner>
         </Portal>

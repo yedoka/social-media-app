@@ -1,19 +1,18 @@
 import { useState } from "react";
 import { Button, Group, Input } from "@chakra-ui/react";
 
-import type { PostType } from "@/shared/types";
 import { usePostStore } from "../model/usePostStore";
 
 interface PostCommentInputProps {
-  post: PostType;
+  postId: string;
 }
 
-export const PostCommentInput = ({ post }: PostCommentInputProps) => {
+export const PostCommentInput = ({ postId }: PostCommentInputProps) => {
   const [commentText, setCommentText] = useState("");
   const { addComment } = usePostStore();
 
   const onSubmit = async () => {
-    await addComment(post._id, commentText);
+    await addComment(postId, commentText);
     setCommentText("");
   };
 
@@ -26,11 +25,14 @@ export const PostCommentInput = ({ post }: PostCommentInputProps) => {
       <Input
         id="text"
         type="text"
-        placeholder="Your comment..."
+        placeholder="Add a comment..."
         value={commentText}
         onChange={handleCommentChange}
+        size="xs"
       />
-      <Button onClick={onSubmit}>Post</Button>
+      <Button onClick={onSubmit} size="xs">
+        Post
+      </Button>
     </Group>
   );
 };

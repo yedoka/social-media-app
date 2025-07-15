@@ -14,10 +14,10 @@ export const PostComment = ({ comment }: PostCommentProps) => {
       </Avatar.Root>
       <Box>
         <Text fontSize="sm">
-          <Text as="span" fontWeight="bold">
-            {comment.user.name}
-          </Text>{" "}
-          <Text as="span">{comment.text}</Text>
+          <Text as="span" fontWeight={600}>
+            {comment.user.name}{" "}
+          </Text>
+          {comment.text}
         </Text>
       </Box>
     </Flex>

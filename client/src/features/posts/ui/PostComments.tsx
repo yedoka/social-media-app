@@ -11,17 +11,11 @@ interface PostComponentsProps {
 
 export const PostComments = ({ post }: PostComponentsProps) => {
   return (
-    <Box>
-      <Text fontWeight="semibold" mb={2}>
-        Comments
-      </Text>
-      <Box maxH="300px" overflowY="auto" pr={2}>
-        {post.comments.length !== 0 &&
-          post.comments.map((comment) => (
-            <PostComment key={comment.text} comment={comment} />
-          ))}
-        <PostCommentInput post={post} />
-      </Box>
+    <Box overflowY="auto">
+      {post.comments.map((comment) => (
+        <PostComment key={comment._id} comment={comment} />
+      ))}
+      <PostCommentInput postId={post._id} />
     </Box>
   );
 };
