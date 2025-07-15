@@ -21,7 +21,6 @@ exports.createPost = async (req, res) => {
 
     const post = await newPost.save();
 
-    // Add post to user's posts array
     user.posts.push(post._id);
     await user.save();
 
@@ -79,12 +78,10 @@ exports.deletePost = async (req, res) => {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    // Check user owns the post
     if (post.user.toString() !== req.user.id) {
       return res.status(401).json({ message: "User not authorized" });
     }
 
-    // Remove from user's posts array
     await User.findByIdAndUpdate(req.user.id, {
       $pull: { posts: post._id },
     });
@@ -102,16 +99,12 @@ exports.deletePost = async (req, res) => {
 // @route   PUT /api/posts/like/:id
 exports.likePost = async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id).populate(
-      "user",
-      "name avatar"
-    );
+    const post = await Post.findById(req.params.id);
 
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    // Check if already liked
     if (post.likes.some((like) => like.toString() === req.user.id)) {
       return res.status(400).json({ message: "Already liked" });
     }
@@ -119,7 +112,12 @@ exports.likePost = async (req, res) => {
     post.likes.unshift(req.user.id);
     await post.save();
 
-    res.json(post);
+    const populatedPost = await Post.findById(req.params.id)
+      .populate("user", "name avatar")
+      .populate("likes", "name avatar")
+      .populate("comments.user", "name avatar");
+
+    res.json(populatedPost);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -130,16 +128,12 @@ exports.likePost = async (req, res) => {
 // @route   PUT /api/posts/unlike/:id
 exports.unlikePost = async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id).populate(
-      "user",
-      "name avatar"
-    );
+    const post = await Post.findById(req.params.id);
 
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    // Check if user has not liked it
     if (!post.likes.some((like) => like.toString() === req.user.id)) {
       return res.status(400).json({ message: "Not liked yet" });
     }
@@ -147,7 +141,12 @@ exports.unlikePost = async (req, res) => {
     post.likes = post.likes.filter((like) => like.toString() !== req.user.id);
     await post.save();
 
-    res.json(post);
+    const populatedPost = await Post.findById(req.params.id)
+      .populate("user", "name avatar")
+      .populate("likes", "name avatar")
+      .populate("comments.user", "name avatar");
+
+    res.json(populatedPost);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -202,7 +201,6 @@ exports.deleteComment = async (req, res) => {
       return res.status(404).json({ message: "Comment not found" });
     }
 
-    // Make sure user is owner of comment
     if (comment.user.toString() !== req.user.id) {
       return res.status(401).json({ message: "User not authorized" });
     }

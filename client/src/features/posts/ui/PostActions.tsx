@@ -23,10 +23,15 @@ interface PostActionsProps {
 }
 
 export const PostActions = ({ post }: PostActionsProps) => {
-  const { likePost, unlikePost } = usePostStore();
+  const { posts, likePost, unlikePost } = usePostStore();
   const { authUser } = useAuthStore();
 
-  const isLikedByUser = checkIsLikedByUser(post.likes, authUser?._id || "");
+  const updatedPost = posts.find((p) => p._id === post._id) || post;
+
+  const isLikedByUser = checkIsLikedByUser(
+    updatedPost.likes,
+    authUser?._id || ""
+  );
 
   const handlePostLike = (postId: string) => {
     if (isLikedByUser) {

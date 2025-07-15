@@ -70,28 +70,96 @@ export const usePostStore = create<PostStore>((set, get) => ({
   },
 
   likePost: async (postId: string) => {
+    const { posts } = get();
+    const currentPost = posts.find((p) => p._id === postId);
+    if (!currentPost) return;
+
+    const { useAuthStore } = await import("@/features/auth/model/useAuthStore");
+    const currentUserId = useAuthStore.getState().authUser?._id;
+    if (!currentUserId) return;
+
+    const alreadyLiked = currentPost.likes.some(
+      (like) => like._id === currentUserId
+    );
+    if (alreadyLiked) return;
+
+    set((state) => ({
+      posts: state.posts.map((post) =>
+        post._id === postId
+          ? {
+              ...post,
+              likes: [...post.likes, { _id: currentUserId } as any],
+            }
+          : post
+      ),
+    }));
+
     try {
       const res = await apiClient.put(`/posts/like/${postId}`);
       set((state) => ({
         posts: state.posts.map((post) =>
-          post._id === postId ? { ...post, ...res.data } : post
+          post._id === postId ? res.data : post
         ),
       }));
     } catch (error) {
       console.error("Error liking post:", error);
+      set((state) => ({
+        posts: state.posts.map((post) =>
+          post._id === postId
+            ? {
+                ...post,
+                likes: post.likes.filter((like) => like._id !== currentUserId),
+              }
+            : post
+        ),
+      }));
     }
   },
 
   unlikePost: async (postId: string) => {
+    const { posts } = get();
+    const currentPost = posts.find((p) => p._id === postId);
+    if (!currentPost) return;
+
+    const { useAuthStore } = await import("@/features/auth/model/useAuthStore");
+    const currentUserId = useAuthStore.getState().authUser?._id;
+    if (!currentUserId) return;
+
+    const isLiked = currentPost.likes.some(
+      (like) => like._id === currentUserId
+    );
+    if (!isLiked) return;
+
+    set((state) => ({
+      posts: state.posts.map((post) =>
+        post._id === postId
+          ? {
+              ...post,
+              likes: post.likes.filter((like) => like._id !== currentUserId),
+            }
+          : post
+      ),
+    }));
+
     try {
       const res = await apiClient.put(`/posts/unlike/${postId}`);
       set((state) => ({
         posts: state.posts.map((post) =>
-          post._id === postId ? { ...post, ...res.data } : post
+          post._id === postId ? res.data : post
         ),
       }));
     } catch (error) {
       console.error("Error unliking post:", error);
+      set((state) => ({
+        posts: state.posts.map((post) =>
+          post._id === postId
+            ? {
+                ...post,
+                likes: [...post.likes, { _id: currentUserId } as any],
+              }
+            : post
+        ),
+      }));
     }
   },
 
