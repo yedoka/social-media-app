@@ -3,18 +3,18 @@ import { Avatar, Button, Heading, HStack, Stack, Text } from "@chakra-ui/react";
 import { ProfilePosts } from "@/features/profile/ui/ProfilePosts";
 import type { UserType } from "@/shared/types";
 import { useUserStore } from "../model/useUserStore";
+import { ProfileEditForm } from "./ProfileEditForm";
 
 interface ProfileDetailsProps {
   userData: UserType;
-  onEdit?: () => void;
 }
 
-export const ProfileDetails = ({ userData, onEdit }: ProfileDetailsProps) => {
+export const ProfileDetails = ({ userData }: ProfileDetailsProps) => {
   const currentUserProfile = useUserStore((state) => state.currentUserProfile);
   const followUser = useUserStore((state) => state.followUser);
   const unfollowUser = useUserStore((state) => state.unfollowUser);
 
-  const isOwnProfile = !!onEdit;
+  const isOwnProfile = currentUserProfile?._id === userData._id;
 
   const isFollowing =
     currentUserProfile?.following?.some(
@@ -42,9 +42,7 @@ export const ProfileDetails = ({ userData, onEdit }: ProfileDetailsProps) => {
           <HStack justify="space-between">
             <Heading>{userData.name}</Heading>
             {isOwnProfile ? (
-              <Button variant="subtle" onClick={onEdit}>
-                Edit profile
-              </Button>
+              <ProfileEditForm data={userData} />
             ) : (
               <Button onClick={() => toggleFollow()}>
                 {isFollowing ? "Unfollow" : "Follow"}
