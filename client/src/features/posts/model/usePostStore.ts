@@ -166,9 +166,36 @@ export const usePostStore = create<PostStore>((set, get) => ({
   addComment: async (postId: string, text: string) => {
     try {
       set({ error: null });
+
+      const { useAuthStore } = await import(
+        "@/features/auth/model/useAuthStore"
+      );
+      const currentUser = useAuthStore.getState().authUser;
+
+      if (!currentUser) return;
+
+      const optimisticComment = {
+        _id: `temp-${Date.now()}`,
+        user: currentUser,
+        text,
+        createdAt: new Date().toISOString(),
+      };
+
+      set((state) => ({
+        posts: state.posts.map((post) =>
+          post._id === postId
+            ? {
+                ...post,
+                comments: [optimisticComment, ...post.comments],
+              }
+            : post
+        ),
+      }));
+
       const res = await apiClient.post(`/posts/comment/${postId}`, {
         text: text,
       });
+
       set((state) => ({
         posts: state.posts.map((post) =>
           post._id === postId ? { ...post, comments: res.data } : post
@@ -177,6 +204,19 @@ export const usePostStore = create<PostStore>((set, get) => ({
     } catch (error) {
       console.error("Error adding comment:", error);
       set({ error: "Failed to add comment" });
+
+      set((state) => ({
+        posts: state.posts.map((post) =>
+          post._id === postId
+            ? {
+                ...post,
+                comments: post.comments.filter(
+                  (c) => !c._id.startsWith("temp-")
+                ),
+              }
+            : post
+        ),
+      }));
     }
   },
 

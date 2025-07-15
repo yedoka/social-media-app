@@ -159,7 +159,6 @@ exports.addComment = async (req, res) => {
   const { text } = req.body;
 
   try {
-    const user = await User.findById(req.user.id);
     const post = await Post.findById(req.params.id);
 
     if (!post) {
@@ -169,14 +168,17 @@ exports.addComment = async (req, res) => {
     const newComment = {
       user: req.user.id,
       text,
-      name: user.name,
-      avatar: user.avatar,
     };
 
     post.comments.unshift(newComment);
     await post.save();
 
-    res.json(post.comments);
+    const populatedPost = await Post.findById(req.params.id).populate(
+      "comments.user",
+      "name avatar"
+    );
+
+    res.json(populatedPost.comments);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -211,7 +213,12 @@ exports.deleteComment = async (req, res) => {
 
     await post.save();
 
-    res.json(post.comments);
+    const populatedPost = await Post.findById(req.params.id).populate(
+      "comments.user",
+      "name avatar"
+    );
+
+    res.json(populatedPost.comments);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

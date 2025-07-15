@@ -7,7 +7,7 @@ interface PostCommentProps {
 
 export const PostComment = ({ comment }: PostCommentProps) => {
   return (
-    <Flex key={comment.user.name} mb={3} align="start">
+    <Flex key={comment.user.name} mb={3} align="center">
       <Avatar.Root size="sm" mr={2}>
         <Avatar.Image src={comment.user.avatar} />
         <Avatar.Fallback name={comment.user.name} />

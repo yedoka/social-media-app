@@ -2,6 +2,7 @@ export { PostActions } from "./PostActions";
 export { PostComment } from "./PostComment";
 export { PostCommentInput } from "./PostCommentInput";
 export { PostComments } from "./PostComments";
+export { PostDialog } from "./PostDialog";
 export { PostFooter } from "./PostFooter";
 export { PostHeader } from "./PostHeader";
 export { Post } from "./Post";
