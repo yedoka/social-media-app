@@ -45,7 +45,7 @@ export const Sidebar = () => {
         <Stack gap={6}>
           <Link to="/">
             <Text fontSize="2xl" fontWeight="bold">
-              Link Up
+              social
             </Text>
           </Link>
           <List.Root variant="plain">
