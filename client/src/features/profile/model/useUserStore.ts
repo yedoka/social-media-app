@@ -12,7 +12,7 @@ interface UserStore {
   currentUserProfile: UserType | null;
   visitedUserProfile: UserType | null;
   suggestedUsers: UserType[];
-  searchResults: UserType[];
+  searchResults: UserType[] | null;
 
   isLoadingProfile: boolean;
   isLoadingSearch: boolean;
@@ -27,8 +27,8 @@ interface UserStore {
   followUser: (userId: string) => Promise<void>;
   unfollowUser: (userId: string) => Promise<void>;
   searchUsers: (query: string) => Promise<void>;
-  getSuggestedUsers: () => Promise<void>;
   clearSearchResults: () => void;
+  getSuggestedUsers: () => Promise<void>;
   clearError: () => void;
 }
 
@@ -36,7 +36,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
   currentUserProfile: null,
   visitedUserProfile: null,
   suggestedUsers: [],
-  searchResults: [],
+  searchResults: null,
   isLoadingProfile: false,
   isLoadingSearch: false,
   isUpdatingProfile: false,

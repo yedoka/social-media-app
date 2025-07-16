@@ -1,61 +1,78 @@
-import { useState } from "react";
-
 import { Link } from "react-router-dom";
-import { Avatar, HStack, Popover, Portal, Text } from "@chakra-ui/react";
+import { Avatar, HStack, Text, Box } from "@chakra-ui/react";
 
 import type { UserType } from "@/shared/types";
+import { useAuthStore } from "@/features/auth/model/useAuthStore";
 
 interface UserListProps {
   foundUsers: UserType[];
   onUserSelect: () => void;
+  maxResults?: number;
 }
 
-export const UserList = ({ foundUsers, onUserSelect }: UserListProps) => {
-  const [open, setOpen] = useState(false);
-  const handleClick = () => {
-    onUserSelect();
-    setOpen(false);
+export const UserList = ({
+  foundUsers,
+  onUserSelect,
+  maxResults = 5,
+}: UserListProps) => {
+  if (!foundUsers || foundUsers.length === 0) {
+    return null;
+  }
+  const { authUser } = useAuthStore();
+
+  const displayUsers = foundUsers.slice(0, maxResults);
+  const hasMoreResults = foundUsers.length > maxResults;
+
+  const checkIsOwnProfile = (user: UserType) => {
+    return authUser && user._id === authUser._id;
   };
 
   return (
-    <>
-      {foundUsers.slice(0, 3).map((item) => (
-        <Popover.Root
-          open={open}
-          onOpenChange={(e) => setOpen(e.open)}
+    <Box>
+      {displayUsers.map((item) => (
+        <Link
+          to={checkIsOwnProfile(item) ? "/profile" : `/user/${item.name}`}
           key={item._id}
+          onClick={onUserSelect}
         >
-          <Popover.Trigger>
-            <HStack p={4}>
-              <Avatar.Root size="xs">
-                <Avatar.Image src={item.avatar} />
-                <Avatar.Fallback name={item.name} />
-              </Avatar.Root>
-              <Text fontSize="sm">{item.name}</Text>
-            </HStack>
-          </Popover.Trigger>
-          <Portal>
-            <Popover.Positioner>
-              <Popover.Content className="bg-dark-bg border border-dark-border text-xs text-primary-text ">
-                <Link
-                  to={`/user/${item.name}`}
-                  key={item._id}
-                  className="flex items-center"
-                  onClick={handleClick}
+          <HStack
+            p={3}
+            _hover={{ bg: "gray.100", _dark: { bg: "gray.700" } }}
+            borderRadius="md"
+            transition="all 0.2s"
+            cursor="pointer"
+          >
+            <Avatar.Root size="sm">
+              <Avatar.Image src={item.avatar} alt={item.name} />
+              <Avatar.Fallback name={item.name} />
+            </Avatar.Root>
+            <Box flex="1">
+              <Text fontWeight="medium" fontSize="sm">
+                {item.name}
+              </Text>
+              {item.bio && (
+                <Text
+                  fontSize="xs"
+                  color="gray.500"
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
                 >
-                  <HStack>
-                    <Avatar.Root size="xs">
-                      <Avatar.Image src={item.avatar} alt={item.name} />
-                      <Avatar.Fallback name={item.name} />
-                    </Avatar.Root>
-                    <Text>{item.name}</Text>
-                  </HStack>
-                </Link>
-              </Popover.Content>
-            </Popover.Positioner>
-          </Portal>
-        </Popover.Root>
+                  {item.bio}
+                </Text>
+              )}
+            </Box>
+          </HStack>
+        </Link>
       ))}
-    </>
+
+      {hasMoreResults && (
+        <Text fontSize="xs" color="gray.500" textAlign="center" py={2}>
+          +{foundUsers.length - maxResults} more results
+        </Text>
+      )}
+    </Box>
   );
 };
