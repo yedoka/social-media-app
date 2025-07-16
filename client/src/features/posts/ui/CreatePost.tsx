@@ -33,6 +33,7 @@ export const CreatePost = () => {
 
   const onSubmitPost = async (data: FormValues) => {
     await createPost(data);
+    reset();
   };
 
   return (

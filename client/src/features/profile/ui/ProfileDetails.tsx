@@ -44,7 +44,10 @@ export const ProfileDetails = ({ userData }: ProfileDetailsProps) => {
             {isOwnProfile ? (
               <ProfileEditForm data={userData} />
             ) : (
-              <Button onClick={() => toggleFollow()}>
+              <Button
+                onClick={() => toggleFollow()}
+                variant={isFollowing ? "subtle" : "solid"}
+              >
                 {isFollowing ? "Unfollow" : "Follow"}
               </Button>
             )}

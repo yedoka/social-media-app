@@ -51,6 +51,7 @@ export const PostDialog = ({ post, trigger }: PostDialogProps) => {
                   </Link>
                 </Flex>
                 <Flex
+                  flex={1}
                   gap={3}
                   direction="column"
                   overflow="auto"

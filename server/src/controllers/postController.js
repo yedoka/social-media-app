@@ -24,7 +24,12 @@ exports.createPost = async (req, res) => {
     user.posts.push(post._id);
     await user.save();
 
-    res.status(201).json(post);
+    const populatedPost = await Post.findById(post._id)
+      .populate("user", "name avatar")
+      .populate("likes", "name avatar")
+      .populate("comments.user", "name avatar");
+
+    res.status(201).json(populatedPost);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

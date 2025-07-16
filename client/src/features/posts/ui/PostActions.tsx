@@ -37,6 +37,7 @@ export const PostActions = ({ post }: PostActionsProps) => {
         fill={isLikedByUser ? "red" : "none"}
         size={20}
         cursor="pointer"
+        color={isLikedByUser ? "red" : undefined}
       />
       <PostDialog
         post={updatedPost}
