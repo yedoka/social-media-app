@@ -7,6 +7,7 @@ import {
   Text,
   Avatar,
   CloseButton,
+  Box,
 } from "@chakra-ui/react";
 
 import type { PostType } from "@/shared/types";
@@ -40,21 +41,23 @@ export const PostDialog = ({ post, trigger }: PostDialogProps) => {
                 justify="space-between"
                 flex="1"
               >
+                <Flex align="center" pb={4}>
+                  <Avatar.Root size="xs" mr={3}>
+                    <Avatar.Image src={post.user.avatar} />
+                    <Avatar.Fallback name={post.user.name} />
+                  </Avatar.Root>
+                  <Link to={`/user/${post.user.name}`}>
+                    <Text fontWeight="bold">{post.user.name}</Text>
+                  </Link>
+                </Flex>
                 <Flex
                   gap={3}
                   direction="column"
                   overflow="auto"
                   maxHeight="560px"
+                  scrollbar="hidden"
+                  py={4}
                 >
-                  <Flex align="center" pb={4} borderBottomWidth="1px">
-                    <Avatar.Root size="xs" mr={3}>
-                      <Avatar.Image src={post.user.avatar} />
-                      <Avatar.Fallback name={post.user.name} />
-                    </Avatar.Root>
-                    <Link to={`/user/${post.user.name}`}>
-                      <Text fontWeight="bold">{post.user.name}</Text>
-                    </Link>
-                  </Flex>
                   <Text mb={4}>
                     <Text as="span" fontWeight={600}>
                       {post.user.name}{" "}
@@ -63,7 +66,9 @@ export const PostDialog = ({ post, trigger }: PostDialogProps) => {
                   </Text>
                   <PostComments post={post} />
                 </Flex>
-                <PostCommentInput postId={post._id} />
+                <Box pt="4">
+                  <PostCommentInput postId={post._id} />
+                </Box>
               </Flex>
             </Flex>
             <Dialog.CloseTrigger asChild>
