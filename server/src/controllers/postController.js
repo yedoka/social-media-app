@@ -40,13 +40,31 @@ exports.createPost = async (req, res) => {
 // @route   GET /api/posts
 exports.getPosts = async (req, res) => {
   try {
-    const posts = await Post.find()
-      .populate("user")
-      .populate("comments.user")
-      .populate("likes")
-      .sort({ createdAt: -1 });
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
 
-    res.json(posts);
+    const totalPosts = await Post.countDocuments();
+    const posts = await Post.find()
+      .populate("user", "name avatar")
+      .populate("comments.user", "name avatar")
+      .populate("likes", "name avatar")
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    const hasMore = skip + posts.length < totalPosts;
+
+    res.json({
+      posts,
+      pagination: {
+        currentPage: page,
+        totalPages: Math.ceil(totalPosts / limit),
+        totalPosts,
+        hasMore,
+        limit,
+      },
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

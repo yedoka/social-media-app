@@ -7,9 +7,22 @@ interface PostData {
   image: string;
 }
 
+interface PaginationInfo {
+  currentPage: number;
+  totalPages: number;
+  totalPosts: number;
+  hasMore: boolean;
+  limit: number;
+}
+
 interface PostStore {
   posts: PostType[];
-  getPosts: () => Promise<void>;
+  pagination: PaginationInfo | null;
+  isLoadingInitial: boolean;
+  isLoadingMore: boolean;
+  getPosts: (page?: number) => Promise<void>;
+  loadMorePosts: () => Promise<void>;
+  refreshPosts: () => Promise<void>;
   createPost: (data: PostData) => Promise<void>;
   deletePost: (postId: string) => Promise<void>;
   likePost: (postId: string) => Promise<void>;
@@ -22,20 +35,44 @@ interface PostStore {
 
 export const usePostStore = create<PostStore>((set, get) => ({
   posts: [],
+  pagination: null,
+  isLoadingInitial: false,
+  isLoadingMore: false,
   isPending: false,
   error: null,
 
-  getPosts: async () => {
+  getPosts: async (page = 1) => {
     try {
-      set({ isPending: true, error: null });
-      const res = await apiClient.get("/posts");
-      set({ posts: res.data });
+      const isFirstPage = page === 1;
+      set({
+        [isFirstPage ? "isLoadingInitial" : "isLoadingMore"]: true,
+        error: null,
+      });
+
+      const res = await apiClient.get(`/posts?page=${page}&limit=2`);
+      const { posts: newPosts, pagination } = res.data;
+
+      set((state) => ({
+        posts: isFirstPage ? newPosts : [...state.posts, ...newPosts],
+        pagination,
+      }));
     } catch (error) {
       console.error("Error fetching posts:", error);
-      set({ posts: [], error: "Failed to fetch posts" });
+      set({ error: "Failed to fetch posts" });
     } finally {
-      set({ isPending: false });
+      set({ isLoadingInitial: false, isLoadingMore: false });
     }
+  },
+
+  loadMorePosts: async () => {
+    const { pagination, isLoadingMore } = get();
+    if (!pagination?.hasMore || isLoadingMore) return;
+
+    await get().getPosts(pagination.currentPage + 1);
+  },
+
+  refreshPosts: async () => {
+    await get().getPosts(1);
   },
 
   createPost: async (data) => {
@@ -45,7 +82,16 @@ export const usePostStore = create<PostStore>((set, get) => ({
         text: data.text,
         image: data.image,
       });
-      set((state) => ({ posts: [res.data, ...state.posts] }));
+
+      set((state) => ({
+        posts: [res.data, ...state.posts],
+        pagination: state.pagination
+          ? {
+              ...state.pagination,
+              totalPosts: state.pagination.totalPosts + 1,
+            }
+          : null,
+      }));
     } catch (error) {
       console.error("Error creating post:", error);
       set({ error: "Failed to create post" });
@@ -60,6 +106,12 @@ export const usePostStore = create<PostStore>((set, get) => ({
       await apiClient.delete(`/posts/${postId}`);
       set((state) => ({
         posts: state.posts.filter((post) => post._id !== postId),
+        pagination: state.pagination
+          ? {
+              ...state.pagination,
+              totalPosts: state.pagination.totalPosts - 1,
+            }
+          : null,
       }));
     } catch (error) {
       console.error("Error deleting post:", error);
