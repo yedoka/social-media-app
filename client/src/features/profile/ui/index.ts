@@ -1,3 +1,3 @@
 export * from "./ProfileDetails";
-export * from "./ProfileEditForm";
+export * from "./ProfileEditDialog";
 export * from "./ProfilePosts";

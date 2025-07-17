@@ -1,22 +1,21 @@
 import { useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EditFormSchema } from "@/features/auth/lib/validation";
 import { toast } from "react-toastify";
 import {
   Button,
   CloseButton,
-  Container,
   Dialog,
   Field,
-  Heading,
   Input,
   Portal,
   Stack,
   Text,
 } from "@chakra-ui/react";
 
+import { EditFormSchema } from "@/features/auth/lib/validation";
 import type { UserType } from "@/shared/types";
+
 import { useUserStore } from "../model/useUserStore";
 
 interface FormValues {
@@ -26,9 +25,10 @@ interface FormValues {
 
 interface EditFormProps {
   data: UserType;
+  trigger: React.ReactNode;
 }
 
-export const ProfileEditForm = ({ data }: EditFormProps) => {
+export const ProfileEditDialog = ({ data, trigger }: EditFormProps) => {
   const {
     register,
     handleSubmit,
@@ -65,11 +65,7 @@ export const ProfileEditForm = ({ data }: EditFormProps) => {
 
   return (
     <Dialog.Root size="sm" placement="center">
-      <Dialog.Trigger asChild>
-        <Button variant="outline" size="sm">
-          Edit
-        </Button>
-      </Dialog.Trigger>
+      <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
       <Portal>
         <Dialog.Backdrop />
         <Dialog.Positioner>
