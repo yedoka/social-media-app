@@ -16,6 +16,8 @@ exports.getUserProfile = async (req, res) => {
           },
         ],
       })
+      .populate("followers")
+      .populate("following")
       .select("-password");
 
     if (!user) {

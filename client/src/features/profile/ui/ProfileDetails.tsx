@@ -1,9 +1,21 @@
-import { Avatar, Button, Heading, HStack, Stack, Text } from "@chakra-ui/react";
+import {
+  Avatar,
+  Button,
+  CloseButton,
+  Dialog,
+  Heading,
+  HStack,
+  Portal,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 
 import { ProfilePosts } from "@/features/profile/ui/ProfilePosts";
 import type { UserType } from "@/shared/types";
+
 import { useUserStore } from "../model/useUserStore";
 import { ProfileEditForm } from "./ProfileEditForm";
+import { ProfileUserList } from "./ProfileUserList";
 
 interface ProfileDetailsProps {
   userData: UserType;
@@ -53,9 +65,66 @@ export const ProfileDetails = ({ userData }: ProfileDetailsProps) => {
             )}
           </HStack>
           <HStack fontSize="sm">
-            <Text>Posts: {userData.posts.length}</Text>
-            <Text>Followers: {userData.followers.length}</Text>
-            <Text>Following: {userData.following.length}</Text>
+            <Text>
+              {userData.posts.length}{" "}
+              <Text as="span" color="gray.400">
+                posts
+              </Text>
+            </Text>
+            <Dialog.Root size="sm" placement="center">
+              <Dialog.Trigger asChild>
+                <Text cursor="pointer">
+                  {userData.followers.length}{" "}
+                  <Text as="span" color="gray.400">
+                    followers
+                  </Text>
+                </Text>
+              </Dialog.Trigger>
+              <Portal>
+                <Dialog.Backdrop />
+                <Dialog.Positioner>
+                  <Dialog.Content>
+                    <Dialog.Header>
+                      <Dialog.Title>Followers</Dialog.Title>
+                    </Dialog.Header>
+                    <ProfileUserList
+                      users={userData.followers}
+                      type="followers"
+                    />
+                    <Dialog.CloseTrigger asChild>
+                      <CloseButton size="sm" />
+                    </Dialog.CloseTrigger>
+                  </Dialog.Content>
+                </Dialog.Positioner>
+              </Portal>
+            </Dialog.Root>
+            <Dialog.Root size="sm" placement="center">
+              <Dialog.Trigger asChild>
+                <Text cursor="pointer">
+                  {userData.following.length}{" "}
+                  <Text as="span" color="gray.400">
+                    following
+                  </Text>
+                </Text>
+              </Dialog.Trigger>
+              <Portal>
+                <Dialog.Backdrop />
+                <Dialog.Positioner>
+                  <Dialog.Content>
+                    <Dialog.Header>
+                      <Dialog.Title>Following</Dialog.Title>
+                    </Dialog.Header>
+                    <ProfileUserList
+                      users={userData.following}
+                      type="following"
+                    />
+                    <Dialog.CloseTrigger asChild>
+                      <CloseButton size="sm" />
+                    </Dialog.CloseTrigger>
+                  </Dialog.Content>
+                </Dialog.Positioner>
+              </Portal>
+            </Dialog.Root>
           </HStack>
         </Stack>
       </HStack>

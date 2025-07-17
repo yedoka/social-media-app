@@ -44,11 +44,13 @@ export const PostHeader = ({ user, postId }: PostHeaderProps) => {
                   value="delete"
                   color="fg.error"
                   onClick={() => deletePost(postId)}
-                  cursor="pointer"
                 >
                   Delete
                 </Menu.Item>
               )}
+              <Menu.Item value="viewProfile">
+                <Link to={linkToProfile}>View Profile</Link>
+              </Menu.Item>
             </Menu.Content>
           </Menu.Positioner>
         </Portal>

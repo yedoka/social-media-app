@@ -31,7 +31,7 @@ export const PostDialog = ({ post, trigger }: PostDialogProps) => {
               <Image
                 src={post.image}
                 alt="Post"
-                objectFit="cover"
+                objectFit="contain"
                 maxWidth="500px"
               />
               <Flex
@@ -57,7 +57,6 @@ export const PostDialog = ({ post, trigger }: PostDialogProps) => {
                   overflow="auto"
                   maxHeight="560px"
                   scrollbar="hidden"
-                  py={4}
                 >
                   <Text mb={4}>
                     <Text as="span" fontWeight={600}>
