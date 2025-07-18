@@ -44,7 +44,7 @@ export const Feed = () => {
         hasMore={pagination?.hasMore ?? false}
         loader={
           <Center py={4}>
-            <Spinner size="lg" />
+            <Spinner size="md" />
           </Center>
         }
         endMessage={

@@ -23,7 +23,6 @@ export const Sidebar = () => {
   const logoutHandler = async () => {
     try {
       await logOut();
-      // Optionally, you can redirect the user after logout
       navigate("/auth/login");
     } catch (error) {
       console.error("Logout failed:", error);

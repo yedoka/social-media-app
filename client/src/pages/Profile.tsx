@@ -31,7 +31,7 @@ export const Profile = () => {
   if (isLoadingProfile) {
     return (
       <Center h="200px">
-        <Spinner size="xl" />
+        <Spinner size="md" />
       </Center>
     );
   }

@@ -56,7 +56,7 @@ export const SearchBar = () => {
       <InputGroup
         endElement={
           <HStack>
-            {isLoadingSearch && <Spinner size="sm" />}
+            {isLoadingSearch && <Spinner size="md" />}
             {searchTerm && (
               <X
                 size={16}
@@ -82,7 +82,7 @@ export const SearchBar = () => {
         <>
           {isLoadingSearch ? (
             <HStack justify="center" py={4}>
-              <Spinner size="sm" />
+              <Spinner size="md" />
               <Text fontSize="sm" color="gray.500">
                 Searching...
               </Text>

@@ -4,11 +4,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
 import {
   Button,
+  Center,
   CloseButton,
   Dialog,
   Field,
   Input,
   Portal,
+  Spinner,
   Stack,
   Text,
 } from "@chakra-ui/react";
@@ -60,7 +62,11 @@ export const ProfileEditDialog = ({ data, trigger }: EditFormProps) => {
   };
 
   if (!data) {
-    return <Text>Loading...</Text>;
+    return (
+      <Center h="200px">
+        <Spinner size="md" />
+      </Center>
+    );
   }
 
   return (
