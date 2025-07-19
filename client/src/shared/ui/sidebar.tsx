@@ -1,5 +1,5 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { Newspaper, User, LogOutIcon } from "lucide-react";
+import { Newspaper, User, LogOutIcon, MessageCircle } from "lucide-react";
 import { Box, Button, HStack, Icon, List, Stack, Text } from "@chakra-ui/react";
 import { SearchBar } from "@/features/search-bar/ui/SearchBar";
 import { CreatePost } from "@/features/posts/ui/CreatePost";
@@ -16,6 +16,11 @@ export const Sidebar = () => {
       path: `/profile`,
       description: "Profile",
       icon: <User />,
+    },
+    {
+      path: `/messages`,
+      description: "Messages",
+      icon: <MessageCircle />,
     },
   ];
   const navigate = useNavigate();

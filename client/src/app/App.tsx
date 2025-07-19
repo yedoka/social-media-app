@@ -1,12 +1,12 @@
+import { useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-
-import { AppProviders } from "./AppProviders";
 
 import "@/app/index.css";
 import { useAuthStore } from "@/features/auth/model/useAuthStore";
-import { useEffect } from "react";
-import { Auth, Feed, Profile } from "@/pages";
+import { Auth, Feed, Profile, Messages } from "@/pages";
 import { AuthLayout, RootLayout } from "@/layout";
+
+import { AppProviders } from "./AppProviders";
 
 export const App = () => {
   const { authUser, checkAuth } = useAuthStore();
@@ -30,6 +30,10 @@ export const App = () => {
           <Route
             path="/user/:username"
             element={authUser ? <Profile /> : <Navigate to="/auth/login" />}
+          />
+          <Route
+            path="/messages"
+            element={authUser ? <Messages /> : <Navigate to="/auth/login" />}
           />
         </Route>
         <Route path="/auth" element={<AuthLayout />}>

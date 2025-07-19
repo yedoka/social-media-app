@@ -1,3 +1,4 @@
-export * from "./Auth";
-export * from "./Feed";
-export * from "./Profile";
+export { Auth } from "./Auth";
+export { Feed } from "./Feed";
+export { Profile } from "./Profile";
+export { Messages } from "./Messages";
