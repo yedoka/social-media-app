@@ -2,7 +2,7 @@ import { Heart, MessageCircle } from "lucide-react";
 import { HStack } from "@chakra-ui/react";
 
 import type { PostType } from "@/shared/types";
-import { useAuthStore } from "@/features/auth/model/useAuthStore";
+import { useAuthUser } from "@/features/auth/model/useAuthStore";
 import { usePostStore } from "../model/usePostStore";
 import { checkIsLikedByUser } from "../lib";
 import { PostDialog } from "./PostDialog";
@@ -13,7 +13,7 @@ interface PostActionsProps {
 
 export const PostActions = ({ post }: PostActionsProps) => {
   const { posts, likePost, unlikePost } = usePostStore();
-  const { authUser } = useAuthStore();
+  const authUser = useAuthUser();
 
   const updatedPost = posts.find((p) => p._id === post._id) || post;
 

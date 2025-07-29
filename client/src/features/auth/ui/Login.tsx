@@ -16,7 +16,7 @@ import {
 
 import { loginSchema } from "../lib";
 
-import { useAuthStore } from "../model/useAuthStore";
+import { useAuthActions, useAuthIsPending } from "../model/useAuthStore";
 
 interface FormValues {
   email: string;
@@ -34,7 +34,8 @@ export const Login = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const { logIn, isPending } = useAuthStore();
+  const { logIn } = useAuthActions();
+  const isPending = useAuthIsPending();
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     logIn(data);

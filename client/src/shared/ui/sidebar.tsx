@@ -3,7 +3,7 @@ import { Newspaper, User, LogOutIcon, MessageCircle } from "lucide-react";
 import { Box, Button, HStack, Icon, List, Stack, Text } from "@chakra-ui/react";
 import { SearchBar } from "@/features/search-bar/ui/SearchBar";
 import { CreatePost } from "@/features/posts/ui/CreatePost";
-import { useAuthStore } from "@/features/auth/model/useAuthStore";
+import { useAuthActions } from "@/features/auth/model/useAuthStore";
 
 export const Sidebar = () => {
   const links = [
@@ -24,7 +24,7 @@ export const Sidebar = () => {
     },
   ];
   const navigate = useNavigate();
-  const { logOut } = useAuthStore();
+  const { logOut } = useAuthActions();
   const logoutHandler = async () => {
     try {
       await logOut();

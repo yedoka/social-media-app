@@ -1,5 +1,5 @@
 import { Box, Text, HStack, Avatar } from "@chakra-ui/react";
-import { useAuthStore } from "@/features/auth/model/useAuthStore";
+import { useAuthUser } from "@/features/auth/model/useAuthStore";
 import type { MessageType } from "@/shared/types";
 
 interface MessageBoxProps {
@@ -7,7 +7,7 @@ interface MessageBoxProps {
 }
 
 export const MessageBox = ({ message }: MessageBoxProps) => {
-  const { authUser } = useAuthStore();
+  const authUser = useAuthUser();
   const isFromMe = message.senderId._id === authUser?._id;
 
   return (
