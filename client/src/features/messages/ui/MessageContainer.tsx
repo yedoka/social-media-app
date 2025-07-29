@@ -8,7 +8,11 @@ import {
   Spinner,
   Center,
 } from "@chakra-ui/react";
-import { useMessageStore } from "../model/useMessageStore";
+import {
+  useMessageIsLoading,
+  useMessageActions,
+  useMessages,
+} from "../model/useMessageStore";
 import { MessageBox } from "./MessageBox";
 import { MessageInput } from "./MessageInput";
 import type { UserType } from "@/shared/types";
@@ -18,7 +22,9 @@ interface MessageContainerProps {
 }
 
 export const MessageContainer = ({ selectedUser }: MessageContainerProps) => {
-  const { messages, isLoading, getMessages } = useMessageStore();
+  const { getMessages } = useMessageActions();
+  const messages = useMessages();
+  const isLoading = useMessageIsLoading();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

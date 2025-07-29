@@ -1,14 +1,10 @@
 import { useEffect } from "react";
+import { Box, VStack, HStack, Avatar, Text } from "@chakra-ui/react";
 import {
-  Box,
-  VStack,
-  HStack,
-  Avatar,
-  Text,
-  Spinner,
-  Center,
-} from "@chakra-ui/react";
-import { useMessageStore } from "../model/useMessageStore";
+  useMessageActions,
+  useMessageSelectedUser,
+  useUsers,
+} from "../model/useMessageStore";
 import type { UserType } from "@/shared/types";
 
 interface UserListProps {
@@ -16,7 +12,9 @@ interface UserListProps {
 }
 
 export const UserList = ({ onUserSelect }: UserListProps) => {
-  const { users, getUsers, selectedUser } = useMessageStore();
+  const users = useUsers();
+  const { getUsers } = useMessageActions();
+  const selectedUser = useMessageSelectedUser();
 
   useEffect(() => {
     getUsers();

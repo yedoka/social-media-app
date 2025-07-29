@@ -1,13 +1,18 @@
 import { useEffect } from "react";
 import { Box, Center, Text } from "@chakra-ui/react";
 import { UserList, MessageContainer } from "@/features/messages/ui";
-import { useMessageStore } from "@/features/messages/model/useMessageStore";
+import {
+  useMessageActions,
+  useMessageSelectedUser,
+} from "@/features/messages/model/useMessageStore";
 import { useAuthUser } from "@/features/auth/model/useAuthStore";
 import type { UserType } from "@/shared/types";
 import { io } from "socket.io-client";
 
 export const Messages = () => {
-  const { selectedUser, setSelectedUser, addMessage } = useMessageStore();
+  const { setSelectedUser, addMessage } = useMessageActions();
+  const selectedUser = useMessageSelectedUser();
+
   const authUser = useAuthUser();
 
   useEffect(() => {

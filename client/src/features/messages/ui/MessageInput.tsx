@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { HStack, Input, Button } from "@chakra-ui/react";
 import { Send } from "lucide-react";
-import { useMessageStore } from "../model/useMessageStore";
+import { useMessageActions } from "../model/useMessageStore";
 
 interface MessageInputProps {
   userId: string;
@@ -9,7 +9,7 @@ interface MessageInputProps {
 
 export const MessageInput = ({ userId }: MessageInputProps) => {
   const [text, setText] = useState("");
-  const { sendMessage } = useMessageStore();
+  const { sendMessage } = useMessageActions();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
