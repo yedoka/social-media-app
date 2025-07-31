@@ -126,7 +126,7 @@ export const usePostStore = create<PostStore>((set, get) => ({
     const currentPost = posts.find((p) => p._id === postId);
     if (!currentPost) return;
 
-    const { useAuthStore } = await import("@/features/auth/model/useAuthStore");
+    const { useAuthStore } = await import("@/features/auth/model/authStore");
     const currentUserId = useAuthStore.getState().authUser?._id;
     if (!currentUserId) return;
 
@@ -173,7 +173,7 @@ export const usePostStore = create<PostStore>((set, get) => ({
     const currentPost = posts.find((p) => p._id === postId);
     if (!currentPost) return;
 
-    const { useAuthStore } = await import("@/features/auth/model/useAuthStore");
+    const { useAuthStore } = await import("@/features/auth/model/authStore");
     const currentUserId = useAuthStore.getState().authUser?._id;
     if (!currentUserId) return;
 
@@ -219,9 +219,7 @@ export const usePostStore = create<PostStore>((set, get) => ({
     try {
       set({ error: null });
 
-      const { useAuthStore } = await import(
-        "@/features/auth/model/useAuthStore"
-      );
+      const { useAuthStore } = await import("@/features/auth/model/authStore");
       const currentUser = useAuthStore.getState().authUser;
 
       if (!currentUser) return;

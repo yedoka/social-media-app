@@ -2,8 +2,8 @@ import { Heart, MessageCircle } from "lucide-react";
 import { HStack } from "@chakra-ui/react";
 
 import type { PostType } from "@/shared/types";
-import { useAuthUser } from "@/features/auth/model/useAuthStore";
-import { usePostStore } from "../model/usePostStore";
+import { useAuthUser } from "@/features/auth/model/authStore";
+import { usePostStore } from "../model/postStore";
 import { checkIsLikedByUser } from "../lib";
 import { PostDialog } from "./PostDialog";
 

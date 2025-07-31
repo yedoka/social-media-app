@@ -6,7 +6,7 @@ import {
   useAuthActions,
   useAuthIsCheckingAuth,
   useAuthUser,
-} from "@/features/auth/model/useAuthStore";
+} from "@/features/auth/model/authStore";
 import { Auth, Feed, Profile, Messages } from "@/pages";
 import { AuthLayout, RootLayout } from "@/layout";
 

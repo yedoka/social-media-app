@@ -18,7 +18,7 @@ import {
 import { EditFormSchema } from "@/features/auth/lib/validation";
 import type { UserType } from "@/shared/types";
 
-import { useUserStore } from "../model/useUserStore";
+import { useUserStore } from "../model/userStore";
 
 interface FormValues {
   name: string;

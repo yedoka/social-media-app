@@ -4,7 +4,7 @@ import {
   useMessageActions,
   useMessageSelectedUser,
   useUsers,
-} from "../model/useMessageStore";
+} from "../model/messageStore";
 import type { UserType } from "@/shared/types";
 
 interface UserListProps {

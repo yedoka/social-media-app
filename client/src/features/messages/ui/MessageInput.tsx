@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { HStack, Input, Button } from "@chakra-ui/react";
 import { Send } from "lucide-react";
-import { useMessageActions } from "../model/useMessageStore";
+import { useMessageActions } from "../model/messageStore";
 
 interface MessageInputProps {
   userId: string;

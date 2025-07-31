@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { Edit3 } from "lucide-react";
-import { usePostStore } from "../model/usePostStore";
+import { usePostStore } from "../model/postStore";
 
 interface FormValues {
   text: string;

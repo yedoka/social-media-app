@@ -3,7 +3,7 @@ import { Avatar, Button, Heading, HStack, Stack, Text } from "@chakra-ui/react";
 import { ProfilePosts } from "@/features/profile/ui/ProfilePosts";
 import type { UserType } from "@/shared/types";
 
-import { useUserStore } from "../model/useUserStore";
+import { useUserStore } from "../model/userStore";
 import { ProfileEditDialog } from "./ProfileEditDialog";
 import { ProfileUserListDialog } from "./ProfileUserListDialog";
 

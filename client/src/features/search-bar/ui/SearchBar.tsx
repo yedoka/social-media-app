@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { Search, X } from "lucide-react";
 
-import { useUserStore } from "@/features/profile/model/useUserStore";
+import { useUserStore } from "@/features/profile/model/userStore";
 import { useDebounce } from "../hooks/useDebounce";
 import { UserList } from "./UserList";
 

@@ -4,8 +4,8 @@ import { UserList, MessageContainer } from "@/features/messages/ui";
 import {
   useMessageActions,
   useMessageSelectedUser,
-} from "@/features/messages/model/useMessageStore";
-import { useAuthUser } from "@/features/auth/model/useAuthStore";
+} from "@/features/messages/model/messageStore";
+import { useAuthUser } from "@/features/auth/model/authStore";
 import type { UserType } from "@/shared/types";
 import { io } from "socket.io-client";
 

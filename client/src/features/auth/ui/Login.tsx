@@ -16,7 +16,7 @@ import {
 
 import { loginSchema } from "../lib";
 
-import { useAuthActions, useAuthIsPending } from "../model/useAuthStore";
+import { useAuthActions, useAuthIsPending } from "../model/authStore";
 
 interface FormValues {
   email: string;

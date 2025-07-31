@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Group, Input } from "@chakra-ui/react";
 
-import { usePostStore } from "../model/usePostStore";
+import { usePostStore } from "../model/postStore";
 
 interface PostCommentInputProps {
   postId: string;

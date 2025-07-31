@@ -12,7 +12,7 @@ import {
   useMessageIsLoading,
   useMessageActions,
   useMessages,
-} from "../model/useMessageStore";
+} from "../model/messageStore";
 import { MessageBox } from "./MessageBox";
 import { MessageInput } from "./MessageInput";
 import type { UserType } from "@/shared/types";

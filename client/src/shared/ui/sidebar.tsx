@@ -3,7 +3,7 @@ import { Newspaper, User, LogOutIcon, MessageCircle } from "lucide-react";
 import { Box, Button, HStack, Icon, List, Stack, Text } from "@chakra-ui/react";
 import { SearchBar } from "@/features/search-bar/ui/SearchBar";
 import { CreatePost } from "@/features/posts/ui/CreatePost";
-import { useAuthActions } from "@/features/auth/model/useAuthStore";
+import { useAuthActions } from "@/features/auth/model/authStore";
 
 export const Sidebar = () => {
   const links = [

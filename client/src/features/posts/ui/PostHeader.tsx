@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { Ellipsis } from "lucide-react";
 
 import type { UserType } from "@/shared/types";
-import { usePostStore } from "../model/usePostStore";
-import { useAuthUser } from "@/features/auth/model/useAuthStore";
+import { usePostStore } from "../model/postStore";
+import { useAuthUser } from "@/features/auth/model/authStore";
 
 interface PostHeaderProps {
   user: UserType;

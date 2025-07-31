@@ -3,7 +3,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Post } from "@/features/posts/ui/Post";
 import { Box, Heading, Stack, Text, Spinner, Center } from "@chakra-ui/react";
 import { PostSkeleton } from "@/features/posts/ui/PostSkeleton";
-import { usePostStore } from "@/features/posts/model/usePostStore";
+import { usePostStore } from "@/features/posts/model/postStore";
 
 export const Feed = () => {
   const { posts, pagination, isLoadingInitial, getPosts, loadMorePosts } =

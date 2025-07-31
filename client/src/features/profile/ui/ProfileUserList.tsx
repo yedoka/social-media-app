@@ -1,7 +1,7 @@
 import type { UserType } from "@/shared/types";
 import { Avatar, Box, Button, Flex, Text } from "@chakra-ui/react";
 import { Link, useParams } from "react-router-dom";
-import { useUserStore } from "../model/useUserStore";
+import { useUserStore } from "../model/userStore";
 
 interface ProfileUserListProps {
   users: UserType[];

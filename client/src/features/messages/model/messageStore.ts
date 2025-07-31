@@ -5,7 +5,7 @@ import type { MessageType, UserType } from "@/shared/types";
 interface MessageStore {
   messages: MessageType[];
   users: UserType[];
-  selectedUser: UserType | null;
+  selectedUser?: UserType | null;
   isLoading: boolean;
   error: string | null;
 
@@ -19,7 +19,7 @@ interface MessageStore {
   };
 }
 
-export const useMessageStore = create<MessageStore>((set, get) => ({
+export const useMessageStore = create<MessageStore>((set) => ({
   messages: [],
   users: [],
   selectedUser: null,

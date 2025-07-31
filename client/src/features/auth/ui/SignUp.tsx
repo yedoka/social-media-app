@@ -16,7 +16,7 @@ import {
   useAuthActions,
   useAuthIsPending,
   useAuthStore,
-} from "../model/useAuthStore";
+} from "../model/authStore";
 
 interface FormValues {
   email: string;
