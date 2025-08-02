@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Avatar, HStack, Text, Box } from "@chakra-ui/react";
 
 import type { UserType } from "@/shared/types";
-import { useAuthStore } from "@/features/auth/model/useAuthStore";
+import { useAuthUser } from "@/features/auth/model/authStore";
 
 interface UserListProps {
   foundUsers: UserType[];
@@ -15,10 +15,10 @@ export const UserList = ({
   onUserSelect,
   maxResults = 5,
 }: UserListProps) => {
-  if (!foundUsers || foundUsers.length === 0) {
+  if (foundUsers.length === 0) {
     return null;
   }
-  const { authUser } = useAuthStore();
+  const authUser = useAuthUser();
 
   const displayUsers = foundUsers.slice(0, maxResults);
   const hasMoreResults = foundUsers.length > maxResults;

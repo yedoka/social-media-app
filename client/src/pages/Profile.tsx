@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Text, Spinner, Center } from "@chakra-ui/react";
 import { ProfileDetails } from "@/features/profile/ui/ProfileDetails";
-import { useUserStore } from "@/features/profile/model/useUserStore";
+import { useUserStore } from "@/features/profile/model/userStore";
 import { useParams } from "react-router";
 
 export const Profile = () => {

@@ -1,4 +1,3 @@
-// Base interfaces for creation (what you send to API)
 export interface CreateUserData {
   name: string;
   email: string;
@@ -16,39 +15,37 @@ export interface CreateCommentData {
   text: string;
 }
 
-// Full interfaces for data received from API
 export interface UserType {
   _id: string;
   name: string;
   email: string;
   bio: string;
   avatar: string;
-  followers: UserType[]; // Can be populated or not
-  following: UserType[]; // Can be populated or not
-  posts: PostType[]; // Can be populated or not
-  createdAt: string; // ISO date string
-  updatedAt: string; // ISO date string
+  followers: UserType[];
+  following: UserType[];
+  posts: PostType[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface CommentType {
   _id: string;
-  user: UserType; // Can be populated or not
+  user: UserType;
   text: string;
-  createdAt: string; // ISO date string
+  createdAt: string;
 }
 
 export interface PostType {
   _id: string;
-  user: UserType; // Can be populated or not
+  user: UserType;
   text: string;
   image: string;
-  likes: UserType[]; // Can be populated or not
+  likes: UserType[];
   comments: CommentType[];
-  createdAt: string; // ISO date string
-  updatedAt: string; // ISO date string
+  createdAt: string;
+  updatedAt: string;
 }
 
-// Utility types for when you know the population state
 export interface PopulatedUser
   extends Omit<UserType, "followers" | "following" | "posts"> {
   followers: UserType[];
@@ -63,11 +60,20 @@ export interface PopulatedPost
   comments: PopulatedComment[];
 }
 
+export interface MessageType {
+  _id: string;
+  senderId: UserType;
+  receiverId: UserType;
+  text: string;
+  isRead: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface PopulatedComment extends Omit<CommentType, "user"> {
   user: UserType;
 }
 
-// API response types
 export interface ApiResponse<T> {
   success: boolean;
   data: T;
@@ -85,7 +91,6 @@ export interface PaginatedResponse<T> {
   };
 }
 
-// Common API responses
 export type UserResponse = ApiResponse<UserType>;
 export type PostResponse = ApiResponse<PostType>;
 export type UsersResponse = PaginatedResponse<UserType>;

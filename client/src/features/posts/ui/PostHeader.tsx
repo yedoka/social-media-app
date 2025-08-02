@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { Ellipsis } from "lucide-react";
 
 import type { UserType } from "@/shared/types";
-import { usePostStore } from "../model/usePostStore";
-import { useAuthStore } from "@/features/auth/model/useAuthStore";
+import { usePostStore } from "../model/postStore";
+import { useAuthUser } from "@/features/auth/model/authStore";
 
 interface PostHeaderProps {
   user: UserType;
@@ -12,10 +12,10 @@ interface PostHeaderProps {
 }
 
 export const PostHeader = ({ user, postId }: PostHeaderProps) => {
-  const authUser = useAuthStore((state) => state.authUser);
+  const authUser = useAuthUser();
   const { deletePost } = usePostStore();
 
-  const isOwnPost = user._id === useAuthStore.getState().authUser?._id;
+  const isOwnPost = user._id === authUser?._id;
   const isOwnProfile = authUser?._id === user._id;
   const linkToProfile = isOwnProfile ? "/profile" : `/user/${user.name}`;
 
