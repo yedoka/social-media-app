@@ -15,7 +15,7 @@ export const UserList = ({
   onUserSelect,
   maxResults = 5,
 }: UserListProps) => {
-  if (!foundUsers || foundUsers.length === 0) {
+  if (foundUsers.length === 0) {
     return null;
   }
   const authUser = useAuthUser();

@@ -15,7 +15,7 @@ import { useDebounce } from "../hooks/useDebounce";
 import { UserList } from "./UserList";
 
 export const SearchBar = () => {
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState("");
   const { searchUsers, searchResults, isLoadingSearch, clearSearchResults } =
     useUserStore();
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
