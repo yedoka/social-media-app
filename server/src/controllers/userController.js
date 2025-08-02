@@ -85,7 +85,18 @@ exports.updateUserProfile = async (req, res) => {
 
     await user.save();
 
-    const updatedUser = await User.findById(req.user.id).select("-password");
+    const updatedUser = await User.findById(req.user.id)
+      .populate({
+        path: "posts",
+        populate: [
+          { path: "user", select: "name avatar" },
+          {
+            path: "comments.user",
+            select: "name avatar",
+          },
+        ],
+      })
+      .select("-password");
     res.json(updatedUser);
   } catch (error) {
     console.error("Error in updateUserProfile:", error.message);

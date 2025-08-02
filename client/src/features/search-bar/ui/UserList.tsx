@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Avatar, HStack, Text, Box } from "@chakra-ui/react";
 
 import type { UserType } from "@/shared/types";
-import { useAuthUser } from "@/features/auth/model/authStore";
+import { useAuthUser } from "@/features/auth";
 
 interface UserListProps {
   foundUsers: UserType[];

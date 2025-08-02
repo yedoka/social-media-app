@@ -15,8 +15,7 @@ import {
 } from "@chakra-ui/react";
 
 import { loginSchema } from "../lib";
-
-import { useAuthActions, useAuthIsPending } from "../model/authStore";
+import { useAuthActions } from "../model";
 
 interface FormValues {
   email: string;
@@ -34,11 +33,10 @@ export const Login = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const { logIn } = useAuthActions();
-  const isPending = useAuthIsPending();
+  const { login, isPending } = useAuthActions();
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    logIn(data);
+    login(data);
     reset();
   };
 

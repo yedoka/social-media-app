@@ -1,17 +1,18 @@
-import { useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Post } from "@/features/posts/ui/Post";
 import { Box, Heading, Stack, Text, Spinner, Center } from "@chakra-ui/react";
 import { PostSkeleton } from "@/features/posts/ui/PostSkeleton";
-import { usePostStore } from "@/features/posts/model/postStore";
+import { usePosts } from "@/features/posts";
 
 export const Feed = () => {
-  const { posts, pagination, isLoadingInitial, getPosts, loadMorePosts } =
-    usePostStore();
-
-  useEffect(() => {
-    getPosts(1);
-  }, [getPosts]);
+  const {
+    posts,
+    pagination,
+    isLoadingInitial,
+    loadMorePosts,
+    hasMorePosts,
+    refreshPosts,
+  } = usePosts();
 
   if (isLoadingInitial) {
     return (
@@ -41,7 +42,7 @@ export const Feed = () => {
       <InfiniteScroll
         dataLength={posts.length}
         next={loadMorePosts}
-        hasMore={pagination?.hasMore ?? false}
+        hasMore={hasMorePosts ?? false}
         loader={
           <Center py={4}>
             <Spinner size="md" />
@@ -55,7 +56,7 @@ export const Feed = () => {
             </Text>
           </Center>
         }
-        refreshFunction={() => getPosts(1)}
+        refreshFunction={refreshPosts}
         pullDownToRefresh={true}
         pullDownToRefreshThreshold={50}
         pullDownToRefreshContent={

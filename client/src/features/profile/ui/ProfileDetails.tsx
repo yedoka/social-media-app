@@ -3,7 +3,7 @@ import { Avatar, Button, Heading, HStack, Stack, Text } from "@chakra-ui/react";
 import { ProfilePosts } from "@/features/profile/ui/ProfilePosts";
 import type { UserType } from "@/shared/types";
 
-import { useUserStore } from "../model/userStore";
+import { useCurrentProfile, useFollowUser } from "../model/useProfile";
 import { ProfileEditDialog } from "./ProfileEditDialog";
 import { ProfileUserListDialog } from "./ProfileUserListDialog";
 
@@ -12,9 +12,8 @@ interface ProfileDetailsProps {
 }
 
 export const ProfileDetails = ({ userData }: ProfileDetailsProps) => {
-  const currentUserProfile = useUserStore((state) => state.currentUserProfile);
-  const followUser = useUserStore((state) => state.followUser);
-  const unfollowUser = useUserStore((state) => state.unfollowUser);
+  const { profile: currentUserProfile } = useCurrentProfile();
+  const { followUser, unfollowUser, isToggling } = useFollowUser();
 
   const isOwnProfile = currentUserProfile?._id === userData._id;
 
@@ -23,13 +22,13 @@ export const ProfileDetails = ({ userData }: ProfileDetailsProps) => {
       (followedUser) => followedUser._id === userData._id
     ) || false;
 
-  const toggleFollow = async () => {
+  const toggleFollow = () => {
     if (!userData || !currentUserProfile) return;
 
     if (isFollowing) {
-      await unfollowUser(userData._id);
+      unfollowUser(userData._id);
     } else {
-      await followUser(userData._id);
+      followUser(userData._id);
     }
   };
 
@@ -54,10 +53,17 @@ export const ProfileDetails = ({ userData }: ProfileDetailsProps) => {
               />
             ) : (
               <Button
-                onClick={() => toggleFollow()}
+                onClick={toggleFollow}
                 variant={isFollowing ? "subtle" : "solid"}
+                disabled={isToggling}
               >
-                {isFollowing ? "Unfollow" : "Follow"}
+                {isToggling
+                  ? isFollowing
+                    ? "Unfollowing..."
+                    : "Following..."
+                  : isFollowing
+                    ? "Unfollow"
+                    : "Follow"}
               </Button>
             )}
           </HStack>

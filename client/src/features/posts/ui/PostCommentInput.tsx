@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Group, Input } from "@chakra-ui/react";
 
-import { usePostStore } from "../model/postStore";
+import { usePostComments } from "../model";
 
 interface PostCommentInputProps {
   postId: string;
@@ -9,11 +9,13 @@ interface PostCommentInputProps {
 
 export const PostCommentInput = ({ postId }: PostCommentInputProps) => {
   const [commentText, setCommentText] = useState("");
-  const { addComment } = usePostStore();
+  const { addComment, isAdding } = usePostComments();
 
   const onSubmit = async () => {
-    await addComment(postId, commentText);
-    setCommentText("");
+    if (commentText.trim()) {
+      addComment(postId, commentText);
+      setCommentText("");
+    }
   };
 
   const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +32,11 @@ export const PostCommentInput = ({ postId }: PostCommentInputProps) => {
         onChange={handleCommentChange}
         size="xs"
       />
-      <Button onClick={onSubmit} size="xs">
+      <Button
+        onClick={onSubmit}
+        size="xs"
+        disabled={isAdding || !commentText.trim()}
+      >
         Post
       </Button>
     </Group>

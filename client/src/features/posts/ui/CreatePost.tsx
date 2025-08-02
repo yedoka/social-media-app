@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { Edit3 } from "lucide-react";
-import { usePostStore } from "../model/postStore";
+import { useCreatePost } from "../model";
 
 interface FormValues {
   text: string;
@@ -29,10 +29,10 @@ export const CreatePost = () => {
     defaultValues: { text: "", image: "" },
   });
 
-  const { createPost, isPending } = usePostStore((state) => state);
+  const { createPost, isCreating } = useCreatePost();
 
   const onSubmitPost = async (data: FormValues) => {
-    await createPost(data);
+    createPost(data);
     reset();
   };
 
@@ -100,7 +100,7 @@ export const CreatePost = () => {
                   </Button>
                 </Dialog.ActionTrigger>
                 <Dialog.ActionTrigger asChild>
-                  <Button type="submit" disabled={isPending}>
+                  <Button type="submit" disabled={isCreating}>
                     Save
                   </Button>
                 </Dialog.ActionTrigger>

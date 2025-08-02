@@ -2,8 +2,8 @@ import { Heart, MessageCircle } from "lucide-react";
 import { HStack } from "@chakra-ui/react";
 
 import type { PostType } from "@/shared/types";
-import { useAuthUser } from "@/features/auth/model/authStore";
-import { usePostStore } from "../model/postStore";
+import { useAuthUser } from "@/features/auth";
+import { useLikePost } from "../model";
 import { checkIsLikedByUser } from "../lib";
 import { PostDialog } from "./PostDialog";
 
@@ -12,15 +12,10 @@ interface PostActionsProps {
 }
 
 export const PostActions = ({ post }: PostActionsProps) => {
-  const { posts, likePost, unlikePost } = usePostStore();
+  const { likePost, unlikePost, isToggling } = useLikePost();
   const authUser = useAuthUser();
 
-  const updatedPost = posts.find((p) => p._id === post._id) || post;
-
-  const isLikedByUser = checkIsLikedByUser(
-    updatedPost.likes,
-    authUser?._id || ""
-  );
+  const isLikedByUser = checkIsLikedByUser(post.likes, authUser?._id || "");
 
   const handlePostLike = (postId: string) => {
     if (isLikedByUser) {
@@ -38,9 +33,10 @@ export const PostActions = ({ post }: PostActionsProps) => {
         size={20}
         cursor="pointer"
         color={isLikedByUser ? "red" : undefined}
+        opacity={isToggling ? 0.5 : 1}
       />
       <PostDialog
-        post={updatedPost}
+        post={post}
         trigger={<MessageCircle cursor="pointer" size={20} />}
       />
     </HStack>

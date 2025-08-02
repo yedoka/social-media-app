@@ -1,25 +1,13 @@
-import { useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-
-import "@/app/index.css";
-import {
-  useAuthActions,
-  useAuthIsCheckingAuth,
-  useAuthUser,
-} from "@/features/auth/model/authStore";
-import { Auth, Feed, Profile, Messages } from "@/pages";
-import { AuthLayout, RootLayout } from "@/layout";
-
 import { Center, Spinner } from "@chakra-ui/react";
 
-export const App = () => {
-  const authUser = useAuthUser();
-  const { checkAuth } = useAuthActions();
-  const isCheckingAuth = useAuthIsCheckingAuth();
+import { useAuth } from "@/features/auth";
+import { Auth, Feed, Profile, Messages } from "@/pages";
+import { AuthLayout, RootLayout } from "@/layout";
+import "@/app/index.css";
 
-  useEffect(() => {
-    checkAuth();
-  }, []);
+export const App = () => {
+  const { user: authUser, isCheckingAuth } = useAuth();
 
   if (isCheckingAuth) {
     return (

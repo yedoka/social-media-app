@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "react-toastify";
 import {
   Button,
   Center,
@@ -18,7 +17,7 @@ import {
 import { EditFormSchema } from "@/features/auth/lib/validation";
 import type { UserType } from "@/shared/types";
 
-import { useUserStore } from "../model/userStore";
+import { useUpdateProfile } from "../model/useProfile";
 
 interface FormValues {
   name: string;
@@ -43,22 +42,10 @@ export const ProfileEditDialog = ({ data, trigger }: EditFormProps) => {
     resolver: zodResolver(EditFormSchema),
     mode: "onSubmit",
   });
-  const { updateProfile } = useUserStore();
+  const { updateProfile, isUpdating } = useUpdateProfile();
 
   const handleSave: SubmitHandler<FormValues> = async (formData) => {
-    try {
-      await updateProfile(formData);
-      toast.success("Profile updated successfully", {
-        position: "bottom-right",
-        theme: "dark",
-      });
-    } catch (error) {
-      console.error("Failed to update profile:", error);
-      toast.error("Failed to update profile. Please try again.", {
-        position: "bottom-right",
-        theme: "dark",
-      });
-    }
+    updateProfile(formData);
   };
 
   if (!data) {
@@ -115,7 +102,9 @@ export const ProfileEditDialog = ({ data, trigger }: EditFormProps) => {
                   <Button variant="outline">Cancel</Button>
                 </Dialog.ActionTrigger>
                 <Dialog.ActionTrigger asChild>
-                  <Button type="submit">Save</Button>
+                  <Button type="submit" disabled={isUpdating}>
+                    {isUpdating ? "Saving..." : "Save"}
+                  </Button>
                 </Dialog.ActionTrigger>
               </Dialog.Footer>
             </form>

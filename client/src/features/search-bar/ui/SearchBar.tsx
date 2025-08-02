@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useState } from "react";
 
 import {
   Input,
@@ -10,32 +10,17 @@ import {
 } from "@chakra-ui/react";
 import { Search, X } from "lucide-react";
 
-import { useUserStore } from "@/features/profile/model/userStore";
+import { useUserSearch } from "@/features/profile";
 import { useDebounce } from "../hooks/useDebounce";
 import { UserList } from "./UserList";
 
 export const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const { searchUsers, searchResults, isLoadingSearch, clearSearchResults } =
-    useUserStore();
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
-  const abortControllerRef = useRef<AbortController | null>(null);
 
-  useEffect(() => {
-    if (!debouncedSearchTerm.trim()) {
-      clearSearchResults();
-      return;
-    }
-
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
-
-    if (debouncedSearchTerm.trim().length >= 2) {
-      abortControllerRef.current = new AbortController();
-      searchUsers(debouncedSearchTerm);
-    }
-  }, [debouncedSearchTerm, searchUsers, clearSearchResults]);
+  const { results: searchResults, isLoading: isLoadingSearch } = useUserSearch(
+    debouncedSearchTerm.trim().length >= 2 ? debouncedSearchTerm : ""
+  );
 
   const handleChange = (value: string) => {
     setSearchTerm(value);
@@ -43,12 +28,10 @@ export const SearchBar = () => {
 
   const handleClearSearch = () => {
     setSearchTerm("");
-    clearSearchResults();
   };
 
   const handleUserSelect = () => {
     setSearchTerm("");
-    clearSearchResults();
   };
 
   return (

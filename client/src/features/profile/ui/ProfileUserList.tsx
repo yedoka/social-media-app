@@ -1,7 +1,7 @@
 import type { UserType } from "@/shared/types";
 import { Avatar, Box, Button, Flex, Text } from "@chakra-ui/react";
 import { Link, useParams } from "react-router-dom";
-import { useUserStore } from "../model/userStore";
+import { useFollowUser } from "../model/useProfile";
 
 interface ProfileUserListProps {
   users: UserType[];
@@ -10,7 +10,7 @@ interface ProfileUserListProps {
 
 export const ProfileUserList = ({ users, type }: ProfileUserListProps) => {
   const { username } = useParams();
-  const unfollowUser = useUserStore((state) => state.unfollowUser);
+  const { unfollowUser, isUnfollowing } = useFollowUser();
 
   return (
     <Box minHeight="300px" maxHeight="400px" overflowY="auto" px={4}>
@@ -34,8 +34,9 @@ export const ProfileUserList = ({ users, type }: ProfileUserListProps) => {
                 variant="outline"
                 colorScheme="red"
                 onClick={() => unfollowUser(user._id)}
+                disabled={isUnfollowing}
               >
-                Unfollow
+                {isUnfollowing ? "Unfollowing..." : "Unfollow"}
               </Button>
             )}
           </Flex>

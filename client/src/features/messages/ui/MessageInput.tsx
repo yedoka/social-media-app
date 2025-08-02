@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { HStack, Input, Button } from "@chakra-ui/react";
 import { Send } from "lucide-react";
-import { useMessageActions } from "../model/messageStore";
+import { useSendMessage } from "../model";
 
 interface MessageInputProps {
   userId: string;
@@ -9,13 +9,13 @@ interface MessageInputProps {
 
 export const MessageInput = ({ userId }: MessageInputProps) => {
   const [text, setText] = useState("");
-  const { sendMessage } = useMessageActions();
+  const { sendMessage, isSending } = useSendMessage();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!text.trim()) return;
 
-    await sendMessage(userId, text);
+    sendMessage(userId, { text });
     setText("");
   };
 
@@ -27,8 +27,13 @@ export const MessageInput = ({ userId }: MessageInputProps) => {
           onChange={(e) => setText(e.target.value)}
           placeholder="Type a message..."
           flex={1}
+          disabled={isSending}
         />
-        <Button type="submit" colorScheme="blue" disabled={!text.trim()}>
+        <Button
+          type="submit"
+          colorScheme="blue"
+          disabled={!text.trim() || isSending}
+        >
           <Send size={16} />
         </Button>
       </HStack>

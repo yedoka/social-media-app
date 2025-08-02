@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { Ellipsis } from "lucide-react";
 
 import type { UserType } from "@/shared/types";
-import { usePostStore } from "../model/postStore";
-import { useAuthUser } from "@/features/auth/model/authStore";
+import { useDeletePost } from "../model";
+import { useAuthUser } from "@/features/auth";
 
 interface PostHeaderProps {
   user: UserType;
@@ -13,7 +13,7 @@ interface PostHeaderProps {
 
 export const PostHeader = ({ user, postId }: PostHeaderProps) => {
   const authUser = useAuthUser();
-  const { deletePost } = usePostStore();
+  const { deletePost, isDeleting } = useDeletePost();
 
   const isOwnPost = user._id === authUser?._id;
   const isOwnProfile = authUser?._id === user._id;
@@ -44,8 +44,9 @@ export const PostHeader = ({ user, postId }: PostHeaderProps) => {
                   value="delete"
                   color="fg.error"
                   onClick={() => deletePost(postId)}
+                  disabled={isDeleting}
                 >
-                  Delete
+                  {isDeleting ? "Deleting..." : "Delete"}
                 </Menu.Item>
               )}
               <Menu.Item value="viewProfile">

@@ -1,5 +1,5 @@
 import { Box, Text, HStack, Avatar } from "@chakra-ui/react";
-import { useAuthUser } from "@/features/auth/model/authStore";
+import { useAuthUser } from "@/features/auth";
 import type { MessageType } from "@/shared/types";
 
 interface MessageBoxProps {

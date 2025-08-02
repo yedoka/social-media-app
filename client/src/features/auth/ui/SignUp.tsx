@@ -12,11 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { Lock, Mail, User } from "lucide-react";
 
-import {
-  useAuthActions,
-  useAuthIsPending,
-  useAuthStore,
-} from "../model/authStore";
+import { useAuthActions } from "../model";
 
 interface FormValues {
   email: string;
@@ -40,8 +36,7 @@ export const SignUp = () => {
     resolver: zodResolver(signupSchema),
     mode: "onSubmit",
   });
-  const { register: signUp } = useAuthActions();
-  const isPending = useAuthIsPending();
+  const { register: signUp, isPending } = useAuthActions();
 
   const onSubmit = async (data: FormValues) => {
     signUp(data);

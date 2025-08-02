@@ -8,11 +8,7 @@ import {
   Spinner,
   Center,
 } from "@chakra-ui/react";
-import {
-  useMessageIsLoading,
-  useMessageActions,
-  useMessages,
-} from "../model/messageStore";
+import { useMessages } from "../model";
 import { MessageBox } from "./MessageBox";
 import { MessageInput } from "./MessageInput";
 import type { UserType } from "@/shared/types";
@@ -22,16 +18,8 @@ interface MessageContainerProps {
 }
 
 export const MessageContainer = ({ selectedUser }: MessageContainerProps) => {
-  const { getMessages } = useMessageActions();
-  const messages = useMessages();
-  const isLoading = useMessageIsLoading();
+  const { messages, isLoading, isError } = useMessages(selectedUser._id);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (selectedUser) {
-      getMessages(selectedUser._id);
-    }
-  }, [selectedUser]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -41,6 +29,14 @@ export const MessageContainer = ({ selectedUser }: MessageContainerProps) => {
     return (
       <Center flex={1}>
         <Spinner size="md" />
+      </Center>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Center flex={1}>
+        <Text color="gray.500">Failed to load messages</Text>
       </Center>
     );
   }
@@ -57,7 +53,7 @@ export const MessageContainer = ({ selectedUser }: MessageContainerProps) => {
         </VStack>
       </HStack>
 
-      <Box flex={1} overflowY="auto" p={4} backgroundColor={"gray.900"}>
+      <Box flex={1} overflowY="auto" p={4} bg="gray.900">
         <VStack gap={2} align="stretch">
           {messages.map((message) => (
             <MessageBox key={message._id} message={message} />
