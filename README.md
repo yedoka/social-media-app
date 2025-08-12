@@ -1,6 +1,6 @@
 # Social Media App
 
-A full-stack social media application built with React, Node.js, Express, and MongoDB. Features include user authentication, post creation, real-time interactions, infinite scrolling, and user profiles.
+A full-stack social media application built with MERN stack and socket.io real time communication. Features include user authentication, post creation, real-time interactions, infinite scrolling, and user profiles.
 
 ## 🚀 Features
 
@@ -31,6 +31,7 @@ A full-stack social media application built with React, Node.js, Express, and Mo
   - Instant UI updates with optimistic updates
   - Real-time like/comment counters
   - Live search results
+  - Real time messages
 
 - **Modern UI/UX**
   - Responsive design with Chakra UI
@@ -63,6 +64,7 @@ A full-stack social media application built with React, Node.js, Express, and Mo
 - **CORS** - Cross-origin resource sharing
 - **Helmet** - Security middleware
 - **Morgan** - HTTP request logging
+- **Socket.io** - Real time communication
 
 ## 📁 Project Structure
 
